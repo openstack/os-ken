@@ -1,5 +1,4 @@
-# Copyright (C) 2011, 2012 Nippon Telegraph and Telephone Corporation.
-# Copyright (C) 2011 Isaku Yamahata <yamahata at valinux co jp>
+# Copyright (c) 2013 Hewlett-Packard Development Company, L.P.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,17 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# a bug workaround.  http://bugs.python.org/issue15881
+# THIS FILE IS MANAGED BY THE GLOBAL REQUIREMENTS REPO - DO NOT EDIT
+import setuptools
+
+# In python < 2.7.4, a lazy loading of package `pbr` will break
+# setuptools if some other modules registered functions in `atexit`.
+# solution from: http://bugs.python.org/issue15881#msg170215
 try:
-    import multiprocessing
+    import multiprocessing  # noqa
 except ImportError:
     pass
 
-import setuptools
-import ryu.hooks
-
-
-ryu.hooks.save_orig()
-setuptools.setup(name='ryu',
-                 setup_requires=['pbr'],
-                 pbr=True)
+setuptools.setup(
+    setup_requires=['pbr'],
+    pbr=True)

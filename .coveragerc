@@ -1,0 +1,6 @@
+[run]
+branch = True
+source = os_ken
+
+[report]
+ignore_errors = True
