@@ -10,8 +10,8 @@ oslotest>=1.10.0 # Apache-2.0
 stestr>=1.0.0 # Apache-2.0
 testtools>=1.4.0 # MIT
 autopep8
-mock
+mock>=2.0.0 # BSD
 nose
-pycodestyle
-pylint
+pycodestyle>=2.0.0 # MIT
+pylint==1.9.2 # GPLv2
 formencode
