@@ -18,7 +18,7 @@ import base64
 
 import six
 
-from ryu.lib import addrconv
+from os_ken.lib import addrconv
 
 
 class TypeDescr(object):

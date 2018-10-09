@@ -60,8 +60,8 @@ import random
 import struct
 
 from . import packet_base
-from ryu.lib import addrconv
-from ryu.lib import stringify
+from os_ken.lib import addrconv
+from os_ken.lib import stringify
 
 # DHCPv6 message types
 DHCPV6_SOLICIT = 1
@@ -199,7 +199,7 @@ class dhcp6(packet_base.PacketBase):
 class options(stringify.StringifyMixin):
     """DHCP (RFC 3315) options encoder/decoder class.
 
-    This is used with ryu.lib.packet.dhcp6.dhcp6.
+    This is used with os_ken.lib.packet.dhcp6.dhcp6.
     """
 
     def __init__(self, option_list=None, options_len=0):
@@ -233,7 +233,7 @@ class options(stringify.StringifyMixin):
 class option(stringify.StringifyMixin):
     """DHCP (RFC 3315) options encoder/decoder class.
 
-    This is used with ryu.lib.packet.dhcp6.dhcp6.options.
+    This is used with os_ken.lib.packet.dhcp6.dhcp6.options.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.

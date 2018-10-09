@@ -19,9 +19,9 @@ import logging
 import netaddr
 import six
 
-from ryu.lib import dpid
-from ryu.lib import hub
-from ryu.ofproto import ofproto_v1_2
+from os_ken.lib import dpid
+from os_ken.lib import hub
+from os_ken.ofproto import ofproto_v1_2
 
 
 LOG = logging.getLogger(__name__)

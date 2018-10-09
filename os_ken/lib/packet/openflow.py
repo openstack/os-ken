@@ -15,7 +15,7 @@
 
 import struct
 
-from ryu.lib import stringify
+from os_ken.lib import stringify
 from . import packet_base
 
 
@@ -42,8 +42,8 @@ class openflow(packet_base.PacketBase):
 
     @classmethod
     def parser(cls, buf):
-        from ryu.ofproto import ofproto_parser
-        from ryu.ofproto import ofproto_protocol
+        from os_ken.ofproto import ofproto_parser
+        from os_ken.ofproto import ofproto_protocol
 
         (version, msg_type, msg_len, xid) = ofproto_parser.header(buf)
 
@@ -79,7 +79,7 @@ class OFPUnparseableMsg(stringify.StringifyMixin):
     ============== ======================================================
     Attribute      Description
     ============== ======================================================
-    datapath       A ryu.ofproto.ofproto_protocol.ProtocolDesc instance
+    datapath       A os_ken.ofproto.ofproto_protocol.ProtocolDesc instance
                    for this message or None if OpenFlow protocol version
                    is unsupported version.
     version        OpenFlow protocol version
@@ -92,7 +92,7 @@ class OFPUnparseableMsg(stringify.StringifyMixin):
     .. Note::
 
         "datapath" attribute is different from
-        ryu.controller.controller.Datapath.
+        os_ken.controller.controller.Datapath.
         So you can not use "datapath" attribute to send OpenFlow messages.
         For example, "datapath" attribute does not have send_msg method.
     """

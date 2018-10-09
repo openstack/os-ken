@@ -15,7 +15,7 @@
 
 import abc
 import six
-from ryu.lib import stringify
+from os_ken.lib import stringify
 
 
 @six.add_metaclass(abc.ABCMeta)

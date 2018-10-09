@@ -16,9 +16,9 @@
 import abc
 import six
 import struct
-from ryu.lib import addrconv
-from ryu.lib import stringify
-from ryu.lib.packet import packet_base
+from os_ken.lib import addrconv
+from os_ken.lib import stringify
+from os_ken.lib.packet import packet_base
 
 # IEEE 802.1ag OpCode
 CFM_CC_MESSAGE = 0x01
@@ -193,7 +193,7 @@ class cc_message(operation):
     """CFM (IEEE Std 802.1ag-2007) Continuity Check Message (CCM)
     encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -407,7 +407,7 @@ class loopback_message(loopback):
 
     """CFM (IEEE Std 802.1ag-2007) Loopback Message (LBM) encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -440,7 +440,7 @@ class loopback_reply(loopback):
 
     """CFM (IEEE Std 802.1ag-2007) Loopback Reply (LBR) encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -498,7 +498,7 @@ class link_trace_message(link_trace):
     """CFM (IEEE Std 802.1ag-2007) Linktrace Message (LTM)
     encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -584,7 +584,7 @@ class link_trace_reply(link_trace):
 
     """CFM (IEEE Std 802.1ag-2007) Linktrace Reply (LTR) encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -700,7 +700,7 @@ class sender_id_tlv(tlv):
 
     """CFM (IEEE Std 802.1ag-2007) Sender ID TLV encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -857,7 +857,7 @@ class port_status_tlv(tlv):
 
     """CFM (IEEE Std 802.1ag-2007) Port Status TLV encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -910,7 +910,7 @@ class data_tlv(tlv):
 
     """CFM (IEEE Std 802.1ag-2007) Data TLV encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -962,7 +962,7 @@ class interface_status_tlv(tlv):
 
     """CFM (IEEE Std 802.1ag-2007) Interface Status TLV encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1023,7 +1023,7 @@ class ltm_egress_identifier_tlv(tlv):
 
     """CFM (IEEE Std 802.1ag-2007) LTM EGRESS TLV encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1080,7 +1080,7 @@ class ltr_egress_identifier_tlv(tlv):
 
     """CFM (IEEE Std 802.1ag-2007) LTR EGRESS TLV encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1151,7 +1151,7 @@ class organization_specific_tlv(tlv):
     """CFM (IEEE Std 802.1ag-2007) Organization Specific TLV
        encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1280,7 +1280,7 @@ class reply_ingress_tlv(reply_tlv):
 
     """CFM (IEEE Std 802.1ag-2007) Reply Ingress TLV encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1329,7 +1329,7 @@ class reply_egress_tlv(reply_tlv):
 
     """CFM (IEEE Std 802.1ag-2007) Reply Egress TLV encoder/decoder class.
 
-    This is used with ryu.lib.packet.cfm.cfm.
+    This is used with os_ken.lib.packet.cfm.cfm.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.

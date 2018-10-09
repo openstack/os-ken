@@ -21,7 +21,7 @@ SFLOW_V3 = 0x00000003
 SFLOW_V4 = 0x00000004
 SFLOW_V5 = 0x00000005
 
-LOG = logging.getLogger('ryu.lib.xflow.sflow')
+LOG = logging.getLogger('os_ken.lib.xflow.sflow')
 
 
 class sFlow(object):

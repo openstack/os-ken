@@ -82,8 +82,8 @@ import six
 import struct
 
 from . import packet_base
-from ryu.lib import addrconv
-from ryu.lib import stringify
+from os_ken.lib import addrconv
+from os_ken.lib import stringify
 
 BFD_STATE_ADMIN_DOWN = 0
 BFD_STATE_DOWN = 1

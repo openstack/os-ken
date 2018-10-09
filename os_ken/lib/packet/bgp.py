@@ -37,20 +37,20 @@ import struct
 import netaddr
 import six
 
-from ryu.lib.stringify import StringifyMixin
-from ryu.lib.packet import afi as addr_family
-from ryu.lib.packet import safi as subaddr_family
-from ryu.lib.packet import packet_base
-from ryu.lib.packet import stream_parser
-from ryu.lib.packet import vxlan
-from ryu.lib.packet import mpls
-from ryu.lib import addrconv
-from ryu.lib import type_desc
-from ryu.lib.type_desc import TypeDisp
-from ryu.lib import ip
-from ryu.lib.pack_utils import msg_pack_into
-from ryu.utils import binary_str
-from ryu.utils import import_module
+from os_ken.lib.stringify import StringifyMixin
+from os_ken.lib.packet import afi as addr_family
+from os_ken.lib.packet import safi as subaddr_family
+from os_ken.lib.packet import packet_base
+from os_ken.lib.packet import stream_parser
+from os_ken.lib.packet import vxlan
+from os_ken.lib.packet import mpls
+from os_ken.lib import addrconv
+from os_ken.lib import type_desc
+from os_ken.lib.type_desc import TypeDisp
+from os_ken.lib import ip
+from os_ken.lib.pack_utils import msg_pack_into
+from os_ken.utils import binary_str
+from os_ken.utils import import_module
 
 reduce = six.moves.reduce
 
@@ -2261,7 +2261,7 @@ class FlowSpecVPNv4NLRI(_FlowSpecNLRIBase):
         This function returns a NLRI instance from human readable format value.
 
         :param route_dist: Route Distinguisher.
-        :param kwargs: See :py:mod:`ryu.lib.packet.bgp.FlowSpecIPv4NLRI`
+        :param kwargs: See :py:mod:`os_ken.lib.packet.bgp.FlowSpecIPv4NLRI`
 
         Example::
 
@@ -2380,7 +2380,7 @@ class FlowSpecVPNv6NLRI(_FlowSpecNLRIBase):
         This function returns a NLRI instance from human readable format value.
 
         :param route_dist: Route Distinguisher.
-        :param kwargs: See :py:mod:`ryu.lib.packet.bgp.FlowSpecIPv6NLRI`
+        :param kwargs: See :py:mod:`os_ken.lib.packet.bgp.FlowSpecIPv6NLRI`
         """
         return cls._from_user(route_dist, **kwargs)
 
@@ -5647,7 +5647,7 @@ class BGPRouteRefresh(BGPMessage):
 class StreamParser(stream_parser.StreamParser):
     """Streaming parser for BGP-4 messages.
 
-    This is a subclass of ryu.lib.packet.stream_parser.StreamParser.
+    This is a subclass of os_ken.lib.packet.stream_parser.StreamParser.
     Its parse method returns a list of BGPMessage subclass instances.
     """
 

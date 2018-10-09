@@ -16,16 +16,16 @@
 import base64
 import logging
 
-from ryu.ofproto import ether
-from ryu.ofproto import inet
-from ryu.ofproto import ofproto_common
-from ryu.ofproto import ofproto_v1_3
-from ryu.ofproto import ofproto_v1_3_parser
-from ryu.lib import ofctl_nicira_ext
-from ryu.lib import ofctl_utils
+from os_ken.ofproto import ether
+from os_ken.ofproto import inet
+from os_ken.ofproto import ofproto_common
+from os_ken.ofproto import ofproto_v1_3
+from os_ken.ofproto import ofproto_v1_3_parser
+from os_ken.lib import ofctl_nicira_ext
+from os_ken.lib import ofctl_utils
 
 
-LOG = logging.getLogger('ryu.lib.ofctl_v1_3')
+LOG = logging.getLogger('os_ken.lib.ofctl_v1_3')
 
 DEFAULT_TIMEOUT = 1.0
 

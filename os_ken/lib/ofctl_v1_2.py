@@ -16,14 +16,14 @@
 import logging
 import netaddr
 
-from ryu.ofproto import ether
-from ryu.ofproto import inet
-from ryu.ofproto import ofproto_v1_2
-from ryu.ofproto import ofproto_v1_2_parser
-from ryu.lib import ofctl_utils
+from os_ken.ofproto import ether
+from os_ken.ofproto import inet
+from os_ken.ofproto import ofproto_v1_2
+from os_ken.ofproto import ofproto_v1_2_parser
+from os_ken.lib import ofctl_utils
 
 
-LOG = logging.getLogger('ryu.lib.ofctl_v1_2')
+LOG = logging.getLogger('os_ken.lib.ofctl_v1_2')
 
 DEFAULT_TIMEOUT = 1.0
 

@@ -23,8 +23,8 @@ from . import udp
 from . import sctp
 from . import gre
 from . import in_proto as inet
-from ryu.lib import addrconv
-from ryu.lib import stringify
+from os_ken.lib import addrconv
+from os_ken.lib import stringify
 
 
 IPV6_ADDRESS_PACK_STR = '!16s'
@@ -223,7 +223,7 @@ class opt_header(header):
 class hop_opts(opt_header):
     """IPv6 (RFC 2460) Hop-by-Hop Options header encoder/decoder class.
 
-    This is used with ryu.lib.packet.ipv6.ipv6.
+    This is used with os_ken.lib.packet.ipv6.ipv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -250,7 +250,7 @@ class hop_opts(opt_header):
 class dst_opts(opt_header):
     """IPv6 (RFC 2460) destination header encoder/decoder class.
 
-    This is used with ryu.lib.packet.ipv6.ipv6.
+    This is used with os_ken.lib.packet.ipv6.ipv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -276,8 +276,8 @@ class dst_opts(opt_header):
 class option(stringify.StringifyMixin):
     r"""IPv6 (RFC 2460) Options header encoder/decoder class.
 
-    This is used with ryu.lib.packet.ipv6.hop_opts or
-                      ryu.lib.packet.ipv6.dst_opts.
+    This is used with os_ken.lib.packet.ipv6.hop_opts or
+                      os_ken.lib.packet.ipv6.dst_opts.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -390,7 +390,7 @@ class routing_type3(header):
     An IPv6 Routing Header for Source Routes with the RPL (RFC 6554)
     encoder/decoder class.
 
-    This is used with ryu.lib.packet.ipv6.ipv6.
+    This is used with os_ken.lib.packet.ipv6.ipv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -498,7 +498,7 @@ class routing_type3(header):
 class fragment(header):
     r"""IPv6 (RFC 2460) fragment header encoder/decoder class.
 
-    This is used with ryu.lib.packet.ipv6.ipv6.
+    This is used with os_ken.lib.packet.ipv6.ipv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -549,7 +549,7 @@ class fragment(header):
 class auth(header):
     """IP Authentication header (RFC 2402) encoder/decoder class.
 
-    This is used with ryu.lib.packet.ipv6.ipv6.
+    This is used with os_ken.lib.packet.ipv6.ipv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.

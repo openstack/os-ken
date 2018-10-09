@@ -18,7 +18,7 @@
 # in a little more pythonic way.
 # currently assuming OF-Config 1.1.1.
 
-from ryu.lib import stringify
+from os_ken.lib import stringify
 
 
 from .base import _Base, _ct, _e, _ns_netconf

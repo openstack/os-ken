@@ -22,8 +22,8 @@ import binascii
 
 from . import packet_base
 from . import packet_utils
-from ryu.lib import addrconv
-from ryu.lib import stringify
+from os_ken.lib import addrconv
+from os_ken.lib import stringify
 
 ICMPV6_DST_UNREACH = 1       # dest unreachable, codes:
 ICMPV6_PACKET_TOO_BIG = 2       # packet too big
@@ -92,11 +92,11 @@ class icmpv6(packet_base.PacketBase):
                    (0 means automatically-calculate when encoding)
     data           Payload.
 
-                   ryu.lib.packet.icmpv6.echo object, \
-                   ryu.lib.packet.icmpv6.nd_neighbor object, \
-                   ryu.lib.packet.icmpv6.nd_router_solicit object, \
-                   ryu.lib.packet.icmpv6.nd_router_advert object, \
-                   ryu.lib.packet.icmpv6.mld object, \
+                   os_ken.lib.packet.icmpv6.echo object, \
+                   os_ken.lib.packet.icmpv6.nd_neighbor object, \
+                   os_ken.lib.packet.icmpv6.nd_router_solicit object, \
+                   os_ken.lib.packet.icmpv6.nd_router_advert object, \
+                   os_ken.lib.packet.icmpv6.mld object, \
                    or a bytearray.
     ============== ====================
     """
@@ -165,7 +165,7 @@ class nd_neighbor(_ICMPv6Payload):
     """ICMPv6 sub encoder/decoder class for Neighbor Solicitation and
     Neighbor Advertisement messages. (RFC 4861)
 
-    This is used with ryu.lib.packet.icmpv6.icmpv6.
+    This is used with os_ken.lib.packet.icmpv6.icmpv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -179,7 +179,7 @@ class nd_neighbor(_ICMPv6Payload):
     res            R,S,O Flags for Neighbor Advertisement. \
                    The 3 MSBs of "Reserved" field for Neighbor Solicitation.
     dst            Target Address
-    option         a derived object of ryu.lib.packet.icmpv6.nd_option \
+    option         a derived object of os_ken.lib.packet.icmpv6.nd_option \
                    or a bytearray. None if no options.
     ============== ====================
     """
@@ -246,7 +246,7 @@ class nd_router_solicit(_ICMPv6Payload):
     """ICMPv6 sub encoder/decoder class for Router Solicitation messages.
     (RFC 4861)
 
-    This is used with ryu.lib.packet.icmpv6.icmpv6.
+    This is used with os_ken.lib.packet.icmpv6.icmpv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -258,7 +258,7 @@ class nd_router_solicit(_ICMPv6Payload):
     Attribute      Description
     ============== ====================
     res            This field is unused.  It MUST be initialized to zero.
-    option         a derived object of ryu.lib.packet.icmpv6.nd_option \
+    option         a derived object of os_ken.lib.packet.icmpv6.nd_option \
                    or a bytearray. None if no options.
     ============== ====================
     """
@@ -317,7 +317,7 @@ class nd_router_advert(_ICMPv6Payload):
     """ICMPv6 sub encoder/decoder class for Router Advertisement messages.
     (RFC 4861)
 
-    This is used with ryu.lib.packet.icmpv6.icmpv6.
+    This is used with os_ken.lib.packet.icmpv6.icmpv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -334,7 +334,7 @@ class nd_router_advert(_ICMPv6Payload):
     rea_t          Reachable Time.
     ret_t          Retrans Timer.
     options        List of a derived object of \
-                   ryu.lib.packet.icmpv6.nd_option or a bytearray. \
+                   os_ken.lib.packet.icmpv6.nd_option or a bytearray. \
                    None if no options.
     ============== ====================
     """
@@ -478,9 +478,9 @@ class nd_option_sla(nd_option_la):
     """ICMPv6 sub encoder/decoder class for Neighbor discovery
     Source Link-Layer Address Option. (RFC 4861)
 
-    This is used with ryu.lib.packet.icmpv6.nd_neighbor,
-    ryu.lib.packet.icmpv6.nd_router_solicit or
-    ryu.lib.packet.icmpv6.nd_router_advert.
+    This is used with os_ken.lib.packet.icmpv6.nd_neighbor,
+    os_ken.lib.packet.icmpv6.nd_router_solicit or
+    os_ken.lib.packet.icmpv6.nd_router_advert.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -518,7 +518,7 @@ class nd_option_tla(nd_option_la):
     """ICMPv6 sub encoder/decoder class for Neighbor discovery
     Target Link-Layer Address Option. (RFC 4861)
 
-    This is used with ryu.lib.packet.icmpv6.nd_neighbor.
+    This is used with os_ken.lib.packet.icmpv6.nd_neighbor.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -556,7 +556,7 @@ class nd_option_pi(nd_option):
     r"""ICMPv6 sub encoder/decoder class for Neighbor discovery
     Prefix Information Option. (RFC 4861)
 
-    This is used with ryu.lib.packet.icmpv6.nd_router_advert.
+    This is used with os_ken.lib.packet.icmpv6.nd_router_advert.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -628,7 +628,7 @@ class echo(_ICMPv6Payload):
     """ICMPv6 sub encoder/decoder class for Echo Request and Echo Reply
     messages.
 
-    This is used with ryu.lib.packet.icmpv6.icmpv6 for
+    This is used with os_ken.lib.packet.icmpv6.icmpv6 for
     ICMPv6 Echo Request and Echo Reply messages.
 
     An instance has the following attributes at least.
@@ -686,7 +686,7 @@ class mld(_ICMPv6Payload):
 
     http://www.ietf.org/rfc/rfc2710.txt
 
-    This is used with ryu.lib.packet.icmpv6.icmpv6.
+    This is used with os_ken.lib.packet.icmpv6.icmpv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -740,7 +740,7 @@ class mldv2_query(mld):
 
     http://www.ietf.org/rfc/rfc3810.txt
 
-    This is used with ryu.lib.packet.icmpv6.icmpv6.
+    This is used with os_ken.lib.packet.icmpv6.icmpv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -828,7 +828,7 @@ class mldv2_report(mld):
 
     http://www.ietf.org/rfc/rfc3810.txt
 
-    This is used with ryu.lib.packet.icmpv6.icmpv6.
+    This is used with os_ken.lib.packet.icmpv6.icmpv6.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -838,7 +838,7 @@ class mldv2_report(mld):
     Attribute      Description
     ============== =========================================
     record_num     a number of the group records.
-    records        a list of ryu.lib.packet.icmpv6.mldv2_report_group.
+    records        a list of os_ken.lib.packet.icmpv6.mldv2_report_group.
                    None if no records.
     ============== =========================================
     """
@@ -888,7 +888,7 @@ class mldv2_report_group(stringify.StringifyMixin):
     ICMPv6 sub encoder/decoder class for MLD v2 Lister Report Group
     Record messages. (RFC 3810)
 
-    This is used with ryu.lib.packet.icmpv6.mldv2_report.
+    This is used with os_ken.lib.packet.icmpv6.mldv2_report.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte

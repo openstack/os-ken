@@ -15,7 +15,7 @@
 # limitations under the License.
 
 """
-NETCONF definitions used by ryu/lib/of_config.
+NETCONF definitions used by os_ken/lib/of_config.
 """
 
 import os.path

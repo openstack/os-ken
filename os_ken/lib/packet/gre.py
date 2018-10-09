@@ -15,7 +15,7 @@
 
 import struct
 
-from ryu.lib.pack_utils import msg_pack_into
+from os_ken.lib.pack_utils import msg_pack_into
 from . import packet_base
 from . import packet_utils
 from . import ether_types

@@ -16,10 +16,10 @@
 import base64
 import logging
 
-from ryu.ofproto import ether
-from ryu.ofproto import ofproto_v1_5
-from ryu.ofproto import ofproto_v1_5_parser
-from ryu.lib import ofctl_utils
+from os_ken.ofproto import ether
+from os_ken.ofproto import ofproto_v1_5
+from os_ken.ofproto import ofproto_v1_5_parser
+from os_ken.lib import ofctl_utils
 
 LOG = logging.getLogger(__name__)
 

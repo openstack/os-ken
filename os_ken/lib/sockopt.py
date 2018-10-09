@@ -18,7 +18,7 @@ import platform
 import socket
 import struct
 
-from ryu.lib import sockaddr
+from os_ken.lib import sockaddr
 
 
 TCP_MD5SIG_LINUX = 0x0e

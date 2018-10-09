@@ -17,9 +17,9 @@ import abc
 import six
 import struct
 
-from ryu.lib import addrconv
-from ryu.lib import stringify
-from ryu.lib.packet import packet_base
+from os_ken.lib import addrconv
+from os_ken.lib import stringify
+from os_ken.lib.packet import packet_base
 
 # Chunk Types
 TYPE_DATA = 0
@@ -83,7 +83,7 @@ class sctp(packet_base.PacketBase):
     vtag           Verification Tag
     csum           Checksum
                    (0 means automatically-calculate when encoding)
-    chunks         a list of derived classes of ryu.lib.packet.sctp.chunk.
+    chunks         a list of derived classes of os_ken.lib.packet.sctp.chunk.
     ============== =====================================================
     """
 
@@ -387,7 +387,7 @@ class chunk_data(chunk):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -469,7 +469,7 @@ class chunk_init(chunk_init_base):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -490,7 +490,7 @@ class chunk_init(chunk_init_base):
     i_tsn          Transmission Sequence Number that the sender will use.
     params         Optional/Variable-Length Parameters.
 
-                   a list of derived classes of ryu.lib.packet.sctp.param.
+                   a list of derived classes of os_ken.lib.packet.sctp.param.
     ============== =====================================================
     """
 
@@ -521,7 +521,7 @@ class chunk_init_ack(chunk_init_base):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -542,7 +542,7 @@ class chunk_init_ack(chunk_init_base):
     i_tsn          Transmission Sequence Number that the sender will use.
     params         Optional/Variable-Length Parameters.
 
-                   a list of derived classes of ryu.lib.packet.sctp.param.
+                   a list of derived classes of os_ken.lib.packet.sctp.param.
     ============== =====================================================
     """
 
@@ -573,7 +573,7 @@ class chunk_sack(chunk):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -670,7 +670,7 @@ class chunk_heartbeat(chunk_heartbeat_base):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -684,7 +684,7 @@ class chunk_heartbeat(chunk_heartbeat_base):
     flags          set to '0'. this field will be ignored.
     length         length of this chunk containing this header.
                    (0 means automatically-calculate when encoding)
-    info           ryu.lib.packet.sctp.param_heartbeat.
+    info           os_ken.lib.packet.sctp.param_heartbeat.
     ============== =====================================================
     """
 
@@ -715,7 +715,7 @@ class chunk_heartbeat_ack(chunk_heartbeat_base):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -729,7 +729,7 @@ class chunk_heartbeat_ack(chunk_heartbeat_base):
     flags          set to '0'. this field will be ignored.
     length         length of this chunk containing this header.
                    (0 means automatically-calculate when encoding)
-    info           ryu.lib.packet.sctp.param_heartbeat.
+    info           os_ken.lib.packet.sctp.param_heartbeat.
     ============== =====================================================
     """
 
@@ -759,7 +759,7 @@ class chunk_abort(chunk):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -774,7 +774,7 @@ class chunk_abort(chunk):
                    the Verification tag is copy of the sender.
     length         length of this chunk containing this header.
                    (0 means automatically-calculate when encoding)
-    causes         a list of derived classes of ryu.lib.packet.sctp.causes.
+    causes         a list of derived classes of os_ken.lib.packet.sctp.causes.
     ============== =====================================================
     """
 
@@ -838,7 +838,7 @@ class chunk_shutdown(chunk):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -893,7 +893,7 @@ class chunk_shutdown_ack(chunk_ack_base):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -922,7 +922,7 @@ class chunk_error(chunk):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -936,7 +936,7 @@ class chunk_error(chunk):
     flags          set to '0'. this field will be ignored.
     length         length of this chunk containing this header.
                    (0 means automatically-calculate when encoding)
-    causes         a list of derived classes of ryu.lib.packet.sctp.causes.
+    causes         a list of derived classes of os_ken.lib.packet.sctp.causes.
     ============== =====================================================
     """
 
@@ -996,7 +996,7 @@ class chunk_cookie_echo(chunk):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1059,7 +1059,7 @@ class chunk_cookie_ack(chunk_ack_base):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1088,7 +1088,7 @@ class chunk_ecn_echo(chunk_ecn_base):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1118,7 +1118,7 @@ class chunk_cwr(chunk_ecn_base):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1149,7 +1149,7 @@ class chunk_shutdown_complete(chunk):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.sctp
+    - os_ken.lib.packet.sctp.sctp
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1271,8 +1271,8 @@ class cause_invalid_stream_id(cause_with_value):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1320,8 +1320,8 @@ class cause_missing_param(cause):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1392,8 +1392,8 @@ class cause_stale_cookie(cause_with_value):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1423,8 +1423,8 @@ class cause_out_of_resource(cause):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1458,8 +1458,8 @@ class cause_unresolvable_addr(cause_with_value):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1472,11 +1472,11 @@ class cause_unresolvable_addr(cause_with_value):
     ============== =====================================================
     value          Unresolvable Address. one of follows:
 
-                   ryu.lib.packet.sctp.param_host_addr,
+                   os_ken.lib.packet.sctp.param_host_addr,
 
-                   ryu.lib.packet.sctp.param_ipv4, or
+                   os_ken.lib.packet.sctp.param_ipv4, or
 
-                   ryu.lib.packet.sctp.param_ipv6.
+                   os_ken.lib.packet.sctp.param_ipv6.
     length         length of this cause containing this header.
                    (0 means automatically-calculate when encoding)
     ============== =====================================================
@@ -1525,8 +1525,8 @@ class cause_unrecognized_chunk(cause_with_value):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1556,8 +1556,8 @@ class cause_invalid_param(cause):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1591,8 +1591,8 @@ class cause_unrecognized_param(cause_with_value):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1622,8 +1622,8 @@ class cause_no_userdata(cause_with_value):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1655,8 +1655,8 @@ class cause_cookie_while_shutdown(cause):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1691,8 +1691,8 @@ class cause_restart_with_new_addr(cause_with_value):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1766,8 +1766,8 @@ class cause_user_initiated_abort(cause_with_value):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1797,8 +1797,8 @@ class cause_protocol_violation(cause_with_value):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_abort
-    - ryu.lib.packet.sctp.chunk_error
+    - os_ken.lib.packet.sctp.chunk_abort
+    - os_ken.lib.packet.sctp.chunk_error
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1877,8 +1877,8 @@ class param_heartbeat(param):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_heartbeat
-    - ryu.lib.packet.sctp.chunk_heartbeat_ack
+    - os_ken.lib.packet.sctp.chunk_heartbeat
+    - os_ken.lib.packet.sctp.chunk_heartbeat_ack
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1907,7 +1907,7 @@ class param_state_cookie(param):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_init_ack
+    - os_ken.lib.packet.sctp.chunk_init_ack
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1936,7 +1936,7 @@ class param_unrecognized_param(param):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_init_ack
+    - os_ken.lib.packet.sctp.chunk_init_ack
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -1965,7 +1965,7 @@ class param_cookie_preserve(param):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_init
+    - os_ken.lib.packet.sctp.chunk_init
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -2013,8 +2013,8 @@ class param_ecn(param):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_init
-    - ryu.lib.packet.sctp.chunk_init_ack
+    - os_ken.lib.packet.sctp.chunk_init
+    - os_ken.lib.packet.sctp.chunk_init_ack
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -2051,8 +2051,8 @@ class param_host_addr(param):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_init
-    - ryu.lib.packet.sctp.chunk_init_ack
+    - os_ken.lib.packet.sctp.chunk_init
+    - os_ken.lib.packet.sctp.chunk_init_ack
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -2081,7 +2081,7 @@ class param_supported_addr(param):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_init
+    - os_ken.lib.packet.sctp.chunk_init
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -2147,8 +2147,8 @@ class param_ipv4(param):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_init
-    - ryu.lib.packet.sctp.chunk_init_ack
+    - os_ken.lib.packet.sctp.chunk_init
+    - os_ken.lib.packet.sctp.chunk_init_ack
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -2204,8 +2204,8 @@ class param_ipv6(param):
 
     This class is used with the following.
 
-    - ryu.lib.packet.sctp.chunk_init
-    - ryu.lib.packet.sctp.chunk_init_ack
+    - os_ken.lib.packet.sctp.chunk_init
+    - os_ken.lib.packet.sctp.chunk_init_ack
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.

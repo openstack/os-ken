@@ -19,7 +19,7 @@ import logging
 import six
 
 from . import packet_base
-from ryu.lib import type_desc
+from os_ken.lib import type_desc
 
 LOG = logging.getLogger(__name__)
 
@@ -65,7 +65,7 @@ class vxlan(packet_base.PacketBase):
         assert (1 << 3) == (flags_reserved >> 24)
 
         # Note: To avoid cyclic import, import ethernet module here
-        from ryu.lib.packet import ethernet
+        from os_ken.lib.packet import ethernet
         return cls(vni_rserved >> 8), ethernet.ethernet, buf[cls._MIN_LEN:]
 
     def serialize(self, payload, prev):

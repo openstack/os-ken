@@ -18,9 +18,9 @@ import os
 import logging
 import six
 
-from ryu.lib import hub, alert
-from ryu.base import app_manager
-from ryu.controller import event
+from os_ken.lib import hub, alert
+from os_ken.base import app_manager
+from os_ken.controller import event
 
 
 BUFSIZE = alert.AlertPkt._ALERTPKT_SIZE

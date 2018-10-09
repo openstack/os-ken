@@ -15,7 +15,7 @@
 
 import struct
 from . import packet_base
-from ryu.lib import addrconv
+from os_ken.lib import addrconv
 
 # Slow Protocol Multicast destination
 SLOW_PROTOCOL_MULTICAST = '01:80:c2:00:00:02'

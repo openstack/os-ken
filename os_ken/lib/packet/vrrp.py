@@ -68,16 +68,16 @@ VRRP packet parser/serializer
 
 import struct
 
-from ryu.lib.packet import ethernet
-from ryu.lib.packet import ether_types as ether
-from ryu.lib.packet import in_proto as inet
-from ryu.lib.packet import ipv4
-from ryu.lib.packet import ipv6
-from ryu.lib.packet import packet
-from ryu.lib.packet import packet_base
-from ryu.lib.packet import packet_utils
-from ryu.lib.packet import vlan
-from ryu.lib import addrconv
+from os_ken.lib.packet import ethernet
+from os_ken.lib.packet import ether_types as ether
+from os_ken.lib.packet import in_proto as inet
+from os_ken.lib.packet import ipv4
+from os_ken.lib.packet import ipv6
+from os_ken.lib.packet import packet
+from os_ken.lib.packet import packet_base
+from os_ken.lib.packet import packet_utils
+from os_ken.lib.packet import vlan
+from os_ken.lib import addrconv
 
 
 # IPv4
@@ -184,7 +184,7 @@ class vrrp(packet_base.PacketBase):
     """The base class for VRRPv2 (RFC 3768) and VRRPv3 (RFC 5798)
     header encoder/decoder classes.
 
-    Unlike other ryu.lib.packet.packet_base.PacketBase derived classes,
+    Unlike other os_ken.lib.packet.packet_base.PacketBase derived classes,
     This class should not be directly instantiated by user.
 
     An instance has the following attributes at least.
@@ -327,7 +327,7 @@ class vrrp(packet_base.PacketBase):
     def create_packet(self, primary_ip_address, vlan_id=None):
         """Prepare a VRRP packet.
 
-        Returns a newly created ryu.lib.packet.packet.Packet object
+        Returns a newly created os_ken.lib.packet.packet.Packet object
         with appropriate protocol header objects added by add_protocol().
         It's caller's responsibility to serialize().
         The serialized packet would looks like the ones described in
@@ -414,7 +414,7 @@ class vrrp(packet_base.PacketBase):
 class vrrpv2(vrrp):
     """VRRPv2 (RFC 3768) header encoder/decoder class.
 
-    Unlike other ryu.lib.packet.packet_base.PacketBase derived classes,
+    Unlike other os_ken.lib.packet.packet_base.PacketBase derived classes,
     *create* method should be used to instantiate an object of this class.
     """
 
@@ -434,10 +434,10 @@ class vrrpv2(vrrp):
 
     @staticmethod
     def create(type_, vrid, priority, max_adver_int, ip_addresses):
-        """Unlike other ryu.lib.packet.packet_base.PacketBase derived classes,
+        """Unlike other os_ken.lib.packet.packet_base.PacketBase derived classes,
         this method should be used to instantiate an object of this class.
 
-        This method's arguments are same as ryu.lib.packet.vrrp.vrrp object's
+        This method's arguments are same as os_ken.lib.packet.vrrp.vrrp object's
         attributes of the same name.  (except that *type_* corresponds to
         *type* attribute.)
         """
@@ -524,7 +524,7 @@ class vrrpv2(vrrp):
 class vrrpv3(vrrp):
     """VRRPv3 (RFC 5798) header encoder/decoder class.
 
-    Unlike other ryu.lib.packet.packet_base.PacketBase derived classes,
+    Unlike other os_ken.lib.packet.packet_base.PacketBase derived classes,
     *create* method should be used to instantiate an object of this class.
     """
 
@@ -550,10 +550,10 @@ class vrrpv3(vrrp):
 
     @staticmethod
     def create(type_, vrid, priority, max_adver_int, ip_addresses):
-        """Unlike other ryu.lib.packet.packet_base.PacketBase derived classes,
+        """Unlike other os_ken.lib.packet.packet_base.PacketBase derived classes,
         this method should be used to instantiate an object of this class.
 
-        This method's arguments are same as ryu.lib.packet.vrrp.vrrp object's
+        This method's arguments are same as os_ken.lib.packet.vrrp.vrrp object's
         attributes of the same name.  (except that *type_* corresponds to
         *type* attribute.)
         """

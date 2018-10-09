@@ -21,11 +21,11 @@ import struct
 
 import six
 
-from ryu.lib import addrconv
-from ryu.lib.packet import packet_base
-from ryu.lib.packet import stream_parser
-from ryu.lib.packet.bgp import BGPMessage
-from ryu.lib.type_desc import TypeDisp
+from os_ken.lib import addrconv
+from os_ken.lib.packet import packet_base
+from os_ken.lib.packet import stream_parser
+from os_ken.lib.packet.bgp import BGPMessage
+from os_ken.lib.type_desc import TypeDisp
 
 VERSION = 3
 

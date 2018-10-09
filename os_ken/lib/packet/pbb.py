@@ -14,7 +14,7 @@
 # limitations under the License.
 
 import struct
-from ryu.lib.packet import packet_base
+from os_ken.lib.packet import packet_base
 
 
 class itag(packet_base.PacketBase):
@@ -52,7 +52,7 @@ class itag(packet_base.PacketBase):
         uca = data >> 27 & 1
         sid = data & 0x00ffffff
         # circular import: ethernet -> vlan -> pbb
-        from ryu.lib.packet import ethernet
+        from os_ken.lib.packet import ethernet
         return (cls(pcp, dei, uca, sid), ethernet.ethernet,
                 buf[cls._MIN_LEN:])
 

@@ -18,7 +18,7 @@
 # file if/when OF-Config yang specification is available with a suitable
 # license.
 
-from ryu.lib.of_config.base import _Base, _e, _ct
+from os_ken.lib.of_config.base import _Base, _e, _ct
 
 
 class OFPortConfigurationType(_Base):

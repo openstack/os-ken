@@ -18,8 +18,8 @@ from . import packet_base
 from . import vlan
 from . import mpls
 from . import ether_types as ether
-from ryu.lib import addrconv
-from ryu.lib.pack_utils import msg_pack_into
+from os_ken.lib import addrconv
+from os_ken.lib.pack_utils import msg_pack_into
 
 
 class ethernet(packet_base.PacketBase):

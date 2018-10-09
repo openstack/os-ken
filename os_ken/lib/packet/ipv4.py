@@ -25,7 +25,7 @@ from . import sctp
 from . import ospf
 from . import gre
 from . import in_proto as inet
-from ryu.lib import addrconv
+from os_ken.lib import addrconv
 
 
 IPV4_ADDRESS_PACK_STR = '!I'

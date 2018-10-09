@@ -17,12 +17,12 @@ import struct
 import socket
 import logging
 
-from ryu.ofproto import ofproto_v1_0
-from ryu.lib import ofctl_utils
-from ryu.lib.mac import haddr_to_bin, haddr_to_str
+from os_ken.ofproto import ofproto_v1_0
+from os_ken.lib import ofctl_utils
+from os_ken.lib.mac import haddr_to_bin, haddr_to_str
 
 
-LOG = logging.getLogger('ryu.lib.ofctl_v1_0')
+LOG = logging.getLogger('os_ken.lib.ofctl_v1_0')
 
 DEFAULT_TIMEOUT = 1.0   # TODO:XXX
 

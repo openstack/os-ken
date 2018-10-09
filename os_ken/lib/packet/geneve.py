@@ -19,8 +19,8 @@ Geneve packet parser/serializer
 
 import struct
 
-from ryu.lib import stringify
-from ryu.lib import type_desc
+from os_ken.lib import stringify
+from os_ken.lib import type_desc
 from . import packet_base
 from . import ether_types
 

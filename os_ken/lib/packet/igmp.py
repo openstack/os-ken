@@ -118,10 +118,10 @@ import six
 import struct
 from math import trunc
 
-from ryu.lib import addrconv
-from ryu.lib import stringify
-from ryu.lib.packet import packet_base
-from ryu.lib.packet import packet_utils
+from os_ken.lib import addrconv
+from os_ken.lib import stringify
+from os_ken.lib.packet import packet_base
+from os_ken.lib.packet import packet_utils
 
 
 IGMP_TYPE_QUERY = 0x11
@@ -335,7 +335,7 @@ class igmpv3_report(igmp):
     csum            a check sum value. 0 means automatically-calculate
                     when encoding.
     record_num      a number of the group records.
-    records         a list of ryu.lib.packet.igmp.igmpv3_report_group.
+    records         a list of os_ken.lib.packet.igmp.igmpv3_report_group.
                     None if no records.
     =============== ====================================================
     """
@@ -397,7 +397,7 @@ class igmpv3_report_group(stringify.StringifyMixin):
 
     http://www.ietf.org/rfc/rfc3376.txt
 
-    This is used with ryu.lib.packet.igmp.igmpv3_report.
+    This is used with os_ken.lib.packet.igmp.igmpv3_report.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte

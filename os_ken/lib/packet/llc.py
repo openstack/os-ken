@@ -92,7 +92,7 @@ commands/responses
 import struct
 from . import bpdu
 from . import packet_base
-from ryu.lib import stringify
+from os_ken.lib import stringify
 
 
 SAP_BPDU = 0x42
@@ -118,9 +118,9 @@ class llc(packet_base.PacketBase):
     control         Control field \
                     [16 bits for formats that include sequence \
                     numbering, and 8 bits for formats that do not]. \
-                    Either ryu.lib.packet.llc.ControlFormatI or \
-                    ryu.lib.packet.llc.ControlFormatS or \
-                    ryu.lib.packet.llc.ControlFormatU object.
+                    Either os_ken.lib.packet.llc.ControlFormatI or \
+                    os_ken.lib.packet.llc.ControlFormatS or \
+                    os_ken.lib.packet.llc.ControlFormatU object.
     =============== ===============================================
     """
 
