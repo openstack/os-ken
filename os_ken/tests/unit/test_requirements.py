@@ -28,8 +28,7 @@ LOG = logging.getLogger(__name__)
 
 MOD_DIR = os.path.dirname('file://' + sys.modules[__name__].__file__)
 _RYU_REQUIREMENTS_FILES = [
-    '../../../tools/pip-requires',
-    '../../../tools/optional-requires',
+    '../../../requirements.txt',
 ]
 RYU_REQUIREMENTS_FILES = [
     os.path.join(MOD_DIR, f) for f in _RYU_REQUIREMENTS_FILES]

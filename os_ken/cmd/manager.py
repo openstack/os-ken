@@ -29,7 +29,7 @@ from os_ken import log
 log.early_init_log(logging.DEBUG)
 
 from os_ken import flags
-from os_ken import version
+from os_ken import __version__ as version
 from os_ken.app import wsgi
 from os_ken.base.app_manager import AppManager
 from os_ken.controller import controller
