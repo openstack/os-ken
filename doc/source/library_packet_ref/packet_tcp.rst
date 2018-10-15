@@ -2,5 +2,5 @@
 TCP
 ***
 
-.. automodule:: ryu.lib.packet.tcp
+.. automodule:: os_ken.lib.packet.tcp
    :members:

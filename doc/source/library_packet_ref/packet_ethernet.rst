@@ -2,5 +2,5 @@
 Ethernet
 ********
 
-.. automodule:: ryu.lib.packet.ethernet
+.. automodule:: os_ken.lib.packet.ethernet
    :members:

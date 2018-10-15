@@ -10,7 +10,7 @@ Nicira Extension Actions Structures
 The followings shows the supported NXAction classes only in OpenFlow1.0
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:currentmodule:: ryu.ofproto.ofproto_v1_0_parser
+.. py:currentmodule:: os_ken.ofproto.ofproto_v1_0_parser
 
 .. autoclass:: NXActionSetQueue
 .. autoclass:: NXActionDecTtl
@@ -24,7 +24,7 @@ The followings shows the supported NXAction classes only in OpenFlow1.0
 The followings shows the supported NXAction classes in OpenFlow1.0 or later
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:currentmodule:: ryu.ofproto.ofproto_v1_3_parser
+.. py:currentmodule:: os_ken.ofproto.ofproto_v1_3_parser
 
 .. autoclass:: NXActionPopQueue
 .. autoclass:: NXActionRegLoad
@@ -58,12 +58,12 @@ The followings shows the supported NXAction classes in OpenFlow1.0 or later
 .. autoclass:: NXFlowSpecMatch
 .. autoclass:: NXFlowSpecLoad
 .. autoclass:: NXFlowSpecOutput
-.. autofunction:: ryu.ofproto.nicira_ext.ofs_nbits
+.. autofunction:: os_ken.ofproto.nicira_ext.ofs_nbits
 
 .. _nx_match_structures:
 
 Nicira Extended Match Structures
 ================================
 
-.. automodule:: ryu.ofproto.nicira_ext
+.. automodule:: os_ken.ofproto.nicira_ext
 

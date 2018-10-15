@@ -2,5 +2,5 @@
 BFD
 ***
 
-.. automodule:: ryu.lib.packet.bfd
+.. automodule:: os_ken.lib.packet.bfd
    :members:

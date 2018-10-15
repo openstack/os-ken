@@ -2,13 +2,13 @@
 OpenFlow version independent classes and functions
 **************************************************
 
-.. py:currentmodule:: ryu.ofproto.ofproto_parser
+.. py:currentmodule:: os_ken.ofproto.ofproto_parser
 
 Base class for OpenFlow messages
 --------------------------------
 
 ..    XXX
-..    the descrption of _TYPE is inlined from ryu/lib/stringify.py.
+..    the descrption of _TYPE is inlined from os_ken/lib/stringify.py.
 ..    this is a work around for a sphinx bug.
 ..    https://bitbucket.org/birkenfeld/sphinx/issue/741/autodoc-inherited-members-wont-work-for
 

@@ -2,5 +2,5 @@
 LLC
 ***
 
-.. automodule:: ryu.lib.packet.llc
+.. automodule:: os_ken.lib.packet.llc
    :members:

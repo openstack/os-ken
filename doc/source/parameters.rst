@@ -6,9 +6,9 @@
 Getting Started
 ***************
 
-Overview/What's Ryu the Network Operating System
-================================================
-Ryu is an open-sourced Network Operating System which is licensed under Apache v2.0.
+Overview/What's OS-Ken the Network Operating System
+===================================================
+OS-Ken is an open-sourced Network Operating System which is licensed under Apache v2.0.
 It supports openflow protocol.
 
 If you are not familiar with Software Defined Network(SDN) and
@@ -16,40 +16,38 @@ OpenFlow/openflow controller,
 please refer to `openflow org <http://www.openflow.org/>`_ .
 
 The mailing list is available at
-`ryu-devel ML <https://lists.sourceforge.net/lists/listinfo/ryu-devel>`_
+`OpenStack-dev ML <http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-dev>`_
 
 
-Installing Ryu Network Operating System
-=======================================
+Installing OS-Ken Network Operating System
+==========================================
 Extract source code and just type::
 
    % python ./setup.py install
 
-Then, run ryu-manager.
+Then, run os_ken-manager.
 It listens to ip address 0.0.0.0 and port 6633 by default.
 Then have your openflow switch (hardware or openvswitch OVS) to connect to
-ryu-manager.
+os_ken-manager.
 
 For OVS case, you can done it by
 
   % ovs-vsctl set-controller <your bridge>  tcp:<ip addr>[:<port: default 6633>]
 
-At the moment, ryu-manager supports only tcp method.
-If you want to use it with openstack nova and quantum OVS plugin,
-Please refer to :ref:`using_with_openstack`.
+At the moment, os_ken-manager supports only tcp method.
 
 invoking application and Configuration
 ======================================
 It can be configured by passing configuration file like::
 
-  ryu-manager [generic/application specific options...]
+  os_ken-manager [generic/application specific options...]
 
 At the moment applications including the following ones are available
-(And more to come as Ryu evolves.)
+(And more to come as OS-Ken evolves.)
 
-  * ryu.app.simple_isolation.SimpleIsolation
-  * ryu.app.rest.RestAPI
-  * ryu.app.simple_bridge.SimpleSwitch
+  * os_ken.app.simple_isolation.SimpleIsolation
+  * os_ken.app.rest.RestAPI
+  * os_ken.app.simple_bridge.SimpleSwitch
 
 The generic available is as follows::
 
@@ -104,16 +102,16 @@ Invoking Example
 ================
 The example is as follows::
 
-    % PYTHONPATH=. ./bin/ryu-manager --wsapi-port 8081 --verbose --app-lists ryu.app.simple_isolation,ryu.app.rest
-    loading app ryu.app.simple_isolation
-    loading app ryu.app.rest
-    loading app ryu.controller.ofp_handler
+    % PYTHONPATH=. ./bin/os_ken-manager --wsapi-port 8081 --verbose --app-lists os_ken.app.simple_isolation,os_ken.app.rest
+    loading app os_ken.app.simple_isolation
+    loading app os_ken.app.rest
+    loading app os_ken.controller.ofp_handler
     creating context dpset
     creating context wsgi
     creating context network
-    instantiating app ryu.app.simple_isolation
-    instantiating app ryu.app.rest
-    instantiating app ryu.controller.ofp_handler
+    instantiating app os_ken.app.simple_isolation
+    instantiating app os_ken.app.rest
+    instantiating app os_ken.controller.ofp_handler
     BRICK dpset
       CONSUMES EventOFPStateChange
       CONSUMES EventOFPPortStatus

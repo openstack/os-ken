@@ -2,5 +2,5 @@
 VLAN
 ****
 
-.. automodule:: ryu.lib.packet.vlan
+.. automodule:: os_ken.lib.packet.vlan
    :members:

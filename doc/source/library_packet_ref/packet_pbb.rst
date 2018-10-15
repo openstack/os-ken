@@ -2,5 +2,5 @@
 PBB
 ***
 
-.. automodule:: ryu.lib.packet.pbb
+.. automodule:: os_ken.lib.packet.pbb
    :members:

@@ -2,5 +2,5 @@
 Slow
 ****
 
-.. automodule:: ryu.lib.packet.slow
+.. automodule:: os_ken.lib.packet.slow
    :members:

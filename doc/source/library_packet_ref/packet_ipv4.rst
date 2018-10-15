@@ -2,5 +2,5 @@
 IPv4
 ****
 
-.. automodule:: ryu.lib.packet.ipv4
+.. automodule:: os_ken.lib.packet.ipv4
    :members:

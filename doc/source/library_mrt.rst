@@ -5,7 +5,7 @@ MRT file library
 Introduction
 ============
 
-Ryu MRT file library helps you to read/write MRT
+OS-Ken MRT file library helps you to read/write MRT
 (Multi-Threaded Routing Toolkit) Routing Information Export Format
 [`RFC6396`_].
 
@@ -17,7 +17,7 @@ Reading MRT file
 For loading the routing information contained in MRT files, you can use
 mrtlib.Reader.
 
-.. autoclass:: ryu.lib.mrtlib.Reader
+.. autoclass:: os_ken.lib.mrtlib.Reader
 
 Writing MRT file
 ================
@@ -25,4 +25,4 @@ Writing MRT file
 For dumping the routing information which your RyuApp generated, you can use
 mrtlib.Writer.
 
-.. autoclass:: ryu.lib.mrtlib.Writer
+.. autoclass:: os_ken.lib.mrtlib.Writer

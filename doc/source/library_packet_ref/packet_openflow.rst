@@ -2,5 +2,5 @@
 OpenFlow
 ********
 
-.. automodule:: ryu.lib.packet.openflow
+.. automodule:: os_ken.lib.packet.openflow
    :members:

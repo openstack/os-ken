@@ -2,5 +2,5 @@
 CFM
 ***
 
-.. automodule:: ryu.lib.packet.cfm
+.. automodule:: os_ken.lib.packet.cfm
    :members:

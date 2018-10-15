@@ -2,5 +2,5 @@
 OSPF
 ****
 
-.. automodule:: ryu.lib.packet.ospf
+.. automodule:: os_ken.lib.packet.ospf
    :members:

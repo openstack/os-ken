@@ -2,5 +2,5 @@
 BMP
 ***
 
-.. automodule:: ryu.lib.packet.bmp
+.. automodule:: os_ken.lib.packet.bmp
    :members:

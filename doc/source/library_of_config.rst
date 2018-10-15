@@ -2,7 +2,7 @@
 OF-Config support
 *****************
 
-Ryu has a library for OF-Config support.
+OS-Ken has a library for OF-Config support.
 
 XML schema files for NETCONFIG and OFConfig
 ===========================================

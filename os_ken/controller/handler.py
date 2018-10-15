@@ -59,20 +59,20 @@ def set_ev_cls(ev_cls, dispatchers=None):
 
     .. tabularcolumns:: |l|L|
 
-    =========================================== ===============================
-    Negotiation phase                           Description
-    =========================================== ===============================
+    ============================================== ===============================
+    Negotiation phase                              Description
+    ============================================== ===============================
     os_ken.controller.handler.HANDSHAKE_DISPATCHER Sending and waiting for hello
-                                                message
+                                                   message
     os_ken.controller.handler.CONFIG_DISPATCHER    Version negotiated and sent
-                                                features-request message
+                                                   features-request message
     os_ken.controller.handler.MAIN_DISPATCHER      Switch-features message
-                                                received and sent set-config
-                                                message
+                                                   received and sent set-config
+                                                   message
     os_ken.controller.handler.DEAD_DISPATCHER      Disconnect from the peer.  Or
-                                                disconnecting due to some
-                                                unrecoverable errors.
-    =========================================== ===============================
+                                                   disconnecting due to some
+                                                   unrecoverable errors.
+    ============================================== ===============================
     """
     def _set_ev_cls_dec(handler):
         if 'callers' not in dir(handler):

@@ -2,15 +2,15 @@
 Topology Viewer
 ***************
 
-ryu.app.gui_topology.gui_topology provides topology visualization.
+os_ken.app.gui_topology.gui_topology provides topology visualization.
 
-This depends on following ryu applications.
+This depends on following os_ken applications.
 
-===================== =================================================
-ryu.app.rest_topology Get node and link data.
-ryu.app.ws_topology   Being notified change of link up/down.
-ryu.app.ofctl_rest    Get flows of datapaths.
-===================== =================================================
+======================== =================================================
+os_ken.app.rest_topology Get node and link data.
+os_ken.app.ws_topology   Being notified change of link up/down.
+os_ken.app.ofctl_rest    Get flows of datapaths.
+======================== =================================================
 
 Usage
 =====
@@ -21,9 +21,9 @@ Run mininet (or join your real environment)::
 
 Run GUI application::
 
-    $ PYTHONPATH=. ./bin/ryu run --observe-links ryu/app/gui_topology/gui_topology.py
+    $ PYTHONPATH=. ./bin/os_ken run --observe-links os_ken/app/gui_topology/gui_topology.py
 
-Access http://<ip address of ryu host>:8080 with your web browser.
+Access http://<ip address of os_ken host>:8080 with your web browser.
 
 Screenshot
 ==========

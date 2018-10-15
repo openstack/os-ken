@@ -2,5 +2,5 @@
 ARP
 ***
 
-.. automodule:: ryu.lib.packet.arp
+.. automodule:: os_ken.lib.packet.arp
    :members:

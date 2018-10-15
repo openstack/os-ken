@@ -2,5 +2,5 @@
 SCTP
 ****
 
-.. automodule:: ryu.lib.packet.sctp
+.. automodule:: os_ken.lib.packet.sctp
    :members:

@@ -5,17 +5,17 @@ BGP speaker library API Reference
 BGPSpeaker class
 ================
 
-.. autoclass:: ryu.services.protocols.bgp.bgpspeaker.BGPSpeaker
+.. autoclass:: os_ken.services.protocols.bgp.bgpspeaker.BGPSpeaker
    :members:
 
-.. autoclass:: ryu.services.protocols.bgp.bgpspeaker.EventPrefix
+.. autoclass:: os_ken.services.protocols.bgp.bgpspeaker.EventPrefix
    :members:
 
-.. autoclass:: ryu.services.protocols.bgp.info_base.base.PrefixFilter
+.. autoclass:: os_ken.services.protocols.bgp.info_base.base.PrefixFilter
    :members:
 
-.. autoclass:: ryu.services.protocols.bgp.info_base.base.ASPathFilter
+.. autoclass:: os_ken.services.protocols.bgp.info_base.base.ASPathFilter
    :members:
 
-.. autoclass:: ryu.services.protocols.bgp.info_base.base.AttributeMap
+.. autoclass:: os_ken.services.protocols.bgp.info_base.base.AttributeMap
    :members:

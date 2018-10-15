@@ -2,19 +2,19 @@
 OVSDB Manager library
 *********************
 
-Path: ``ryu.services.protocols.ovsdb``
+Path: ``os_ken.services.protocols.ovsdb``
 
 Introduction
 ============
 
-Ryu OVSDB Manager library allows your code to interact with devices
+OS-Ken OVSDB Manager library allows your code to interact with devices
 speaking the OVSDB protocol. This enables your code to perform remote
 management of the devices and react to topology changes on them.
 
 Please note this library will spawn a server listening on the port 6640 (the
 IANA registered for OVSDB protocol), but does not initiate connections from
 controller side.
-Then, to make your devices connect to Ryu, you need to tell the controller IP
+Then, to make your devices connect to OS-Ken, you need to tell the controller IP
 address and port to your devices.
 
 .. code-block:: bash
@@ -50,10 +50,10 @@ and also provides the API "create_port" for creating a port on a bridge.
 
     import uuid
 
-    from ryu.base import app_manager
-    from ryu.controller.handler import set_ev_cls
-    from ryu.services.protocols.ovsdb import api as ovsdb
-    from ryu.services.protocols.ovsdb import event as ovsdb_event
+    from os_ken.base import app_manager
+    from os_ken.controller.handler import set_ev_cls
+    from os_ken.services.protocols.ovsdb import api as ovsdb
+    from os_ken.services.protocols.ovsdb import event as ovsdb_event
 
 
     class MyApp(app_manager.RyuApp):

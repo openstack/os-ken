@@ -2,22 +2,22 @@
 Testing VRRP Module
 ===================
 
-This page describes how to test Ryu VRRP service
+This page describes how to test OS-Ken VRRP service
 
 Running integrated tests
 ========================
 
 Some testing scripts are available.
 
-* ryu/tests/integrated/test_vrrp_linux_multi.py
-* ryu/tests/integrated/test_vrrp_multi.py
+* os_ken/tests/integrated/test_vrrp_linux_multi.py
+* os_ken/tests/integrated/test_vrrp_multi.py
 
 Each files include how to run in the comment.
 Please refer to it.
 
 
-Running multiple Ryu VRRP in network namespace
-==============================================
+Running multiple OS-Ken VRRP in network namespace
+=================================================
 
 The following command lines set up necessary bridges and interfaces.
 
@@ -65,8 +65,8 @@ And then run RYU-VRRP::
     # ip netns exec gateway1 ip link set veth3 up
     # ip netns exec gateway2 ip link set veth4 up
 
-    # ip netns exec gateway1 .ryu-vrrp veth1 '10.0.0.2' 254
-    # ip netns exec gateway2 .ryu-vrrp veth2 '10.0.0.3' 100
+    # ip netns exec gateway1 .os_ken-vrrp veth1 '10.0.0.2' 254
+    # ip netns exec gateway2 .os_ken-vrrp veth2 '10.0.0.3' 100
 
 
 .. admonition:: Caveats
@@ -82,17 +82,17 @@ And then run RYU-VRRP::
             -----------------------
             |Linux Brirge vrrp-br1|
             -----------------------
-     veth3-br1^            ^ veth4-br1
-              |            |
-         veth3V            V veth4
-         ----------       ----------
-         |netns   |       |netns   |
-         |gateway1|       |gateway2|
-         |ryu-vrrp|       |ryu-vrrp|
-         ----------       ----------
-         veth1^            ^ veth2
-              |            |
-     veth1-br0V            V veth2-br0
+     veth3-br1^               ^ veth4-br1
+              |               |
+         veth3V               V veth4
+         -------------       -------------
+         |netns      |       |netns      |
+         |gateway1   |       |gateway2   |
+         |os_ken-vrrp|       |os_ken-vrrp|
+         -------------       ----------
+         veth1^               ^ veth2
+              |               |
+     veth1-br0V               V veth2-br0
             -----------------------
             |Linux Brirge vrrp-br0|
             -----------------------
@@ -102,7 +102,7 @@ And then run RYU-VRRP::
 
 
 
-Here's the helper executable, ryu-vrrp::
+Here's the helper executable, os_ken-vrrp::
 
     #!/usr/bin/env python
     #
@@ -121,10 +121,10 @@ Here's the helper executable, ryu-vrrp::
     # implied.
     # See the License for the specific language governing permissions and
     # limitations under the License.
-    
-    from ryu.lib import hub
+
+    from os_ken.lib import hub
     hub.patch()
-    
+
     # TODO:
     #   Right now, we have our own patched copy of ovs python bindings
     #   Once our modification is upstreamed and widely deployed,
@@ -132,34 +132,34 @@ Here's the helper executable, ryu-vrrp::
     #
     # NOTE: this modifies sys.path and thus affects the following imports.
     # eg. oslo.config.cfg.
-    import ryu.contrib
-    
+    import os_ken.contrib
+
     from oslo.config import cfg
     import logging
     import netaddr
     import sys
     import time
-    
-    from ryu import log
+
+    from os_ken import log
     log.early_init_log(logging.DEBUG)
-    
-    from ryu import flags
-    from ryu import version
-    from ryu.base import app_manager
-    from ryu.controller import controller
-    from ryu.lib import mac as lib_mac
-    from ryu.lib.packet import vrrp
-    from ryu.services.protocols.vrrp import api as vrrp_api
-    from ryu.services.protocols.vrrp import event as vrrp_event
-    
-    
+
+    from os_ken import flags
+    from os_ken import version
+    from os_ken.base import app_manager
+    from os_ken.controller import controller
+    from os_ken.lib import mac as lib_mac
+    from os_ken.lib.packet import vrrp
+    from os_ken.services.protocols.vrrp import api as vrrp_api
+    from os_ken.services.protocols.vrrp import event as vrrp_event
+
+
     CONF = cfg.CONF
-    
+
     _VRID = 7
     _IP_ADDRESS = '10.0.0.1'
     _PRIORITY = 100
-    
-    
+
+
     class VRRPTestRouter(app_manager.RyuApp):
         def __init__(self, *args, **kwargs):
             super(VRRPTestRouter, self).__init__(*args, **kwargs)
@@ -168,50 +168,50 @@ Here's the helper executable, ryu-vrrp::
             self._ifname = args[0]
             self._primary_ip_address = args[1]
             self._priority = int(args[2])
-    
+
         def start(self):
             print 'start'
             hub.spawn(self._main)
-    
+
         def _main(self):
             print self
             interface = vrrp_event.VRRPInterfaceNetworkDevice(
                 lib_mac.DONTCARE, self._primary_ip_address, None, self._ifname)
             self.logger.debug('%s', interface)
-    
+
             ip_addresses = [_IP_ADDRESS]
             config = vrrp_event.VRRPConfig(
                 version=vrrp.VRRP_VERSION_V3, vrid=_VRID, priority=self._priority,
                 ip_addresses=ip_addresses)
             self.logger.debug('%s', config)
-    
+
             rep = vrrp_api.vrrp_config(self, interface, config)
             self.logger.debug('%s', rep)
-    
-    
+
+
     def main():
         vrrp_config = sys.argv[-3:]
         sys.argv = sys.argv[:-3]
-        CONF(project='ryu', version='ryu-vrrp %s' % version)
-    
+        CONF(project='os_ken', version='os_ken-vrrp %s' % version)
+
         log.init_log()
         # always enable ofp for now.
-        app_lists = ['ryu.services.protocols.vrrp.manager',
-                     'ryu.services.protocols.vrrp.dumper',
-                     'ryu.services.protocols.vrrp.sample_manager']
-    
+        app_lists = ['os_ken.services.protocols.vrrp.manager',
+                     'os_ken.services.protocols.vrrp.dumper',
+                     'os_ken.services.protocols.vrrp.sample_manager']
+
         app_mgr = app_manager.AppManager.get_instance()
         app_mgr.load_apps(app_lists)
         contexts = app_mgr.create_contexts()
         app_mgr.instantiate_apps(**contexts)
         vrrp_router = app_mgr.instantiate(VRRPTestRouter, *vrrp_config, **contexts)
         vrrp_router.start()
-    
+
         while True:
             time.sleep(999999)
-    
+
         app_mgr.close()
-    
-    
+
+
     if __name__ == "__main__":
         main()

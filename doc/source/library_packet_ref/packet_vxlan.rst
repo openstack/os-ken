@@ -2,5 +2,5 @@
 VXLAN
 *****
 
-.. automodule:: ryu.lib.packet.vxlan
+.. automodule:: os_ken.lib.packet.vxlan
    :members:

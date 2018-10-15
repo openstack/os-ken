@@ -1006,8 +1006,7 @@ def generate(ofp_name, ofpp_name):
                          ..
 
                          | *field*\=\ *value*
-                         | *field*\ **[**\ *start*\..\ *end*\ **]**\  =\
-                         *src*\ **[**\ *start*\..\ *end*\ **]**
+                         | *field*\ **[**\ *start*\..\ *end*\ **]**\  =\ *src*\ **[**\ *start*\..\ *end*\ **]**
                          | *field*\ **[**\ *start*\..\ *end*\ **]**
                          |
 
@@ -1020,10 +1019,8 @@ def generate(ofp_name, ofpp_name):
                            load:src[start..end]->dst[start..end]
                          ..
 
-                         | **load**\:\ *value*\ **->**\ *dst*\
-                         **[**\ *start*\..\ *end*\ **]**
-                         | **load**\:\ *src*\ **[**\ *start*\..\ *end*\
-                         **] ->**\ *dst*\ **[**\ *start*\..\ *end*\ **]**
+                         | **load**\:\ *value*\ **->**\ *dst*\ **[**\ *start*\..\ *end*\ **]**
+                         | **load**\:\ *src*\ **[**\ *start*\..\ *end*\ **] ->**\ *dst*\ **[**\ *start*\..\ *end*\ **]**
                          |
 
                          Please use the

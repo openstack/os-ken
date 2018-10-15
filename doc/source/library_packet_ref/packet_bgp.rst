@@ -2,5 +2,5 @@
 BGP
 ***
 
-.. automodule:: ryu.lib.packet.bgp
+.. automodule:: os_ken.lib.packet.bgp
    :members:

@@ -2,5 +2,5 @@
 DHCP
 ****
 
-.. automodule:: ryu.lib.packet.dhcp
+.. automodule:: os_ken.lib.packet.dhcp
    :members:

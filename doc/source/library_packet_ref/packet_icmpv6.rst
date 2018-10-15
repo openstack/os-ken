@@ -2,5 +2,5 @@
 ICMPv6
 ******
 
-.. automodule:: ryu.lib.packet.icmpv6
+.. automodule:: os_ken.lib.packet.icmpv6
    :members:

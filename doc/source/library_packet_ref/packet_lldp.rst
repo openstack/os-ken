@@ -2,5 +2,5 @@
 LLDP
 ****
 
-.. automodule:: ryu.lib.packet.lldp
+.. automodule:: os_ken.lib.packet.lldp
    :members:

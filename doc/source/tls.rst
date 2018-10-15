@@ -3,7 +3,7 @@ Setup TLS Connection
 ********************
 
 If you want to use secure channel to connect OpenFlow switches, you
-need to use TLS connection. This document describes how to setup Ryu
+need to use TLS connection. This document describes how to setup OS-Ken
 to connect to the Open vSwitch over TLS.
 
 
@@ -58,17 +58,17 @@ Substitute the correct file names, if they differ from the ones used
 above. You should use absolute file names.
 
 
-Run Ryu with CA files::
+Run OS-Ken with CA files::
 
-    % ryu-manager --ctl-privkey ctl-privkey.pem \
+    % os_ken-manager --ctl-privkey ctl-privkey.pem \
                   --ctl-cert ctl-cert.pem \
                   --ca-certs /usr/local/var/lib/openvswitch/pki/switchca/cacert.pem \
                   --verbose
 
 You can see something like::
 
-    loading app ryu.controller.ofp_handler
-    instantiating app ryu.controller.ofp_handler
+    loading app os_ken.controller.ofp_handler
+    instantiating app os_ken.controller.ofp_handler
     BRICK ofp_event
       CONSUMES EventOFPSwitchFeatures
       CONSUMES EventOFPErrorMsg
@@ -76,7 +76,7 @@ You can see something like::
       CONSUMES EventOFPEchoRequest
     connected socket:<SSLSocket fileno=4 sock=127.0.0.1:6633 peer=127.0.0.1:61302> a
     ddress:('127.0.0.1', 61302)
-    hello ev <ryu.controller.ofp_event.EventOFPHello object at 0x1047806d0>
+    hello ev <os_ken.controller.ofp_event.EventOFPHello object at 0x1047806d0>
     move onto config mode
     switch features ev version: 0x1 msg_type 0x6 xid 0xb0bb34e5 port OFPPhyPort(port
     _no=65534, hw_addr='\x16\xdc\xa2\xe2}K', name='br0\x00\x00\x00\x00\x00\x00\x00\x

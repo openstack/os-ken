@@ -1,8 +1,8 @@
-******************
-ryu.app.ofctl_rest
-******************
+*********************
+os_ken.app.ofctl_rest
+*********************
 
-ryu.app.ofctl_rest provides REST APIs for retrieving the switch stats
+os_ken.app.ofctl_rest provides REST APIs for retrieving the switch stats
 and Updating the switch stats.
 This application helps you debug your application and get various statistics.
 

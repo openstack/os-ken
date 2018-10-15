@@ -2,5 +2,5 @@
 Zebra
 *****
 
-.. automodule:: ryu.lib.packet.zebra
+.. automodule:: os_ken.lib.packet.zebra
    :members:

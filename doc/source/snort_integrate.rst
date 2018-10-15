@@ -2,30 +2,30 @@
 Snort Intergration
 ******************
 
-This document describes how to integrate Ryu with Snort.
+This document describes how to integrate OS-Ken with Snort.
 
 Overview
 ========
 
-There are two options can send alert to Ryu controller. The Option 1 is easier if you just want to demonstrate or test. Since Snort need very large computation power for analyzing packets you can choose Option 2 to separate them.  
+There are two options can send alert to OS-Ken controller. The Option 1 is easier if you just want to demonstrate or test. Since Snort need very large computation power for analyzing packets you can choose Option 2 to separate them.
 
-**[Option 1] Ryu and Snort are on the same machine**
+**[Option 1] OS-Ken and Snort are on the same machine**
 ::
 
-          +---------------------+
-          |      unixsock       |
-          |    Ryu  ==  snort   |
-          +----eth0-----eth1----+
+          +------------------------+
+          |      unixsock          |
+          |    OS-Ken  ==  snort   |
+          +----eth0-----eth1-------+
                  |       |
     +-------+   +----------+   +-------+
     | HostA |---| OFSwitch |---| HostB |
     +-------+   +----------+   +-------+
 
 
-The above depicts Ryu and Snort architecture. Ryu receives Snort alert packet via **Unix Domain Socket** . To monitor packets between HostA and HostB, installing a flow that mirrors packets to Snort.
+The above depicts OS-Ken and Snort architecture. OS-Ken receives Snort alert packet via **Unix Domain Socket** . To monitor packets between HostA and HostB, installing a flow that mirrors packets to Snort.
 
 
-**[Option 2] Ryu and Snort are on the different machines**
+**[Option 2] OS-Ken and Snort are on the different machines**
 ::
 
               +---------------+
@@ -37,14 +37,14 @@ The above depicts Ryu and Snort architecture. Ryu receives Snort alert packet vi
     | HostA |---| OFSwitch |---| LAN (*CP) |
     +-------+   +----------+   +-----------+
                      |             |
-                +----------+   +----------+
-                |  HostB   |   |   Ryu    |
-                +----------+   +----------+
+                +----------+   +-------------+
+                |  HostB   |   |   OS-Ken    |
+                +----------+   +-------------+
 
 
 **\*CP: Control Plane**
 
-The above depicts Ryu and Snort architecture. Ryu receives Snort alert packet via **Network Socket** . To monitor packets between HostA and HostB, installing a flow that mirrors packets to Snort.
+The above depicts OS-Ken and Snort architecture. OS-Ken receives Snort alert packet via **Network Socket** . To monitor packets between HostA and HostB, installing a flow that mirrors packets to Snort.
 
 
 
@@ -85,9 +85,9 @@ Usage
     # False: Network Socket Server [Option2]
 
 
-2. Run Ryu with sample application: ::
+2. Run OS-Ken with sample application: ::
 
-    $ sudo ./bin/ryu-manager ryu/app/simple_switch_snort.py
+    $ sudo ./bin/os_ken-manager os_ken/app/simple_switch_snort.py
 
 The incoming packets will all mirror to **port 3** which should be connect to Snort network interface. You can modify the mirror port by assign a new value in the ``self.snort_port = 3`` of ``simple_switch_snort.py``
 
@@ -112,9 +112,9 @@ The incoming packets will all mirror to **port 3** which should be connect to Sn
     # False: Network Socket Server [Option2]
 
 
-2. Run Ryu with sample application (On the Controller): ::
+2. Run OS-Ken with sample application (On the Controller): ::
 
-    $ ./bin/ryu-manager ryu/app/simple_switch_snort.py
+    $ ./bin/os_ken-manager os_ken/app/simple_switch_snort.py
 
 3. Run Snort (On the Snort machine): ::
 
@@ -125,7 +125,7 @@ The incoming packets will all mirror to **port 3** which should be connect to Sn
 
     $ sudo python pigrelay.py
 
-This program listening snort alert messages from unix domain socket and sending it to Ryu using network socket.
+This program listening snort alert messages from unix domain socket and sending it to OS-Ken using network socket.
 
 You can clone the source code from this repo. https://github.com/John-Lin/pigrelay
 

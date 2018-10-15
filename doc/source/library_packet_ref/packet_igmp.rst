@@ -2,5 +2,5 @@
 IGMP
 ****
 
-.. automodule:: ryu.lib.packet.igmp
+.. automodule:: os_ken.lib.packet.igmp
    :members:

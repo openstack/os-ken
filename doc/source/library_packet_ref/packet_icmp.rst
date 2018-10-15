@@ -2,5 +2,5 @@
 ICMP
 ****
 
-.. automodule:: ryu.lib.packet.icmp
+.. automodule:: os_ken.lib.packet.icmp
    :members:

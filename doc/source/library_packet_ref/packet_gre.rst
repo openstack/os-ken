@@ -2,5 +2,5 @@
 GRE
 ***
 
-.. automodule:: ryu.lib.packet.gre
+.. automodule:: os_ken.lib.packet.gre
    :members:

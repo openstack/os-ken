@@ -2,7 +2,7 @@
 OVSDB library
 *************
 
-Path: ``ryu.lib.ovs``
+Path: ``os_ken.lib.ovs``
 
 Similar to the :doc:`library_ovsdb_manager`, this library enables your
 application to speak the OVSDB protocol (RFC7047_), but differ from the
@@ -27,19 +27,19 @@ See manpage of ovs-vsctl_ command for more details.
 Basic Usage
 ===========
 
-1. Instantiate :py:mod:`ryu.lib.ovs.vsctl.VSCtl`.
+1. Instantiate :py:mod:`os_ken.lib.ovs.vsctl.VSCtl`.
 
-2. Construct commands with :py:mod:`ryu.lib.ovs.vsctl.VSCtlCommand`.
+2. Construct commands with :py:mod:`os_ken.lib.ovs.vsctl.VSCtlCommand`.
    The syntax is almost the same as ovs-vsctl_ command.
 
-3. Execute commands via :py:mod:`ryu.lib.ovs.vsctl.VSCtl.run_command`.
+3. Execute commands via :py:mod:`os_ken.lib.ovs.vsctl.VSCtl.run_command`.
 
 Example
 -------
 
 .. code-block:: python
 
-    from ryu.lib.ovs import vsctl
+    from os_ken.lib.ovs import vsctl
 
     OVSDB_ADDR = 'tcp:127.0.0.1:6640'
     ovs_vsctl = vsctl.VSCtl(OVSDB_ADDR)
@@ -63,14 +63,14 @@ Example
 API Reference
 =============
 
-ryu.lib.ovs.vsctl
------------------
+os_ken.lib.ovs.vsctl
+--------------------
 
-.. automodule:: ryu.lib.ovs.vsctl
+.. automodule:: os_ken.lib.ovs.vsctl
     :members:
 
-ryu.lib.ovs.bridge
-------------------
+os_ken.lib.ovs.bridge
+---------------------
 
-.. automodule:: ryu.lib.ovs.bridge
+.. automodule:: os_ken.lib.ovs.bridge
     :members:

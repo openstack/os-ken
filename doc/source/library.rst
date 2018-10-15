@@ -2,7 +2,7 @@
 Library
 *******
 
-Ryu provides some useful library for your network applications.
+OS-Ken provides some useful library for your network applications.
 
 .. toctree::
    :maxdepth: 1

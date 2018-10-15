@@ -1,12 +1,12 @@
 :orphan:
 
-ryu-manager manual page
-=======================
+os_ken-manager manual page
+==========================
 
 
 Synopsis
 --------
-**ryu-manager** [-h]
+**os_ken-manager** [-h]
 [--app-lists APP_LISTS] [--ca-certs CA_CERTS]
 [--config-dir DIR] [--config-file PATH]
 [--ctl-cert CTL_CERT] [--ctl-privkey CTL_PRIVKEY]
@@ -37,14 +37,14 @@ Synopsis
 
 Description
 -----------
-:program:`ryu-manager` is the executable for Ryu applications. ryu-manager
-loads Ryu applications and run it.
+:program:`os_ken-manager` is the executable for OS-Ken applications. os_ken-manager
+loads OS-Ken applications and run it.
 
-Ryu is a component-based software defined networking framework. Ryu
+OS-Ken is a component-based software defined networking framework. OS-Ken
 provides software components with well defined API that make it easy for
 developers to create new network management and control applications.
-Ryu supports various protocols for managing network devices, such as
-OpenFlow, Netconf, OF-config, etc. About OpenFlow, Ryu supports fully
+OS-Ken supports various protocols for managing network devices, such as
+OpenFlow, Netconf, OF-config, etc. About OpenFlow, OS-Ken supports fully
 1.0, 1.2, 1.3, 1.4 and Nicira Extensions.
 
 Options

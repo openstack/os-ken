@@ -2,5 +2,5 @@
 BPDU
 ****
 
-.. automodule:: ryu.lib.packet.bpdu
+.. automodule:: os_ken.lib.packet.bpdu
    :members:

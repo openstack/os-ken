@@ -2,7 +2,7 @@
 Testing OF-config support with LINC
 ===================================
 
-This page describes how to setup LINC and test Ryu OF-config with it.
+This page describes how to setup LINC and test OS-Ken OF-config with it.
 
 The procedure is as follows.
 Although all the procedure is written for reader's convenience,
@@ -17,9 +17,9 @@ The test procedure
 * configure LINC switch
 * setup for LINC
 * run LINC switch
-* run Ryu test_of_config app
+* run OS-Ken test_of_config app
 
-For getting/installing Ryu itself, please refer to http://osrg.github.io/ryu/
+For getting/installing OS-Ken itself, please refer to http://osrg.github.io/os_ken/
 
 
 Install Erlang environment
@@ -178,13 +178,13 @@ Then run LINC::
     # rel/linc/bin/linc console
 
 
-Run Ryu test_of_config app
-==========================
+Run OS-Ken test_of_config app
+=============================
 
 Run test_of_config app::
 
-    # ryu-manager --verbose ryu.tests.integrated.test_of_config ryu.app.rest
+    # os_ken-manager --verbose os_ken.tests.integrated.test_of_config os_ken.app.rest
 
-If you don't install ryu and are working in the git repo directly::
+If you don't install os_ken and are working in the git repo directly::
 
-    # PYTHONPATH=. ./bin/ryu-manager --verbose ryu.tests.integrated.test_of_config ryu.app.rest
+    # PYTHONPATH=. ./bin/os_ken-manager --verbose os_ken.tests.integrated.test_of_config os_ken.app.rest

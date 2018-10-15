@@ -5,18 +5,18 @@ Packet library API Reference
 Packet class
 ============
 
-.. automodule:: ryu.lib.packet.packet
+.. automodule:: os_ken.lib.packet.packet
    :members:
 
 Stream Parser class
 ===================
 
-.. automodule:: ryu.lib.packet.stream_parser
+.. automodule:: os_ken.lib.packet.stream_parser
    :members:
 
 List of the sub-classes:
 
-- :py:mod:`ryu.lib.packet.bgp.StreamParser`
+- :py:mod:`os_ken.lib.packet.bgp.StreamParser`
 
 Protocol Header classes
 =======================

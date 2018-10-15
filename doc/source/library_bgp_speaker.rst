@@ -5,7 +5,7 @@ BGP speaker library
 Introduction
 ============
 
-Ryu BGP speaker library helps you to enable your code to speak BGP
+OS-Ken BGP speaker library helps you to enable your code to speak BGP
 protocol. The library supports IPv4, IPv4 MPLS-labeled VPN, IPv6
 MPLS-labeled VPN and L2VPN EVPN address families.
 
@@ -26,13 +26,13 @@ instance advertizes some prefixes.
 
     # initialize a log handler
     # this is not strictly necessary but useful if you get messages like:
-    #    No handlers could be found for logger "ryu.lib.hub"
+    #    No handlers could be found for logger "os_ken.lib.hub"
     import logging
     import sys
     log = logging.getLogger()
     log.addHandler(logging.StreamHandler(sys.stderr))
 
-    from ryu.services.protocols.bgp.bgpspeaker import BGPSpeaker
+    from os_ken.services.protocols.bgp.bgpspeaker import BGPSpeaker
 
     def dump_remote_best_path_change(event):
         print 'the best path changed:', event.remote_as, event.prefix,\

@@ -2,5 +2,5 @@
 UDP
 ***
 
-.. automodule:: ryu.lib.packet.udp
+.. automodule:: os_ken.lib.packet.udp
    :members:

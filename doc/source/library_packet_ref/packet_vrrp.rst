@@ -2,5 +2,5 @@
 VRRP
 ****
 
-.. automodule:: ryu.lib.packet.vrrp
+.. automodule:: os_ken.lib.packet.vrrp
    :members:
