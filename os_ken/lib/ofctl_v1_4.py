@@ -15,10 +15,10 @@
 
 import logging
 
-from ryu.ofproto import ether
-from ryu.ofproto import ofproto_v1_4
-from ryu.ofproto import ofproto_v1_4_parser
-from ryu.lib import ofctl_utils
+from os_ken.ofproto import ether
+from os_ken.ofproto import ofproto_v1_4
+from os_ken.ofproto import ofproto_v1_4_parser
+from os_ken.lib import ofctl_utils
 
 LOG = logging.getLogger(__name__)
 

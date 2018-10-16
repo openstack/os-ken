@@ -203,8 +203,8 @@ class Reader(object):
 
     Example of usage::
 
-        from ryu.lib import pcaplib
-        from ryu.lib.packet import packet
+        from os_ken.lib import pcaplib
+        from os_ken.lib.packet import packet
 
         frame_count = 0
         # iterate pcaplib.Reader that yields (timestamp, packet_data)
@@ -261,7 +261,7 @@ class Writer(object):
     Example of usage::
 
         ...
-        from ryu.lib import pcaplib
+        from os_ken.lib import pcaplib
 
 
         class SimpleSwitch13(app_manager.RyuApp):

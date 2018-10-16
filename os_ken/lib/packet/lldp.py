@@ -51,8 +51,8 @@ optional TLV may be inserted in any order
 """
 
 import struct
-from ryu.lib import stringify
-from ryu.lib.packet import packet_base
+from os_ken.lib import stringify
+from os_ken.lib.packet import packet_base
 
 
 # LLDP destination MAC address

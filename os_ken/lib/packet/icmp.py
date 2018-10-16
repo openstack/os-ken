@@ -20,7 +20,7 @@ import six
 
 from . import packet_base
 from . import packet_utils
-from ryu.lib import stringify
+from os_ken.lib import stringify
 
 
 ICMP_ECHO_REPLY = 0
@@ -54,9 +54,9 @@ class icmp(packet_base.PacketBase):
                    (0 means automatically-calculate when encoding)
     data           Payload. \
                    Either a bytearray, or \
-                   ryu.lib.packet.icmp.echo or \
-                   ryu.lib.packet.icmp.dest_unreach or \
-                   ryu.lib.packet.icmp.TimeExceeded object \
+                   os_ken.lib.packet.icmp.echo or \
+                   os_ken.lib.packet.icmp.dest_unreach or \
+                   os_ken.lib.packet.icmp.TimeExceeded object \
                    NOTE for icmp.echo: \
                    This includes "unused" 16 bits and the following \
                    "Internet Header + 64 bits of Original Data Datagram" of \
@@ -137,7 +137,7 @@ class _ICMPv4Payload(stringify.StringifyMixin):
 class echo(_ICMPv4Payload):
     """ICMP sub encoder/decoder class for Echo and Echo Reply messages.
 
-    This is used with ryu.lib.packet.icmp.icmp for
+    This is used with os_ken.lib.packet.icmp.icmp for
     ICMP Echo and Echo Reply messages.
 
     An instance has the following attributes at least.
@@ -195,7 +195,7 @@ class echo(_ICMPv4Payload):
 class dest_unreach(_ICMPv4Payload):
     """ICMP sub encoder/decoder class for Destination Unreachable Message.
 
-    This is used with ryu.lib.packet.icmp.icmp for
+    This is used with os_ken.lib.packet.icmp.icmp for
     ICMP Destination Unreachable Message.
 
     An instance has the following attributes at least.
@@ -266,7 +266,7 @@ class dest_unreach(_ICMPv4Payload):
 class TimeExceeded(_ICMPv4Payload):
     """ICMP sub encoder/decoder class for Time Exceeded Message.
 
-    This is used with ryu.lib.packet.icmp.icmp for
+    This is used with os_ken.lib.packet.icmp.icmp for
     ICMP Time Exceeded Message.
 
     An instance has the following attributes at least.

@@ -18,7 +18,7 @@ import logging
 from abc import ABCMeta, abstractmethod
 import six
 
-from ryu.lib.packet import packet
+from os_ken.lib.packet import packet
 
 LOG = logging.getLogger(__name__)
 

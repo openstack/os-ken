@@ -17,7 +17,7 @@ import array
 import six
 import socket
 import struct
-from ryu.lib import addrconv
+from os_ken.lib import addrconv
 
 
 def carry_around_add(a, b):

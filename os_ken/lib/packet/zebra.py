@@ -28,12 +28,12 @@ from distutils.version import LooseVersion
 import netaddr
 import six
 
-from ryu import flags as cfg_flags  # For loading 'zapi' option definition
-from ryu.cfg import CONF
-from ryu.lib import addrconv
-from ryu.lib import ip
-from ryu.lib import stringify
-from ryu.lib import type_desc
+from os_ken import flags as cfg_flags  # For loading 'zapi' option definition
+from os_ken.cfg import CONF
+from os_ken.lib import addrconv
+from os_ken.lib import ip
+from os_ken.lib import stringify
+from os_ken.lib import type_desc
 from . import packet_base
 from . import bgp
 from . import safi as packet_safi
@@ -988,7 +988,7 @@ class ZebraMessage(packet_base.PacketBase):
 
         ::
 
-            >>> from ryu.lib.packet import zebra
+            >>> from os_ken.lib.packet import zebra
             >>> zebra.ZebraMessage(body=zebra.ZebraHello())
             ZebraMessage(body=ZebraHello(route_type=14),command=23,
             length=None,version=3,vrf_id=0)

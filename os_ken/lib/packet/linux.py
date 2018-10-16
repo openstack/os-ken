@@ -18,7 +18,7 @@ from . import packet_base
 from . import vlan
 from . import mpls
 from . import ether_types as ether
-from ryu.lib import addrconv
+from os_ken.lib import addrconv
 
 
 class linuxcooked(packet_base.PacketBase):

@@ -15,7 +15,7 @@
 
 import struct
 
-from ryu.lib import addrconv
+from os_ken.lib import addrconv
 from . import ether_types as ether
 from . import packet_base
 

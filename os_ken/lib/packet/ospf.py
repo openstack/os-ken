@@ -23,12 +23,12 @@ import struct
 
 import six
 
-from ryu.lib import addrconv
-from ryu.lib.packet import packet_base
-from ryu.lib.packet import packet_utils
-from ryu.lib.packet import stream_parser
-from ryu.lib.stringify import StringifyMixin
-from ryu.lib import type_desc
+from os_ken.lib import addrconv
+from os_ken.lib.packet import packet_base
+from os_ken.lib.packet import packet_utils
+from os_ken.lib.packet import stream_parser
+from os_ken.lib.stringify import StringifyMixin
+from os_ken.lib import type_desc
 
 
 LOG = logging.getLogger(__name__)

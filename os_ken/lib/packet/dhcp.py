@@ -55,8 +55,8 @@ import struct
 
 import netaddr
 
-from ryu.lib import addrconv
-from ryu.lib import stringify
+from os_ken.lib import addrconv
+from os_ken.lib import stringify
 from . import packet_base
 
 DHCP_BOOT_REQUEST = 1
@@ -216,7 +216,7 @@ class dhcp(packet_base.PacketBase):
 class options(stringify.StringifyMixin):
     """DHCP (RFC 2132) options encoder/decoder class.
 
-    This is used with ryu.lib.packet.dhcp.dhcp.
+    This is used with os_ken.lib.packet.dhcp.dhcp.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.
@@ -289,7 +289,7 @@ class options(stringify.StringifyMixin):
 class option(stringify.StringifyMixin):
     """DHCP (RFC 2132) options encoder/decoder class.
 
-    This is used with ryu.lib.packet.dhcp.dhcp.options.
+    This is used with os_ken.lib.packet.dhcp.dhcp.options.
 
     An instance has the following attributes at least.
     Most of them are same to the on-wire counterparts but in host byte order.

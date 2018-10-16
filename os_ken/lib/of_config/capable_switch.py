@@ -18,15 +18,15 @@ import ncclient
 import ncclient.manager
 import ncclient.xml_
 
-from ryu import exception as ryu_exc
-from ryu.lib import of_config
-from ryu.lib.of_config import constants as ofc_consts
-from ryu.lib.of_config import classes as ofc
+from os_ken import exception as os_ken_exc
+from os_ken.lib import of_config
+from os_ken.lib.of_config import constants as ofc_consts
+from os_ken.lib.of_config import classes as ofc
 
 
 # TODO: When we re-organize ncclient, its NCClientError will be
 #       subclass of RyuException.
-class OFConfigCapableSwitchNotFound(ryu_exc.RyuException,
+class OFConfigCapableSwitchNotFound(os_ken_exc.RyuException,
                                     ncclient.NCClientError):
     message = 'OpenFlow Capable Switch not found'
 

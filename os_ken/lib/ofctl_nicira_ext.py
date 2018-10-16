@@ -16,7 +16,7 @@
 import base64
 import logging
 
-from ryu.ofproto import nicira_ext
+from os_ken.ofproto import nicira_ext
 
 
 LOG = logging.getLogger(__name__)

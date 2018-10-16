@@ -18,7 +18,7 @@ import struct
 import six
 
 from . import packet_base
-from ryu.lib import type_desc
+from os_ken.lib import type_desc
 
 
 class mpls(packet_base.PacketBase):

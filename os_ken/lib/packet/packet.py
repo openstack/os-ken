@@ -22,12 +22,12 @@ import six
 from . import packet_base
 from . import ethernet
 
-from ryu import utils
-from ryu.lib.stringify import StringifyMixin
+from os_ken import utils
+from os_ken.lib.stringify import StringifyMixin
 
 
 # Packet class dictionary
-mod = inspect.getmembers(utils.import_module("ryu.lib.packet"),
+mod = inspect.getmembers(utils.import_module("os_ken.lib.packet"),
                          lambda cls: (inspect.ismodule(cls)))
 cls_list = []
 for _, m in mod:

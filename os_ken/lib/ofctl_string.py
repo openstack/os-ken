@@ -15,9 +15,9 @@
 
 import re
 
-import ryu.exception
-from ryu.lib.ofctl_utils import str_to_int
-from ryu.ofproto import nicira_ext
+import os_ken.exception
+from os_ken.lib.ofctl_utils import str_to_int
+from os_ken.ofproto import nicira_ext
 
 
 def ofp_instruction_from_str(ofproto, action_str):
@@ -44,7 +44,7 @@ def ofp_instruction_from_str(ofproto, action_str):
     while len(action_str):
         m = action_re.match(action_str)
         if not m:
-            raise ryu.exception.OFPInvalidActionString(action_str=action_str)
+            raise os_ken.exception.OFPInvalidActionString(action_str=action_str)
         action_name = m.group(1)
         this_action = m.group(0)
         paren_level = this_action.count('(') - this_action.count(')')
@@ -59,14 +59,14 @@ def ofp_instruction_from_str(ofproto, action_str):
                 assert rest[0] == ','
                 rest = rest[1:]
         except Exception:
-            raise ryu.exception.OFPInvalidActionString(action_str=action_str)
+            raise os_ken.exception.OFPInvalidActionString(action_str=action_str)
         if action_name == 'drop':
             assert this_action == 'drop'
             assert len(result) == 0 and rest == ''
             return []
         converter = getattr(OfctlActionConverter, action_name, None)
         if converter is None or not callable(converter):
-            raise ryu.exception.OFPInvalidActionString(action_str=action_name)
+            raise os_ken.exception.OFPInvalidActionString(action_str=action_name)
         result.append(converter(ofproto, this_action))
         action_str = rest
 
@@ -113,7 +113,7 @@ def tokenize_ofp_instruction_arg(arg):
                 rest = rest[1:]
         return result
     except Exception:
-        raise ryu.exception.OFPInvalidActionString(action_str=arg)
+        raise os_ken.exception.OFPInvalidActionString(action_str=arg)
 
 
 _OXM_FIELD_OFCTL_ALIASES = {
@@ -137,8 +137,8 @@ _OXM_FIELD_OFCTL_ALIASES = {
 }
 
 
-def ofp_ofctl_field_name_to_ryu(field):
-    """Convert an ovs-ofctl field name to ryu equivalent."""
+def ofp_ofctl_field_name_to_os_ken(field):
+    """Convert an ovs-ofctl field name to os_ken equivalent."""
     mapped = _OXM_FIELD_OFCTL_ALIASES.get(field)
     if mapped:
         return mapped
@@ -164,10 +164,10 @@ _NXM_OF_FIELD_MAP.update({
     'icmp_type': 'icmpv4_type_nxm', 'icmp_code': 'icmpv4_code_nxm'})
 
 
-def nxm_field_name_to_ryu(field):
+def nxm_field_name_to_os_ken(field):
     """
     Convert an ovs-ofctl style NXM_/OXM_ field name to
-    a ryu match field name.
+    a os_ken match field name.
     """
     if field.endswith("_W"):
         field = field[:-2]
@@ -219,7 +219,7 @@ class OfctlActionConverter(object):
         try:
             assert action_str.startswith("set_field:")
             value, key = action_str[len("set_field:"):].split("->", 1)
-            fieldarg = dict(field=ofp_ofctl_field_name_to_ryu(key))
+            fieldarg = dict(field=ofp_ofctl_field_name_to_os_ken(key))
             m = value.find('/')
             if m >= 0:
                 fieldarg['value'] = str_to_int(value[:m])
@@ -227,7 +227,7 @@ class OfctlActionConverter(object):
             else:
                 fieldarg['value'] = str_to_int(value)
         except Exception:
-            raise ryu.exception.OFPInvalidActionString(action_str=action_str)
+            raise os_ken.exception.OFPInvalidActionString(action_str=action_str)
         return dict(OFPActionSetField={
             'field': {'OXMTlv': fieldarg}})
 
@@ -249,7 +249,7 @@ class OfctlActionConverter(object):
                 raise Exception
             return dict(NXActionResubmitTable=kwargs)
         except Exception:
-            raise ryu.exception.OFPInvalidActionString(
+            raise os_ken.exception.OFPInvalidActionString(
                 action_str=action_str)
 
     @classmethod
@@ -267,7 +267,7 @@ class OfctlActionConverter(object):
                 'n_clauses': clauses[1],
                 'id': id_})
         except Exception:
-            raise ryu.exception.OFPInvalidActionString(
+            raise os_ken.exception.OFPInvalidActionString(
                 action_str=action_str)
 
     @classmethod
@@ -283,7 +283,7 @@ class OfctlActionConverter(object):
         if len(action_str) > 2:
             if (not action_str.startswith('ct(') or
                     action_str[-1] != ')'):
-                raise ryu.exception.OFPInvalidActionString(
+                raise os_ken.exception.OFPInvalidActionString(
                     action_str=action_str)
             rest = tokenize_ofp_instruction_arg(action_str[len('ct('):-1])
         else:
@@ -307,14 +307,14 @@ class OfctlActionConverter(object):
                         if m:
                             zone_ofs_nbits = nicira_ext.ofs_nbits(
                                 int(m.group(1)), int(m.group(2)))
-                            zone_src = nxm_field_name_to_ryu(
+                            zone_src = nxm_field_name_to_os_ken(
                                 v[:m.start(0)])
                         else:
                             zone_ofs_nbits = str_to_int(v)
                     elif k == 'alg':
                         alg = str_to_port[arg[len('alg='):]]
                 except Exception:
-                    raise ryu.exception.OFPInvalidActionString(
+                    raise os_ken.exception.OFPInvalidActionString(
                         action_str=action_str)
         return dict(NXActionCT={'flags': flags,
                                 'zone_src': zone_src,

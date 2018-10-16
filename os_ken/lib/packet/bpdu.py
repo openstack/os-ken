@@ -130,7 +130,7 @@ Rapid Spanning Tree BPDUs(RST BPDUs) format
 import binascii
 import struct
 from . import packet_base
-from ryu.lib import addrconv
+from os_ken.lib import addrconv
 
 
 # BPDU destination

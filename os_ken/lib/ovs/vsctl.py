@@ -40,10 +40,10 @@ from ovs import ovsuuid
 from ovs import stream
 from ovs.db import idl
 
-from ryu.lib import hub
-from ryu.lib import ip
-from ryu.lib.ovs import vswitch_idl
-from ryu.lib.stringify import StringifyMixin
+from os_ken.lib import hub
+from os_ken.lib import ip
+from os_ken.lib.ovs import vswitch_idl
+from os_ken.lib.stringify import StringifyMixin
 
 
 LOG = logging.getLogger(__name__)       # use ovs.vlog?
@@ -1013,7 +1013,7 @@ class VSCtl(object):
     A class to describe an Open vSwitch instance.
 
     ``remote`` specifies the address of the OVS instance.
-    :py:mod:`ryu.lib.ovs.vsctl.valid_ovsdb_addr` is a convenient function to
+    :py:mod:`os_ken.lib.ovs.vsctl.valid_ovsdb_addr` is a convenient function to
     validate this address.
     """
 
@@ -1279,7 +1279,7 @@ class VSCtl(object):
         Executes the given commands and sends OVSDB messages.
 
         ``commands`` must be a list of
-        :py:mod:`ryu.lib.ovs.vsctl.VSCtlCommand`.
+        :py:mod:`os_ken.lib.ovs.vsctl.VSCtlCommand`.
 
         If ``timeout_sec`` is specified, raises exception after the given
         timeout [sec]. Additionally, if ``exception`` is specified, this

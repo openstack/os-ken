@@ -15,17 +15,17 @@
 # limitations under the License.
 
 """
-Wrapper utility library of :py:mod:`ryu.lib.ovs.vsctl`
+Wrapper utility library of :py:mod:`os_ken.lib.ovs.vsctl`
 """
 
 import functools
 import logging
 
-from ryu import cfg
-import ryu.exception as ryu_exc
-import ryu.lib.dpid as dpid_lib
-import ryu.lib.ovs.vsctl as ovs_vsctl
-from ryu.lib.ovs.vsctl import valid_ovsdb_addr
+from os_ken import cfg
+import os_ken.exception as os_ken_exc
+import os_ken.lib.dpid as dpid_lib
+import os_ken.lib.ovs.vsctl as ovs_vsctl
+from os_ken.lib.ovs.vsctl import valid_ovsdb_addr
 
 
 LOG = logging.getLogger(__name__)
@@ -36,7 +36,7 @@ CONF.register_opts([
 ])
 
 
-class OVSBridgeNotFound(ryu_exc.RyuException):
+class OVSBridgeNotFound(os_ken_exc.RyuException):
     message = 'no bridge for datapath_id %(datapath_id)s'
 
 
@@ -93,7 +93,7 @@ class TunnelPort(object):
 
 class OVSBridge(object):
     """
-    Class to provide wrapper utilities of :py:mod:`ryu.lib.ovs.vsctl.VSCtl`
+    Class to provide wrapper utilities of :py:mod:`os_ken.lib.ovs.vsctl.VSCtl`
 
     ``CONF`` is a instance of ``oslo_config.cfg.ConfigOpts``.
     Mostly ``self.CONF`` is sufficient to instantiate this class from your Ryu
@@ -103,14 +103,14 @@ class OVSBridge(object):
 
     ``ovsdb_addr`` specifies the address of the OVS instance.
     Automatically validated when you call ``init()`` method.
-    Refer to :py:mod:`ryu.lib.ovs.vsctl.valid_ovsdb_addr` for the format of
+    Refer to :py:mod:`os_ken.lib.ovs.vsctl.valid_ovsdb_addr` for the format of
     this address.
 
     if ``timeout`` is omitted, ``CONF.ovsdb_timeout`` will be used as the
     default value.
 
     Usage of ``timeout`` and ``exception`` is the same with ``timeout_sec``
-    and ``exception`` of :py:mod:`ryu.lib.ovs.vsctl.VSCtl.run_command`.
+    and ``exception`` of :py:mod:`os_ken.lib.ovs.vsctl.VSCtl.run_command`.
     """
 
     def __init__(self, CONF, datapath_id, ovsdb_addr, timeout=None,
@@ -129,10 +129,10 @@ class OVSBridge(object):
         Executes the given commands and sends OVSDB messages.
 
         ``commands`` must be a list of
-        :py:mod:`ryu.lib.ovs.vsctl.VSCtlCommand`.
+        :py:mod:`os_ken.lib.ovs.vsctl.VSCtlCommand`.
 
         The given ``timeout`` and ``exception`` when instantiation will be used
-        to call :py:mod:`ryu.lib.ovs.vsctl.VSCtl.run_command`.
+        to call :py:mod:`os_ken.lib.ovs.vsctl.VSCtl.run_command`.
         """
         self.vsctl.run_command(commands, self.timeout, self.exception)
 
@@ -142,7 +142,7 @@ class OVSBridge(object):
 
         If failed to connect to OVS instance or the given ``datapath_id`` does
         not match with the Datapath ID of the connected OVS instance, raises
-        :py:mod:`ryu.lib.ovs.bridge.OVSBridgeNotFound` exception.
+        :py:mod:`os_ken.lib.ovs.bridge.OVSBridgeNotFound` exception.
         """
         if not valid_ovsdb_addr(self.ovsdb_addr):
             raise ValueError('Invalid OVSDB address: %s' % self.ovsdb_addr)
