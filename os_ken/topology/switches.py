@@ -24,7 +24,7 @@ from os_ken.base import app_manager
 from os_ken.controller import ofp_event
 from os_ken.controller.handler import set_ev_cls
 from os_ken.controller.handler import MAIN_DISPATCHER, DEAD_DISPATCHER
-from os_ken.exception import RyuException
+from os_ken.exception import OSKenException
 from os_ken.lib import addrconv, hub
 from os_ken.lib.mac import DONTCARE_STR
 from os_ken.lib.dpid import dpid_to_str, str_to_dpid
@@ -426,7 +426,7 @@ class LLDPPacket(object):
     PORT_ID_STR = '!I'      # uint32_t
     PORT_ID_SIZE = 4
 
-    class LLDPUnknownFormat(RyuException):
+    class LLDPUnknownFormat(OSKenException):
         message = '%(msg)s'
 
     @staticmethod
@@ -493,7 +493,7 @@ class LLDPPacket(object):
         return src_dpid, src_port_no
 
 
-class Switches(app_manager.RyuApp):
+class Switches(app_manager.OSKenApp):
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION, ofproto_v1_2.OFP_VERSION,
                     ofproto_v1_3.OFP_VERSION, ofproto_v1_4.OFP_VERSION]
     _EVENTS = [event.EventSwitchEnter, event.EventSwitchLeave,

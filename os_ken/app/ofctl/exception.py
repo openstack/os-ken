@@ -19,7 +19,7 @@ from os_ken import exception
 
 # base classes
 
-class _ExceptionBase(exception.RyuException):
+class _ExceptionBase(exception.OSKenException):
     def __init__(self, result):
         self.result = result
         super(_ExceptionBase, self).__init__(result=result)

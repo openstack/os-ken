@@ -49,7 +49,7 @@ opts = (cfg.StrOpt('address', default='0.0.0.0', help='OVSDB address'),
 cfg.CONF.register_opts(opts, 'ovsdb')
 
 
-class OVSDB(app_manager.RyuApp):
+class OVSDB(app_manager.OSKenApp):
     _EVENTS = [event.EventNewOVSDBConnection,
                event.EventModifyRequest,
                event.EventReadRequest]

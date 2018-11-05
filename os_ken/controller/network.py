@@ -26,7 +26,7 @@ from os_ken.exception import PortAlreadyExist, PortNotFound, PortUnknown
 NW_ID_UNKNOWN = '__NW_ID_UNKNOWN__'
 
 
-class MacAddressAlreadyExist(os_ken_exc.RyuException):
+class MacAddressAlreadyExist(os_ken_exc.OSKenException):
     message = 'port (%(dpid)s, %(port)s) has already mac %(mac_address)s'
 
 
@@ -347,7 +347,7 @@ class MacAddresses(dict):
         return mac2port.get_ports(mac_address)
 
 
-class Network(app_manager.RyuApp):
+class Network(app_manager.OSKenApp):
     def __init__(self, nw_id_unknown=NW_ID_UNKNOWN):
         super(Network, self).__init__()
         self.name = 'network'

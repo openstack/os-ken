@@ -23,7 +23,7 @@ from os_ken.lib.packet import ethernet
 from os_ken.lib.packet import ether_types
 
 
-class SimpleSwitch13(app_manager.RyuApp):
+class SimpleSwitch13(app_manager.OSKenApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
 
     def __init__(self, *args, **kwargs):

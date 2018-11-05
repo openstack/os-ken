@@ -129,7 +129,7 @@ class EventOFPPortStateChange(event.EventBase):
     """
     An event class to notify the port state changes of Dtatapath instance.
 
-    This event performs like EventOFPPortStatus, but Ryu will
+    This event performs like EventOFPPortStatus, but OSKen will
     send this event after updating ``ports`` dict of Datapath instances.
     An instance has at least the following attributes.
 

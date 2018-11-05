@@ -75,7 +75,7 @@ def find_ssh_server_key():
 class SshServer(paramiko.ServerInterface):
     TERM = "ansi"
     PROMPT = "bgpd> "
-    WELCOME = "\n\rHello, this is Ryu BGP speaker (version %s).\n\r" % version
+    WELCOME = "\n\rHello, this is OSKen BGP speaker (version %s).\n\r" % version
 
     class HelpCmd(Command):
         help_msg = 'show this help'

@@ -25,7 +25,7 @@ import struct
 
 from os_ken import cfg
 from os_ken.base import app_manager
-from os_ken.base.app_manager import RyuApp
+from os_ken.base.app_manager import OSKenApp
 from os_ken.controller.handler import set_ev_cls
 from os_ken.lib import hub
 from os_ken.lib import ip
@@ -178,7 +178,7 @@ def detect_address_family(host):
         return None
 
 
-class ZServer(RyuApp):
+class ZServer(OSKenApp):
     """
     The base class for Zebra server application.
     """

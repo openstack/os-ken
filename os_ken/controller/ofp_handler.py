@@ -48,7 +48,7 @@ from os_ken.ofproto import ofproto_parser
 # back Echo Reply message.
 
 
-class OFPHandler(os_ken.base.app_manager.RyuApp):
+class OFPHandler(os_ken.base.app_manager.OSKenApp):
     def __init__(self, *args, **kwargs):
         super(OFPHandler, self).__init__(*args, **kwargs)
         self.name = ofp_event.NAME
@@ -96,7 +96,7 @@ class OFPHandler(os_ken.base.app_manager.RyuApp):
             if negotiated_versions and not usable_versions:
                 # e.g.
                 # versions of OF 1.0 and 1.1 from switch
-                # max of OF 1.2 from Ryu and supported_ofp_version = (1.2, )
+                # max of OF 1.2 from OSKen and supported_ofp_version = (1.2, )
                 # negotiated version = 1.1
                 # usable version = None
                 error_desc = (
@@ -114,11 +114,11 @@ class OFPHandler(os_ken.base.app_manager.RyuApp):
                     max(negotiated_versions) != max(usable_versions)):
                 # e.g.
                 # versions of OF 1.0 and 1.1 from switch
-                # max of OF 1.2 from Ryu and supported_ofp_version = (1.0, 1.2)
+                # max of OF 1.2 from OSKen and supported_ofp_version = (1.0, 1.2)
                 # negotiated version = 1.1
                 # usable version = 1.0
                 #
-                # TODO: In order to get the version 1.0, Ryu need to send
+                # TODO: In order to get the version 1.0, OSKen need to send
                 # supported verions.
                 error_desc = (
                     'no compatible version found: '
@@ -145,7 +145,7 @@ class OFPHandler(os_ken.base.app_manager.RyuApp):
                 # the switch is able to understand lower version.
                 # e.g.
                 # OF 1.1 from switch
-                # OF 1.2 from Ryu and supported_ofp_version = (1.0, 1.2)
+                # OF 1.2 from OSKen and supported_ofp_version = (1.0, 1.2)
                 # In this case, 1.1 should be used according to the spec,
                 # but 1.1 can't be used.
                 #

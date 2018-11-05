@@ -254,7 +254,7 @@ REQUIREMENTS = {'switchid': SWITCHID_PATTERN,
 LOG = logging.getLogger(__name__)
 
 
-class RestQoSAPI(app_manager.RyuApp):
+class RestQoSAPI(app_manager.OSKenApp):
 
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION,
                     ofproto_v1_2.OFP_VERSION,

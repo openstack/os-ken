@@ -16,7 +16,7 @@
 
 r"""
 Usage:
-PYTHONPATH=. ./bin/os_ken-manager --verbose \
+PYTHONPATH=. ./bin/osken-manager --verbose \
              os_ken.topology.switches \
              os_ken.tests.integrated.test_vrrp_multi \
              os_ken.services.protocols.vrrp.dumper
@@ -25,7 +25,7 @@ os_ken.services.protocols.vrrp.dumper is optional.
 
          +---+          ----------------
       /--|OVS|<--veth-->|              |
-   Ryu   +---+          | linux bridge |<--veth--> command to generate packets
+   OSKen   +---+          | linux bridge |<--veth--> command to generate packets
       \--|OVS|<--veth-->|              |
          +---+          ----------------
 

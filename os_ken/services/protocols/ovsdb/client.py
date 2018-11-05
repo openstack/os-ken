@@ -272,7 +272,7 @@ class Idl(idl.Idl):
         return changed
 
 
-class RemoteOvsdb(app_manager.RyuApp):
+class RemoteOvsdb(app_manager.OSKenApp):
     _EVENTS = [event.EventRowUpdate,
                event.EventRowDelete,
                event.EventRowInsert,

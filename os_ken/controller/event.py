@@ -19,7 +19,7 @@ class EventBase(object):
     """
     The base of all event classes.
 
-    A Ryu application can define its own event type by creating a subclass.
+    A OSKen application can define its own event type by creating a subclass.
     """
 
     def __init__(self):
@@ -28,7 +28,7 @@ class EventBase(object):
 
 class EventRequestBase(EventBase):
     """
-    The base class for synchronous request for RyuApp.send_request.
+    The base class for synchronous request for OSKenApp.send_request.
     """
 
     def __init__(self):
@@ -41,7 +41,7 @@ class EventRequestBase(EventBase):
 
 class EventReplyBase(EventBase):
     """
-    The base class for synchronous request reply for RyuApp.send_reply.
+    The base class for synchronous request reply for OSKenApp.send_reply.
     """
 
     def __init__(self, dst):

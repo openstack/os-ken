@@ -21,7 +21,7 @@ pcaplib.Reader.
 Writing PCAP file
 =================
 
-For dumping the packet data which your RyuApp received, you can use
+For dumping the packet data which your OSKenApp received, you can use
 pcaplib.Writer.
 
 .. autoclass:: os_ken.lib.pcaplib.Writer

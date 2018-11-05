@@ -5,13 +5,13 @@ os_ken manual page
 
 Synopsis
 --------
-**os_ken** [-h] [--config-dir DIR] [--config-file PATH] [--version] [subcommand] ...
+**osken** [-h] [--config-dir DIR] [--config-file PATH] [--version] [subcommand] ...
 
 Description
 -----------
 :program:`os_ken` is the executable for OS-Ken applications. os_ken loads a sub-module
 corresponding to the sub-command and run it. 'run' sub-command is an
-equivalent to os_ken-manager.
+equivalent to osken-manager.
 
 OS-Ken is a component-based software defined networking framework. OS-Ken
 provides software components with well defined API that make it easy for

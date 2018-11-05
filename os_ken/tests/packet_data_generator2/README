@@ -4,8 +4,8 @@ unit tests [2].  As we have the generated files in the repository,
 you don't need to build this program unless you want to (re-)generate
 the files for some reasons, typically adding new test cases.
 
-[1] ryu/tests/packet_data/of*/libofproto-*.packet
-[2] ryu.tests.unit.ofproto.test_parser
+[1] os_ken/tests/packet_data/of*/libofproto-*.packet
+[2] os_ken.tests.unit.ofproto.test_parser
 
 The program requires libofproto library provided by Open vSwitch.
 It's a little tricky to build because Open vSwitch distribution

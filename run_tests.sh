@@ -6,7 +6,7 @@ fi
 
 usage() {
   echo "Usage: $0 [OPTION]..."
-  echo "Run Ryu's test suite(s)"
+  echo "Run OSKen's test suite(s)"
   echo ""
   echo "  -V, --virtual-env                Always use virtualenv.  Install automatically if not present"
   echo "  -N, --no-virtual-env             Don't use virtualenv.  Run tests in local environment"
@@ -62,7 +62,7 @@ done
 
 # If enabled, tell nose to collect coverage data
 if [ $coverage -eq 1 ]; then
-    noseopts="$noseopts --with-coverage --cover-package=ryu"
+    noseopts="$noseopts --with-coverage --cover-package=os_ken"
 fi
 
 run_tests() {
@@ -90,13 +90,13 @@ run_tests() {
 run_pylint() {
   echo "Running pylint ..."
   PYLINT_OPTIONS="--rcfile=.pylintrc --output-format=parseable"
-  PYLINT_INCLUDE="ryu bin/ryu bin/ryu-manager ryu/tests/bin/ryu-client"
-  export PYTHONPATH=$PYTHONPATH:.ryu
+  PYLINT_INCLUDE="os_ken bin/osken bin/osken-manager os_ken/tests/bin/osken-client"
+  export PYTHONPATH=$PYTHONPATH:.os_ken
   PYLINT_LOG=pylint.log
 
   ${wrapper} pylint $PYLINT_OPTIONS $PYLINT_INCLUDE > $PYLINT_LOG
   #BASE_CMD="pylint $PYLINT_OPTIONS $PYLINT_INCLUDE > $PYLINT_LOG"
-  #[ $verbose -eq 1 ] && $BASE_CMD || msg_count=`$BASE_CMD | grep 'ryu/' | wc -l`
+  #[ $verbose -eq 1 ] && $BASE_CMD || msg_count=`$BASE_CMD | grep 'os_ken/' | wc -l`
   #if [ $verbose -eq 0 ]; then
   #  echo "Pylint messages count: " $msg_count
   #fi
@@ -113,7 +113,7 @@ run_pycodestyle() {
   echo "Running $(basename ${PYCODESTYLE}) ..."
 
   PYCODESTYLE_OPTIONS="--repeat --show-source"
-  PYCODESTYLE_INCLUDE="ryu setup*.py"
+  PYCODESTYLE_INCLUDE="os_ken setup*.py"
   PYCODESTYLE_LOG=pycodestyle.log
   ${wrapper} ${PYCODESTYLE} $PYCODESTYLE_OPTIONS $PYCODESTYLE_INCLUDE | tee $PYCODESTYLE_LOG
 }
@@ -121,11 +121,11 @@ run_pycodestyle() {
 run_integrated() {
   echo "Running integrated test ..."
 
-  INTEGRATED_TEST_RUNNER="./ryu/tests/integrated/run_tests_with_ovs12.py"
+  INTEGRATED_TEST_RUNNER="./os_ken/tests/integrated/run_tests_with_ovs12.py"
   sudo PYTHONPATH=. nosetests -s $INTEGRATED_TEST_RUNNER
 }
 #NOSETESTS="nosetests $noseopts $noseargs"
-NOSETESTS="${PYTHON} ./ryu/tests/run_tests.py $noseopts $noseargs"
+NOSETESTS="${PYTHON} ./os_ken/tests/run_tests.py $noseopts $noseargs"
 
 #if [ -n "$PLUGIN_DIR" ]
 #then

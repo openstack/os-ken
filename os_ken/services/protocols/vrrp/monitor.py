@@ -28,7 +28,7 @@ from os_ken.lib.packet import vrrp
 from os_ken.services.protocols.vrrp import event as vrrp_event
 
 
-class VRRPInterfaceMonitor(app_manager.RyuApp):
+class VRRPInterfaceMonitor(app_manager.OSKenApp):
     # subclass of VRRPInterfaceBase -> subclass of VRRPInterfaceMonitor
     _CONSTRUCTORS = {}
 

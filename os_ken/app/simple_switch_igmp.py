@@ -24,7 +24,7 @@ from os_ken.lib import igmplib
 from os_ken.lib.dpid import str_to_dpid
 
 
-class SimpleSwitchIgmp(app_manager.RyuApp):
+class SimpleSwitchIgmp(app_manager.OSKenApp):
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION]
     _CONTEXTS = {'igmplib': igmplib.IgmpLib}
 

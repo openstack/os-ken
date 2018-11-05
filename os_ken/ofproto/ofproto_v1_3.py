@@ -1062,7 +1062,7 @@ OFPQOFC_EPERM = 2           # Permissions error.
 OFPSCFC_BAD_FLAGS = 0       # Specified flags is invalid.
 OFPSCFC_BAD_LEN = 1         # Specified len is invalid.
 OFPQCFC_EPERM = 2           # Permissions error (depracated).
-                            # New or updated Ryu applications shall use
+                            # New or updated OSKen applications shall use
                             # OFPSCFC_EPERM. The variable name is a typo of
                             # in specifications before v1.3.1 (EXT-208).
 OFPSCFC_EPERM = 2           # Permissions error.

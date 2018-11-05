@@ -52,7 +52,7 @@ class EventSlaveStateChanged(event.EventBase):
         self.enabled = enabled
 
 
-class LacpLib(app_manager.RyuApp):
+class LacpLib(app_manager.OSKenApp):
     """LACP exchange library. this works only in a PASSIVE mode."""
 
     # -------------------------------------------------------------------

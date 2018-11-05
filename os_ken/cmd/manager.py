@@ -70,11 +70,11 @@ def main(args=None, prog=None):
     _parse_user_flags()
     try:
         CONF(args=args, prog=prog,
-             project='os_ken', version='os_ken-manager %s' % version,
+             project='os_ken', version='osken-manager %s' % version,
              default_config_files=['/usr/local/etc/os_ken/os_ken.conf'])
     except cfg.ConfigFilesNotFoundError:
         CONF(args=args, prog=prog,
-             project='os_ken', version='os_ken-manager %s' % version)
+             project='os_ken', version='osken-manager %s' % version)
 
     log.init_log()
     logger = logging.getLogger(__name__)
@@ -109,7 +109,7 @@ def main(args=None, prog=None):
         hub.joinall(services)
     except KeyboardInterrupt:
         logger.debug("Keyboard Interrupt received. "
-                     "Closing RYU application manager...")
+                     "Closing OSKen application manager...")
     finally:
         app_mgr.close()
 

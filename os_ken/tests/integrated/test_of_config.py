@@ -33,7 +33,7 @@ Then run linc
 # rel/linc/bin/linc console
 
 Then run os_ken
-# PYTHONPATH=. ./bin/os_ken-manager --verbose \
+# PYTHONPATH=. ./bin/osken-manager --verbose \
         os_ken/tests/integrated/test_of_config.py
 
 
@@ -214,7 +214,7 @@ def _get_schema():
     return lxml.etree.XMLSchema(file=file_name)
 
 
-class OFConfigClient(app_manager.RyuApp):
+class OFConfigClient(app_manager.OSKenApp):
     def __init__(self, *args, **kwargs):
         super(OFConfigClient, self).__init__(*args, **kwargs)
         self.switch = capable_switch.OFCapableSwitch(

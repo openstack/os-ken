@@ -17,7 +17,7 @@
 """
 Implementation of Bidirectional Forwarding Detection for IPv4 (Single Hop)
 
-This module provides a simple way to let Ryu act like a daemon for running
+This module provides a simple way to let OSKen act like a daemon for running
 IPv4 single hop BFD (RFC5881).
 
 Please note that:
@@ -44,7 +44,7 @@ from os_ken.controller import event
 from os_ken.controller import ofp_event
 from os_ken.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER
 from os_ken.controller.handler import set_ev_cls
-from os_ken.exception import RyuException
+from os_ken.exception import OSKenException
 from os_ken.ofproto.ether import ETH_TYPE_IP, ETH_TYPE_ARP
 from os_ken.ofproto import ofproto_v1_3
 from os_ken.ofproto import inet
@@ -132,7 +132,7 @@ class BFDSession(object):
         auth_keys = auth_keys if auth_keys else {}
         assert not (auth_type and len(auth_keys) == 0)
 
-        # RyuApp reference to BFDLib
+        # OSKenApp reference to BFDLib
         self.app = app
 
         # RFC5880 Section 6.8.1.
@@ -517,7 +517,7 @@ class BFDPacket(object):
     Ethernet, IPv4, and UDP headers.
     """
 
-    class BFDUnknownFormat(RyuException):
+    class BFDUnknownFormat(OSKenException):
         message = '%(msg)s'
 
     @staticmethod
@@ -589,7 +589,7 @@ class ARPPacket(object):
     Ethernet header.
     """
 
-    class ARPUnknownFormat(RyuException):
+    class ARPUnknownFormat(OSKenException):
         message = '%(msg)s'
 
     @staticmethod
@@ -648,7 +648,7 @@ class EventBFDSessionStateChanged(event.EventBase):
         self.new_state = new_state
 
 
-class BFDLib(app_manager.RyuApp):
+class BFDLib(app_manager.OSKenApp):
     """
     BFD daemon library.
 
@@ -663,7 +663,7 @@ class BFDLib(app_manager.RyuApp):
         from os_ken.lib import bfdlib
         from os_ken.lib.packet import bfd
 
-        class Foo(app_manager.RyuApp):
+        class Foo(app_manager.OSKenApp):
             OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
 
             _CONTEXTS = {

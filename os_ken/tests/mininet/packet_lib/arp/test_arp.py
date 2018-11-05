@@ -37,16 +37,16 @@ from os_ken.lib.packet import icmp
 LOG = logging.getLogger(__name__)
 
 
-class RunTestMininet(app_manager.RyuApp):
+class RunTestMininet(app_manager.OSKenApp):
 
     _CONTEXTS = {'dpset': dpset.DPSet}
     OFP_VERSIONS = [ofproto_v1_2.OFP_VERSION]
 
     ZERO_MAC = mac.haddr_to_bin('00:00:00:00:00:00')
     BROADCAST_MAC = mac.haddr_to_bin('ff:ff:ff:ff:ff:ff')
-    RYU_MAC = mac.haddr_to_bin('fe:ee:ee:ee:ee:ef')
+    OSKEN_MAC = mac.haddr_to_bin('fe:ee:ee:ee:ee:ef')
     HOST_MAC = mac.haddr_to_bin('00:00:00:00:00:01')
-    RYU_IP = int(netaddr.IPAddress('10.0.0.100'))
+    OSKEN_IP = int(netaddr.IPAddress('10.0.0.100'))
     HOST_IP = int(netaddr.IPAddress('10.0.0.1'))
 
     def __init__(self, *args, **kwargs):
@@ -87,7 +87,7 @@ class RunTestMininet(app_manager.RyuApp):
         return protocols
 
     def _build_ether(self, ethertype, dst_mac=HOST_MAC):
-        e = ethernet.ethernet(dst_mac, self.RYU_MAC, ethertype)
+        e = ethernet.ethernet(dst_mac, self.OSKEN_MAC, ethertype)
         return e
 
     def _build_arp(self, opcode, dst_ip=HOST_IP):
@@ -100,7 +100,7 @@ class RunTestMininet(app_manager.RyuApp):
 
         e = self._build_ether(ether.ETH_TYPE_ARP, _eth_dst_mac)
         a = arp.arp(hwtype=1, proto=ether.ETH_TYPE_IP, hlen=6, plen=4,
-                    opcode=opcode, src_mac=self.RYU_MAC, src_ip=self.RYU_IP,
+                    opcode=opcode, src_mac=self.OSKEN_MAC, src_ip=self.OSKEN_IP,
                     dst_mac=_arp_dst_mac, dst_ip=dst_ip)
         p = packet.Packet()
         p.add_protocol(e)
@@ -114,7 +114,7 @@ class RunTestMininet(app_manager.RyuApp):
         ip = ipv4.ipv4(version=4, header_length=5, tos=0, total_length=84,
                        identification=0, flags=0, offset=0, ttl=64,
                        proto=inet.IPPROTO_ICMP, csum=0,
-                       src=self.RYU_IP, dst=self.HOST_IP)
+                       src=self.OSKEN_IP, dst=self.HOST_IP)
         ping = icmp.icmp(_type, code=0, csum=0, data=echo)
 
         p = packet.Packet()
@@ -125,7 +125,7 @@ class RunTestMininet(app_manager.RyuApp):
         return p
 
     def _garp(self):
-        p = self._build_arp(arp.ARP_REQUEST, self.RYU_IP)
+        p = self._build_arp(arp.ARP_REQUEST, self.OSKEN_IP)
         return p.data
 
     def _arp_request(self):
@@ -159,7 +159,7 @@ class RunTestMininet(app_manager.RyuApp):
             dst_ip = str(netaddr.IPAddress(p_arp.dst_ip))
             if p_arp.opcode == arp.ARP_REQUEST:
                 LOG.debug("--- PacketIn: ARP_Request: %s->%s", src_ip, dst_ip)
-                if p_arp.dst_ip == self.RYU_IP:
+                if p_arp.dst_ip == self.OSKEN_IP:
                     LOG.debug("--- send Pkt: ARP_Reply")
                     data = self._arp_reply()
                     self._send_msg(dp, data)
@@ -180,7 +180,7 @@ class RunTestMininet(app_manager.RyuApp):
             dst = str(netaddr.IPAddress(p_ipv4.dst))
             if p_icmp.type == icmp.ICMP_ECHO_REQUEST:
                 LOG.debug("--- PacketIn: Echo_Request: %s->%s", src, dst)
-                if p_ipv4.dst == self.RYU_IP:
+                if p_ipv4.dst == self.OSKEN_IP:
                     LOG.debug("--- send Pkt: Echo_Reply")
                     echo = p_icmp.data
                     echo.data = bytearray(echo.data)

@@ -27,11 +27,11 @@ from nose.tools import ok_
 LOG = logging.getLogger(__name__)
 
 MOD_DIR = os.path.dirname('file://' + sys.modules[__name__].__file__)
-_RYU_REQUIREMENTS_FILES = [
+_OSKEN_REQUIREMENTS_FILES = [
     '../../../requirements.txt',
 ]
-RYU_REQUIREMENTS_FILES = [
-    os.path.join(MOD_DIR, f) for f in _RYU_REQUIREMENTS_FILES]
+OSKEN_REQUIREMENTS_FILES = [
+    os.path.join(MOD_DIR, f) for f in _OSKEN_REQUIREMENTS_FILES]
 
 OPENSTACK_REQUIREMENTS_REPO = 'https://github.com/openstack/requirements'
 OPENSTACK_REQUIREMENTS_URL = (
@@ -57,12 +57,12 @@ def _get_requirements(files):
 
 
 OPENSTACK_REQUIREMENTS = _get_requirements(OPENSTACK_REQUIREMENTS_FILES)
-RYU_REQUIREMENTS = _get_requirements(RYU_REQUIREMENTS_FILES)
+OSKEN_REQUIREMENTS = _get_requirements(OSKEN_REQUIREMENTS_FILES)
 
 
 class TestRequirements(unittest.TestCase):
     """
-    Test whether the requirements of Ryu has no conflict with that
+    Test whether the requirements of OSKen has no conflict with that
     of other projects.
     """
 
@@ -75,10 +75,10 @@ class TestRequirements(unittest.TestCase):
     def test_with_openstack_requirements(self):
         try:
             for name, req in OPENSTACK_REQUIREMENTS.items():
-                if name in RYU_REQUIREMENTS:
+                if name in OSKEN_REQUIREMENTS:
                     ok_(pkg_resources.require(req))
         except pkg_resources.VersionConflict as e:
             LOG.exception(
-                'Some requirements of Ryu are conflicting with that of '
+                'Some requirements of OSKen are conflicting with that of '
                 'OpenStack project: %s', OPENSTACK_REQUIREMENTS_REPO)
             raise e

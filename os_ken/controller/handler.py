@@ -48,10 +48,10 @@ class _Caller(object):
 # should be named something like 'observe_event'
 def set_ev_cls(ev_cls, dispatchers=None):
     """
-    A decorator for Ryu application to declare an event handler.
+    A decorator for OSKen application to declare an event handler.
 
     Decorated method will become an event handler.
-    ev_cls is an event class whose instances this RyuApp wants to receive.
+    ev_cls is an event class whose instances this OSKenApp wants to receive.
     dispatchers argument specifies one of the following negotiation phases
     (or a list of them) for which events should be generated for this handler.
     Note that, in case an event changes the phase, the phase before the change

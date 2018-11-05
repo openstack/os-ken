@@ -24,7 +24,7 @@ def get_datapath(app, dpid=None):
     """
     Get datapath object by dpid.
 
-    :param app: Client RyuApp instance
+    :param app: Client OSKenApp instance
     :param dpid: Datapath ID (int type) or None to get all datapath objects
 
     Returns a object of datapath, a list of datapath objects when no dpid
@@ -38,7 +38,7 @@ def get_datapath(app, dpid=None):
         import os_ken.app.ofctl.api as ofctl_api
 
 
-        class MyApp(app_manager.RyuApp):
+        class MyApp(app_manager.OSKenApp):
 
             def _my_handler(self, ev):
                 # Get all datapath objects
@@ -54,7 +54,7 @@ def send_msg(app, msg, reply_cls=None, reply_multi=False):
     """
     Send an OpenFlow message and wait for reply messages.
 
-    :param app: Client RyuApp instance
+    :param app: Client OSKenApp instance
     :param msg: An OpenFlow controller-to-switch message to send
     :param reply_cls: OpenFlow message class for expected replies.
         None means no replies are expected.  The default is None.
@@ -74,7 +74,7 @@ def send_msg(app, msg, reply_cls=None, reply_multi=False):
         import os_ken.app.ofctl.api as ofctl_api
 
 
-        class MyApp(app_manager.RyuApp):
+        class MyApp(app_manager.OSKenApp):
 
             def _my_handler(self, ev):
                 # ...(snip)...

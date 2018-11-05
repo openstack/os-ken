@@ -5,7 +5,7 @@ Components of OS-Ken
 Executables
 ===========
 
-bin/os_ken-manager
+bin/osken-manager
 ------------------
 
 The main executable.
@@ -134,7 +134,7 @@ Open vSwitch python binding. Used by os_ken.lib.ovs.
 os_ken.contrib.oslo.config
 --------------------------
 
-Oslo configuration library. Used for os_ken-manager's command-line options
+Oslo configuration library. Used for osken-manager's command-line options
 and configuration files.
 
 os_ken.contrib.ncclient

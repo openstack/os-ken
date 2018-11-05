@@ -41,7 +41,7 @@ This example supposes the following environment::
 
      Host A (172.17.0.1)                      Host B (172.17.0.2)
     +--------------------+                   +--------------------+
-    |   Ryu1             | --- BGP(EVPN) --- |   Ryu2             |
+    |   OSKen1           | --- BGP(EVPN) --- |   OSKen2           |
     +--------------------+                   +--------------------+
             |                                       |
     +--------------------+                   +--------------------+
@@ -129,7 +129,7 @@ Configuration steps
 Testing
 -------
 
-If BGP (EVPN) connection between Ryu1 and Ryu2 has been established,
+If BGP (EVPN) connection between OSKen1 and OSKen2 has been established,
 pings between the client s1h1 and s2h1 should work.
 
 ::
@@ -203,7 +203,7 @@ please check the followings.
             }
         }
 
-4. Make sure that the IPv6 is enabled on your environment. Some Ryu BGP
+4. Make sure that the IPv6 is enabled on your environment. Some OSKen BGP
 features require the IPv6 connectivity to bind sockets. Mininet seems to
 disable IPv6 on its installation.
 
@@ -226,7 +226,7 @@ supports only the OpenFlow version 1.3.
 
 .. Note::
 
-    At the time of this writing, we use the the following version of Ryu,
+    At the time of this writing, we use the the following version of OSKen,
     Open vSwitch and Mininet.
 
     ::
@@ -251,7 +251,7 @@ from os_ken.app.wsgi import Response
 from os_ken.app.wsgi import route
 from os_ken.app.wsgi import WSGIApplication
 from os_ken.base import app_manager
-from os_ken.exception import RyuException
+from os_ken.exception import OSKenException
 from os_ken.lib.ovs import bridge as ovs_bridge
 from os_ken.lib.packet import arp
 from os_ken.lib.packet import ether_types
@@ -292,7 +292,7 @@ def to_str_list(l):
 
 # Exception classes related to OpenFlow and OVSDB
 
-class RestApiException(RyuException):
+class RestApiException(OSKenException):
 
     def to_response(self, status):
         body = {
@@ -417,7 +417,7 @@ class EvpnClient(StringifyMixin):
         self.next_hop = next_hop
 
 
-class RestVtep(app_manager.RyuApp):
+class RestVtep(app_manager.OSKenApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
     _CONTEXTS = {'wsgi': WSGIApplication}
 

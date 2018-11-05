@@ -151,11 +151,11 @@ class Test_Datapath(unittest.TestCase):
                 return out
 
         # Prepare mock
-        ofp_brick_mock = mock.MagicMock(spec=app_manager.RyuApp)
+        ofp_brick_mock = mock.MagicMock(spec=app_manager.OSKenApp)
         app_manager_mock.lookup_service_brick.return_value = ofp_brick_mock
         sock_mock = SocketMock()
         sock_mock.buf = packet_buf
-        sock_mock.random = random.Random('Ryu SDN Framework')
+        sock_mock.random = random.Random('OSKen SDN Framework')
         addr_mock = mock.MagicMock()
 
         # Prepare test target

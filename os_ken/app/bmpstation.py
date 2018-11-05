@@ -24,14 +24,14 @@ from os_ken.lib.hub import StreamServer
 from os_ken.lib.packet import bmp
 
 
-class BMPStation(app_manager.RyuApp):
+class BMPStation(app_manager.OSKenApp):
     def __init__(self):
         super(BMPStation, self).__init__()
         self.name = 'bmpstation'
-        self.server_host = os.environ.get('RYU_BMP_SERVER_HOST', '0.0.0.0')
-        self.server_port = int(os.environ.get('RYU_BMP_SERVER_PORT', 11019))
-        output_file = os.environ.get('RYU_BMP_OUTPUT_FILE', 'os_ken_bmp.log')
-        failed_dump = os.environ.get('RYU_BMP_FAILED_DUMP',
+        self.server_host = os.environ.get('OSKEN_BMP_SERVER_HOST', '0.0.0.0')
+        self.server_port = int(os.environ.get('OSKEN_BMP_SERVER_PORT', 11019))
+        output_file = os.environ.get('OSKEN_BMP_OUTPUT_FILE', 'os_ken_bmp.log')
+        failed_dump = os.environ.get('OSKEN_BMP_FAILED_DUMP',
                                      'os_ken_bmp_failed.dump')
 
         self.output_fd = open(output_file, 'w')

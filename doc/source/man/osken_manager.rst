@@ -1,12 +1,12 @@
 :orphan:
 
-os_ken-manager manual page
+osken-manager manual page
 ==========================
 
 
 Synopsis
 --------
-**os_ken-manager** [-h]
+**osken-manager** [-h]
 [--app-lists APP_LISTS] [--ca-certs CA_CERTS]
 [--config-dir DIR] [--config-file PATH]
 [--ctl-cert CTL_CERT] [--ctl-privkey CTL_PRIVKEY]
@@ -37,7 +37,7 @@ Synopsis
 
 Description
 -----------
-:program:`os_ken-manager` is the executable for OS-Ken applications. os_ken-manager
+:program:`osken-manager` is the executable for OS-Ken applications. osken-manager
 loads OS-Ken applications and run it.
 
 OS-Ken is a component-based software defined networking framework. OS-Ken

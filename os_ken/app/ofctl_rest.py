@@ -22,7 +22,7 @@ from os_ken.controller import ofp_event
 from os_ken.controller import dpset
 from os_ken.controller.handler import MAIN_DISPATCHER
 from os_ken.controller.handler import set_ev_cls
-from os_ken.exception import RyuException
+from os_ken.exception import OSKenException
 from os_ken.ofproto import ofproto_v1_0
 from os_ken.ofproto import ofproto_v1_2
 from os_ken.ofproto import ofproto_v1_3
@@ -184,11 +184,11 @@ supported_ofctl = {
 # POST /stats/experimenter/<dpid>
 
 
-class CommandNotFoundError(RyuException):
+class CommandNotFoundError(OSKenException):
     message = 'No such command : %(cmd)s'
 
 
-class PortNotFoundError(RyuException):
+class PortNotFoundError(OSKenException):
     message = 'No such port info: %(port_no)s'
 
 
@@ -499,7 +499,7 @@ class StatsController(ControllerBase):
         ofctl.set_role(dp, role)
 
 
-class RestStatsApi(app_manager.RyuApp):
+class RestStatsApi(app_manager.OSKenApp):
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION,
                     ofproto_v1_2.OFP_VERSION,
                     ofproto_v1_3.OFP_VERSION,

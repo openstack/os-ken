@@ -30,7 +30,7 @@ from os_ken.cmd.manager import main
 
 
 class Test_Manager(unittest.TestCase):
-    """Test os_ken-manager command
+    """Test osken-manager command
     """
 
     def __init__(self, methodName):
@@ -43,33 +43,33 @@ class Test_Manager(unittest.TestCase):
         pass
 
     @raises(SystemExit)
-    @mock.patch('sys.argv', new=['os_ken-manager', '--version'])
+    @mock.patch('sys.argv', new=['osken-manager', '--version'])
     def test_version(self):
         main()
 
     @raises(SystemExit)
-    @mock.patch('sys.argv', new=['os_ken-manager', '--help'])
+    @mock.patch('sys.argv', new=['osken-manager', '--help'])
     def test_help(self):
         main()
 
     @staticmethod
     def _reset_globals():
         # hack to reset globals like SERVICE_BRICKS.
-        # assumption: this is the only test which actually starts RyuApp.
+        # assumption: this is the only test which actually starts OSKenApp.
         import os_ken.base.app_manager
         import os_ken.ofproto.ofproto_protocol
 
         reload(os_ken.base.app_manager)
         reload(os_ken.ofproto.ofproto_protocol)
 
-    @mock.patch('sys.argv', new=['os_ken-manager', '--verbose',
+    @mock.patch('sys.argv', new=['osken-manager', '--verbose',
                                  'os_ken.tests.unit.cmd.dummy_app'])
     def test_no_services(self):
         self._reset_globals()
         main()
         self._reset_globals()
 
-    @mock.patch('sys.argv', new=['os_ken-manager', '--verbose',
+    @mock.patch('sys.argv', new=['osken-manager', '--verbose',
                                  'os_ken.tests.unit.cmd.dummy_openflow_app'])
     def test_openflow_app(self):
         self._reset_globals()

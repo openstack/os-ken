@@ -33,7 +33,7 @@ class EventAlert(event.EventBase):
         self.msg = msg
 
 
-class SnortLib(app_manager.RyuApp):
+class SnortLib(app_manager.OSKenApp):
 
     def __init__(self):
         super(SnortLib, self).__init__()

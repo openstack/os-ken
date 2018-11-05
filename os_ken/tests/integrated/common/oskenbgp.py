@@ -24,16 +24,16 @@ from . import docker_base as base
 LOG = logging.getLogger(__name__)
 
 
-class RyuBGPContainer(base.BGPContainer):
+class OSKenBGPContainer(base.BGPContainer):
 
     WAIT_FOR_BOOT = 1
     SHARED_VOLUME = '/etc/os_ken'
 
     def __init__(self, name, asn, router_id, ctn_image_name):
-        super(RyuBGPContainer, self).__init__(name, asn, router_id,
+        super(OSKenBGPContainer, self).__init__(name, asn, router_id,
                                               ctn_image_name)
-        self.RYU_CONF = os.path.join(self.config_dir, 'os_ken.conf')
-        self.SHARED_RYU_CONF = os.path.join(self.SHARED_VOLUME, 'os_ken.conf')
+        self.OSKEN_CONF = os.path.join(self.config_dir, 'os_ken.conf')
+        self.SHARED_OSKEN_CONF = os.path.join(self.SHARED_VOLUME, 'os_ken.conf')
         self.SHARED_BGP_CONF = os.path.join(self.SHARED_VOLUME, 'bgp_conf.py')
         self.shared_volumes.append((self.config_dir, self.SHARED_VOLUME))
 
@@ -42,7 +42,7 @@ class RyuBGPContainer(base.BGPContainer):
         c << '[DEFAULT]'
         c << 'verbose=True'
         c << 'log_file=/etc/os_ken/manager.log'
-        with open(self.RYU_CONF, 'w') as f:
+        with open(self.OSKEN_CONF, 'w') as f:
             LOG.info("[%s's new config]" % self.name)
             LOG.info(str(c))
             f.writelines(str(c))
@@ -159,7 +159,7 @@ class RyuBGPContainer(base.BGPContainer):
         results = self.exec_on_ctn('ps ax')
         running = False
         for line in results.split('\n')[1:]:
-            if 'os_ken-manager' in line:
+            if 'osken-manager' in line:
                 running = True
         return running
 
@@ -172,8 +172,8 @@ class RyuBGPContainer(base.BGPContainer):
             try_times = 3
         else:
             try_times = 1
-        cmd = "os_ken-manager --verbose "
-        cmd += "--config-file %s " % self.SHARED_RYU_CONF
+        cmd = "osken-manager --verbose "
+        cmd += "--config-file %s " % self.SHARED_OSKEN_CONF
         cmd += "--bgp-app-config-file %s " % self.SHARED_BGP_CONF
         cmd += "os_ken.services.protocols.bgp.application"
         for _ in range(try_times):
@@ -194,7 +194,7 @@ class RyuBGPContainer(base.BGPContainer):
         else:
             try_times = 1
         for _ in range(try_times):
-            cmd = '/usr/bin/pkill os_ken-manager -SIGTERM'
+            cmd = '/usr/bin/pkill osken-manager -SIGTERM'
             self.exec_on_ctn(cmd)
             if not self.is_running_os_ken():
                 result = True
@@ -203,7 +203,7 @@ class RyuBGPContainer(base.BGPContainer):
         return result
 
     def run(self, wait=False, w_time=WAIT_FOR_BOOT):
-        w_time = super(RyuBGPContainer,
+        w_time = super(OSKenBGPContainer,
                        self).run(wait=wait, w_time=self.WAIT_FOR_BOOT)
         return w_time
 

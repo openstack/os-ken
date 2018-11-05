@@ -29,7 +29,7 @@ from os_ken.lib.packet import icmp
 from os_ken.lib import snortlib
 
 
-class SimpleSwitchSnort(app_manager.RyuApp):
+class SimpleSwitchSnort(app_manager.OSKenApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
     _CONTEXTS = {'snortlib': snortlib.SnortLib}
 

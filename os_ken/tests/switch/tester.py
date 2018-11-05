@@ -32,7 +32,7 @@ from os_ken.base import app_manager
 from os_ken.controller import handler
 from os_ken.controller import ofp_event
 from os_ken.controller.handler import set_ev_cls
-from os_ken.exception import RyuException
+from os_ken.exception import OSKenException
 from os_ken.lib import dpid as dpid_lib
 from os_ken.lib import hub
 from os_ken.lib import stringify
@@ -173,7 +173,7 @@ STATE_DISCONNECTED = 99
 # Test result.
 TEST_OK = 'OK'
 TEST_ERROR = 'ERROR'
-RYU_INTERNAL_ERROR = '- (Ryu internal error.)'
+OSKEN_INTERNAL_ERROR = '- (OSKen internal error.)'
 TEST_FILE_ERROR = '%(file)s : Test file format error (%(detail)s)'
 NO_TEST_FILE = 'Test file (*.json) is not found.'
 INVALID_PATH = '%(path)s : No such file or directory.'
@@ -255,7 +255,7 @@ MSG = {STATE_INIT_FLOW:
 ERR_MSG = 'OFPErrorMsg[type=0x%02x, code=0x%02x]'
 
 
-class TestMessageBase(RyuException):
+class TestMessageBase(OSKenException):
     def __init__(self, state, message_type, **argv):
         msg = MSG[state][message_type] % argv
         super(TestMessageBase, self).__init__(msg=msg)
@@ -282,7 +282,7 @@ class TestError(TestMessageBase):
         super(TestError, self).__init__(state, ERROR, **argv)
 
 
-class OfTester(app_manager.RyuApp):
+class OfTester(app_manager.OSKenApp):
     """ OpenFlow Switch Tester. """
 
     tester_ver = None
@@ -555,7 +555,7 @@ class OfTester(app_manager.RyuApp):
         self.logger.info('    %-100s %s', test.description, result[0])
         if 1 < len(result):
             self.logger.info('        %s', result[1])
-            if result[1] == RYU_INTERNAL_ERROR\
+            if result[1] == OSKEN_INTERNAL_ERROR\
                     or result == 'An unknown exception':
                 self.logger.error(traceback.format_exc())
 
@@ -1041,7 +1041,7 @@ class OfTester(app_manager.RyuApp):
                 measured_value = increased_bytes
                 unit = 'kbps'
             else:
-                raise RyuException(
+                raise OSKenException(
                     'An invalid key exists that is neither "%s" nor "%s".'
                     % (KEY_KBPS, KEY_PKTPS))
 
@@ -1071,7 +1071,7 @@ class OfTester(app_manager.RyuApp):
             self.waiter.wait()
         except hub.Timeout as t:
             if t is not timer:
-                raise RyuException('Internal error. Not my timeout.')
+                raise OSKenException('Internal error. Not my timeout.')
             timeout = True
         finally:
             timer.cancel()

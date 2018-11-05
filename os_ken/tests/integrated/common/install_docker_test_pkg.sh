@@ -1,9 +1,9 @@
 #!/bin/bash
 set -ex
 
-RYU_PATH=`dirname $0`
+OSKEN_PATH=`dirname $0`
 
-source  ${RYU_PATH}/install_docker_test_pkg_common.sh
+source  ${OSKEN_PATH}/install_docker_test_pkg_common.sh
 
 function add_docker_aptline {
     sudo apt-get update

@@ -26,7 +26,7 @@ from os_ken.topology import switches
 LOG = logging.getLogger(__name__)
 
 
-class DiscoveryEventDumper(app_manager.RyuApp):
+class DiscoveryEventDumper(app_manager.OSKenApp):
     ''' This app dumps discovery events
     '''
     _CONTEXTS = {

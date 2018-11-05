@@ -60,7 +60,7 @@ above. You should use absolute file names.
 
 Run OS-Ken with CA files::
 
-    % os_ken-manager --ctl-privkey ctl-privkey.pem \
+    % osken-manager --ctl-privkey ctl-privkey.pem \
                   --ctl-cert ctl-cert.pem \
                   --ca-certs /usr/local/var/lib/openvswitch/pki/switchca/cacert.pem \
                   --verbose

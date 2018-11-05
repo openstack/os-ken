@@ -24,7 +24,7 @@ from os_ken.controller import handler
 from os_ken.services.protocols.vrrp import event as vrrp_event
 
 
-class VRRPDumper(app_manager.RyuApp):
+class VRRPDumper(app_manager.OSKenApp):
     def __init__(self, *args, **kwargs):
         super(VRRPDumper, self).__init__(*args, **kwargs)
 

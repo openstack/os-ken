@@ -38,7 +38,7 @@ PATH = os.path.dirname(__file__)
 
 
 # Serving static files
-class GUIServerApp(app_manager.RyuApp):
+class GUIServerApp(app_manager.OSKenApp):
     _CONTEXTS = {
         'wsgi': WSGIApplication,
     }

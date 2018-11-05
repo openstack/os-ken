@@ -41,7 +41,7 @@ LOG_TEST_FINISH = 'TEST_FINISHED: Completed=[%s] (OK=%s NG=%s SKIP=%s)'
 LOG_TEST_UNSUPPORTED = 'SKIP (unsupported)'
 
 
-class TestFlowBase(app_manager.RyuApp):
+class TestFlowBase(app_manager.OSKenApp):
     """
     To run the tests is required for the following pair of functions.
         1. test_<test name>()

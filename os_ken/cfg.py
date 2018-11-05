@@ -19,7 +19,7 @@ import oslo_config.cfg
 # there are 3 ways to access the configuration.
 #
 #    a. os_ken.cfg.CONF  (used to register cli options)
-#    b. RyuApp.CONF  (preferred way for os_ken applications)
+#    b. OSKenApp.CONF  (preferred way for os_ken applications)
 #    c. oslo_config.cfg.CONF
 #
 # Currently a. and b. shares a single ConfigOpts instance.

@@ -26,10 +26,10 @@ from mininet.net import Mininet
 from mininet.node import RemoteController, OVSKernelSwitch
 
 TIMEOUT = 60
-RYU_HOST = '127.0.0.1'
-RYU_PORT = 6633
+OSKEN_HOST = '127.0.0.1'
+OSKEN_PORT = 6633
 PYTHON_BIN = '.venv/bin/python'
-RYU_MGR = './bin/os_ken-manager'
+OSKEN_MGR = './bin/osken-manager'
 
 
 class OVS12KernelSwitch(OVSKernelSwitch):
@@ -46,7 +46,7 @@ class TestWithOVS12(unittest.TestCase):
     def setUpClass(cls):
         cls.mn = Mininet()
         c = cls.mn.addController(controller=RemoteController,
-                                 ip=RYU_HOST, port=RYU_PORT)
+                                 ip=OSKEN_HOST, port=OSKEN_PORT)
         c.start()
 
         s1 = cls.mn.addSwitch('s1', cls=OVS12KernelSwitch)
@@ -87,19 +87,19 @@ class TestWithOVS12(unittest.TestCase):
         pass
 
     def _run_os_ken_manager_and_check_output(self, app):
-        cmd = [PYTHON_BIN, RYU_MGR, app]
+        cmd = [PYTHON_BIN, OSKEN_MGR, app]
         p = Popen(cmd, stdout=PIPE, stderr=STDOUT)
 
         while True:
             if p.poll() is not None:
-                raise Exception('Another os_ken-manager already running?')
+                raise Exception('Another osken-manager already running?')
 
             line = p.stdout.readline().strip()
             if line == '':
                 time.sleep(1)
                 continue
 
-            print("os_ken-manager: %s" % line)
+            print("osken-manager: %s" % line)
             if line.find('TEST_FINISHED') != -1:
                 ok_(line.find('Completed=[True]') != -1)
                 p.terminate()

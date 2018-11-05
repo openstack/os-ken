@@ -18,7 +18,7 @@ RTN=0
 usage() {
     echo "Usage: $0 [OPTION] [TEST DIR or FILE]..."
     echo ""
-    echo "Run Ryu's test in mininet"
+    echo "Run OSKen's test in mininet"
     echo "ex.) $ $0 l2 l3/icmp/ICMP_ping.mn"
     echo ""
     echo "Options:"
@@ -33,8 +33,8 @@ set_env() {
     DUMP_IF=h2-eth0
     TEST_NAME=
     DUMP_FILE=
-    RYU_APP=
-    RYU_LOG=
+    OSKEN_APP=
+    OSKEN_LOG=
     PCAP_MZ=
     PCAP_FILE=
     PCAP_FILTER=
@@ -85,17 +85,17 @@ ovs_cache_hit() {
     expr `sudo ovs-dpctl show|sed -n 's|lookups: hit:||gp'|awk '{print $1}'` - ${1:-0}
 }
 
-# starting ryu-manager
-run_ryu() {
+# starting osken-manager
+run_osken() {
     ERRSTAT=0
-    ERRTAG="run_ryu() :"
+    ERRTAG="run_osken() :"
 
-    echo "Inf: RYU_APP=$RYU_APP"
-    echo "Inf: ryu-manager starting..."
-    ryu-manager --verbose $RYU_APP 2>$DUMP_DIR/$RYU_LOG &
-    PID_RYU=$!
+    echo "Inf: OSKEN_APP=$OSKEN_APP"
+    echo "Inf: osken-manager starting..."
+    osken-manager --verbose $OSKEN_APP 2>$DUMP_DIR/$OSKEN_LOG &
+    PID_OSKEN=$!
     sleep 1
-    [ -d /proc/$PID_RYU ] || err $ERRTAG "failed to start ryu-manager."
+    [ -d /proc/$PID_OSKEN ] || err $ERRTAG "failed to start osken-manager."
 
     return $ERRSTAT
 }
@@ -109,7 +109,7 @@ run_mn() {
 
 # cleaning after mininet
 clean_mn() {
-    wait_ryu
+    wait_osken
     rm -f $MN_PRE_FILE $MN_POST_FILE
 }
 
@@ -129,10 +129,10 @@ check() {
     echo "TEST ${TEST_NAME} : $RESULT $REASON"
 }
 
-# stoping ryu-manager
-wait_ryu() {
-    kill -2 $PID_RYU
-    wait $PID_RYU
+# stoping osken-manager
+wait_osken() {
+    kill -2 $PID_OSKEN
+    wait $PID_OSKEN
 }
 
 # test-main
@@ -143,7 +143,7 @@ test_mn() {
     [ "$CACHE_HIT" ] && CACHE_HIT=`ovs_cache_hit 0`
     mn_pre
     mn_post
-    run_ryu; [ $? -ne 0 ] && return 1
+    run_osken; [ $? -ne 0 ] && return 1
     run_mn; [ $? -ne 0 ] && return 1
     check
 
@@ -171,12 +171,12 @@ mnfile_check() {
     . $file || err $ERRTAG "failed to include $file"
 
     # parameter check
-    [ "$RYU_APP" ] || err $ERRTAG: "RYU_APP is not defined"
+    [ "$OSKEN_APP" ] || err $ERRTAG: "OSKEN_APP is not defined"
     [ "$PCAP_FILE" -o "$PCAP_MZ" ] || err $ERRTAG: "PCAP_FILE or PCAP_MZ is not defined"
     [ "$PCAP_FILTER" ] || err $ERRTAG "PCAP_FILTER is not defined"
     [ "$TEST_NAME" ] || TEST_NAME=$test
     [ "$DUMP_FILE" ] || DUMP_FILE=$test.dump
-    [ "$RYU_LOG" ] || RYU_LOG=ryu-manager.$test.log
+    [ "$OSKEN_LOG" ] || OSKEN_LOG=osken-manager.$test.log
     [ $ERRSTAT -ne 0 ] && return $ERRSTAT
 
     # pcap check (pcap-file or mz-option)
@@ -189,8 +189,8 @@ mnfile_check() {
     fi
     [ $ERRSTAT -ne 0 ] && return $ERRSTAT
 
-    # ryu-app check
-    [ -r $TEST_DIR/$RYU_APP -o -r $TEST_DIR/${RYU_APP}.py ] && RYU_APP=$TEST_DIR/$RYU_APP
+    # osken-app check
+    [ -r $TEST_DIR/$OSKEN_APP -o -r $TEST_DIR/${OSKEN_APP}.py ] && OSKEN_APP=$TEST_DIR/$OSKEN_APP
 
     return $ERRSTAT
 }

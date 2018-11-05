@@ -37,7 +37,7 @@ class _SwitchInfo(object):
         self.results = {}
 
 
-class OfctlService(app_manager.RyuApp):
+class OfctlService(app_manager.OSKenApp):
     def __init__(self, *args, **kwargs):
         super(OfctlService, self).__init__(*args, **kwargs)
         self.name = 'ofctl_service'

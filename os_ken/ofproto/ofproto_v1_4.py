@@ -1409,7 +1409,7 @@ OFPACPT_REQUESTFORWARD_SLAVE = 10       # RequestForward mask for slave.
 OFPACPT_REQUESTFORWARD_MASTER = 11      # RequestForward mask for master.
 OFPTFPT_EXPERIMENTER_SLAVE = 0xFFFE     # Experimenter for slave (depracated).
 OFPTFPT_EXPERIMENTER_MASTER = 0xFFFF    # Experimenter for master (depracated).
-                                        # New or updated Ryu applications shall use
+                                        # New or updated OSKen applications shall use
                                         # OFPACPT_EXPERIMENTER_SLAVE and OFPACPT_EXPERIMENTER_MASTER.
                                         # The variable name is a typo of in specifications before v1.5.0.
 OFPACPT_EXPERIMENTER_SLAVE = 0xFFFE     # Experimenter for slave.

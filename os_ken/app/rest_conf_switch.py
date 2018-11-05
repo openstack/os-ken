@@ -17,8 +17,6 @@
 """
 This module provides a set of REST API for switch configuration.
 - Per-switch Key-Value store
-
-Used by OpenStack Ryu agent.
 """
 
 import json
@@ -145,7 +143,7 @@ class ConfSwitchController(ControllerBase):
         return self._do_key(dpid, key, _delete_key, _ret)
 
 
-class ConfSwitchAPI(app_manager.RyuApp):
+class ConfSwitchAPI(app_manager.OSKenApp):
     _CONTEXTS = {
         'conf_switch': conf_switch.ConfSwitchSet,
     }

@@ -21,7 +21,7 @@ Running multiple OS-Ken VRRP in network namespace
 
 The following command lines set up necessary bridges and interfaces.
 
-And then run RYU-VRRP::
+And then run OSKen-VRRP::
 
     # ip netns add gateway1
     # ip netns add gateway2
@@ -160,7 +160,7 @@ Here's the helper executable, os_ken-vrrp::
     _PRIORITY = 100
 
 
-    class VRRPTestRouter(app_manager.RyuApp):
+    class VRRPTestRouter(app_manager.OSKenApp):
         def __init__(self, *args, **kwargs):
             super(VRRPTestRouter, self).__init__(*args, **kwargs)
             print args

@@ -15,11 +15,11 @@
 # limitations under the License.
 
 """
-The central management of Ryu applications.
+The central management of OSKen applications.
 
-- Load Ryu applications
-- Provide `contexts` to Ryu applications
-- Route messages among Ryu applications
+- Load OSKen applications
+- Provide `contexts` to OSKen applications
+- Route messages among OSKen applications
 
 """
 
@@ -58,7 +58,7 @@ def _lookup_service_brick_by_mod_name(mod_name):
 
 
 def register_app(app):
-    assert isinstance(app, RyuApp)
+    assert isinstance(app, OSKenApp)
     assert app.name not in SERVICE_BRICKS
     SERVICE_BRICKS[app.name] = app
     register_instance(app)
@@ -88,28 +88,28 @@ def require_app(app_name, api_style=False):
     LOG.debug('require_app: %s is required by %s', app_name, m.__name__)
 
 
-class RyuApp(object):
+class OSKenApp(object):
     """
-    The base class for Ryu applications.
+    The base class for OSKen applications.
 
-    RyuApp subclasses are instantiated after os_ken-manager loaded
-    all requested Ryu application modules.
-    __init__ should call RyuApp.__init__ with the same arguments.
+    OSKenApp subclasses are instantiated after osken-manager loaded
+    all requested OSKen application modules.
+    __init__ should call OSKenApp.__init__ with the same arguments.
     It's illegal to send any events in __init__.
 
     The instance attribute 'name' is the name of the class used for
-    message routing among Ryu applications.  (Cf. send_event)
-    It's set to __class__.__name__ by RyuApp.__init__.
+    message routing among OSKen applications.  (Cf. send_event)
+    It's set to __class__.__name__ by OSKenApp.__init__.
     It's discouraged for subclasses to override this.
     """
 
     _CONTEXTS = {}
     """
-    A dictionary to specify contexts which this Ryu application wants to use.
+    A dictionary to specify contexts which this OSKen application wants to use.
     Its key is a name of context and its value is an ordinary class
     which implements the context.  The class is instantiated by app_manager
-    and the instance is shared among RyuApp subclasses which has _CONTEXTS
-    member with the same key.  A RyuApp subclass can obtain a reference to
+    and the instance is shared among OSKenApp subclasses which has _CONTEXTS
+    member with the same key.  A OSKenApp subclass can obtain a reference to
     the instance via its __init__'s kwargs as the following.
 
     Example::
@@ -124,14 +124,14 @@ class RyuApp(object):
 
     _EVENTS = []
     """
-    A list of event classes which this RyuApp subclass would generate.
+    A list of event classes which this OSKenApp subclass would generate.
     This should be specified if and only if event classes are defined in
-    a different python module from the RyuApp subclass is.
+    a different python module from the OSKenApp subclass is.
     """
 
     OFP_VERSIONS = None
     """
-    A list of supported OpenFlow versions for this RyuApp.
+    A list of supported OpenFlow versions for this OSKenApp.
     The default is all versions supported by the framework.
 
     Examples::
@@ -139,7 +139,7 @@ class RyuApp(object):
         OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION,
                         ofproto_v1_2.OFP_VERSION]
 
-    If multiple Ryu applications are loaded in the system,
+    If multiple OSKen applications are loaded in the system,
     the intersection of their OFP_VERSIONS is used.
     """
 
@@ -151,7 +151,7 @@ class RyuApp(object):
         return iter(cls._CONTEXTS.items())
 
     def __init__(self, *_args, **_kwargs):
-        super(RyuApp, self).__init__()
+        super(OSKenApp, self).__init__()
         self.name = self.__class__.__name__
         self.event_handlers = {}        # ev_cls -> handlers:list
         self.observers = {}     # ev_cls -> observer-name -> states:set
@@ -165,7 +165,7 @@ class RyuApp(object):
             self.logger = logging.getLogger(self.name)
         self.CONF = cfg.CONF
 
-        # prevent accidental creation of instances of this class outside RyuApp
+        # prevent accidental creation of instances of this class outside OSKenApp
         class _EventThreadStop(event.EventBase):
             pass
         self._event_stop = _EventThreadStop()
@@ -265,7 +265,7 @@ class RyuApp(object):
     def send_request(self, req):
         """
         Make a synchronous request.
-        Set req.sync to True, send it to a Ryu application specified by
+        Set req.sync to True, send it to a OSKen application specified by
         req.dst, and block until receiving a reply.
         Returns the received reply.
         The argument should be an instance of EventRequestBase.
@@ -304,7 +304,7 @@ class RyuApp(object):
 
     def send_event(self, name, ev, state=None):
         """
-        Send the specified event to the RyuApp instance specified by name.
+        Send the specified event to the OSKenApp instance specified by name.
         """
 
         if name in SERVICE_BRICKS:
@@ -319,7 +319,7 @@ class RyuApp(object):
 
     def send_event_to_observers(self, ev, state=None):
         """
-        Send the specified event to all observers of this RyuApp.
+        Send the specified event to all observers of this OSKenApp.
         """
 
         for observer in self.get_observers(ev, state):
@@ -354,7 +354,7 @@ class AppManager(object):
 
     @staticmethod
     def run_apps(app_lists):
-        """Run a set of Ryu applications
+        """Run a set of OSKen applications
 
         A convenient method to load and instantiate apps.
         This blocks until all relevant apps stop.
@@ -392,7 +392,7 @@ class AppManager(object):
         mod = utils.import_module(name)
         clses = inspect.getmembers(mod,
                                    lambda cls: (inspect.isclass(cls) and
-                                                issubclass(cls, RyuApp) and
+                                                issubclass(cls, OSKenApp) and
                                                 mod.__name__ ==
                                                 cls.__module__))
         if clses:
@@ -424,7 +424,7 @@ class AppManager(object):
                 assert v == context_cls
                 context_modules.append(context_cls.__module__)
 
-                if issubclass(context_cls, RyuApp):
+                if issubclass(context_cls, OSKenApp):
                     services.extend(get_dependent_services(context_cls))
 
             # we can't load an app that will be initiataed for
@@ -438,7 +438,7 @@ class AppManager(object):
 
     def create_contexts(self):
         for key, cls in self.contexts_cls.items():
-            if issubclass(cls, RyuApp):
+            if issubclass(cls, OSKenApp):
                 # hack for dpset
                 context = self._instantiate(None, cls)
             else:
@@ -462,7 +462,7 @@ class AppManager(object):
                         brick.register_observer(ev_cls, i.name,
                                                 c.dispatchers)
 
-                    # allow RyuApp and Event class are in different module
+                    # allow OSKenApp and Event class are in different module
                     for brick in SERVICE_BRICKS.values():
                         if ev_cls in brick._EVENTS:
                             brick.register_observer(ev_cls, i.name,

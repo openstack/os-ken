@@ -55,7 +55,7 @@ class EventConfSwitchDel(event.EventBase):
                                                self.key)
 
 
-class ConfSwitchSet(app_manager.RyuApp):
+class ConfSwitchSet(app_manager.OSKenApp):
     def __init__(self):
         super(ConfSwitchSet, self).__init__()
         self.name = 'conf_switch'

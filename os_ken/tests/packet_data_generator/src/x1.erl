@@ -46,7 +46,7 @@ x() ->
                 #ofp_match{
                     wildcards = 16#3ffff7,
                     dl_dst = <<"\362\v\244}\370\352">>,
-                    % XXX ryu and flower have different defaults for the
+                    % XXX os-ken and flower have different defaults for the
                     % followin fields.
                     in_port = 0,
                     dl_src = <<0:6/unit:8>>

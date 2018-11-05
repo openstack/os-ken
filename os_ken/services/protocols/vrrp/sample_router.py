@@ -20,7 +20,7 @@ a template for router implementation that support VRRP
 Those routers needs to be created by someone else.
 sample_manager.routerManager is an example.
 Usage example:
-PYTHONPATH=. ./bin/os_ken-manager --verbose \
+PYTHONPATH=. ./bin/osken-manager --verbose \
              os_ken.services.protocols.vrrp.manager \
              os_ken.services.protocols.vrrp.dumper \
              os_ken.services.protocols.vrrp.sample_manager
@@ -47,7 +47,7 @@ from os_ken.services.protocols.vrrp import event as vrrp_event
 from os_ken.services.protocols.vrrp import utils
 
 
-class RouterBase(app_manager.RyuApp):
+class RouterBase(app_manager.OSKenApp):
     def _router_name(self, config, interface):
         ip_version = 'ipv6' if config.is_ipv6 else 'ipv4'
         return '%s-%s-%d-%s' % (self.__class__.__name__,

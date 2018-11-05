@@ -223,7 +223,7 @@ class EventPrefix(object):
 
 
 class BGPSpeaker(object):
-    """Class to provide the APIs of Ryu BGP Speaker.
+    """Class to provide the APIs of OSKen BGP Speaker.
 
     ``as_number`` specifies an Autonomous Number. It must be an integer
     between 1 and 65535.

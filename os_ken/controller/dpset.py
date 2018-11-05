@@ -161,7 +161,7 @@ class PortState(dict):
 
 
 # this depends on controller::Datapath and dispatchers in handler
-class DPSet(app_manager.RyuApp):
+class DPSet(app_manager.OSKenApp):
     """
     DPSet application manages a set of switches (datapaths)
     connected to this controller.
@@ -172,7 +172,7 @@ class DPSet(app_manager.RyuApp):
         from os_ken.controller import dpset
 
 
-        class MyApp(app_manager.RyuApp):
+        class MyApp(app_manager.OSKenApp):
             _CONTEXTS = {
                 'dpset': dpset.DPSet,
             }

@@ -36,7 +36,7 @@ CONF.register_opts([
 ])
 
 
-class OVSBridgeNotFound(os_ken_exc.RyuException):
+class OVSBridgeNotFound(os_ken_exc.OSKenException):
     message = 'no bridge for datapath_id %(datapath_id)s'
 
 
@@ -96,7 +96,7 @@ class OVSBridge(object):
     Class to provide wrapper utilities of :py:mod:`os_ken.lib.ovs.vsctl.VSCtl`
 
     ``CONF`` is a instance of ``oslo_config.cfg.ConfigOpts``.
-    Mostly ``self.CONF`` is sufficient to instantiate this class from your Ryu
+    Mostly ``self.CONF`` is sufficient to instantiate this class from your OSKen
     application.
 
     ``datapath_id`` specifies Datapath ID of the target OVS instance.

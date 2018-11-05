@@ -140,7 +140,7 @@ class _NullColorizer(object):
         self.stream.write(text)
 
 
-class RyuTestResult(result.TextTestResult):
+class OSKenTestResult(result.TextTestResult):
     def __init__(self, *args, **kw):
         result.TextTestResult.__init__(self, *args, **kw)
         self._last_case = None
@@ -231,9 +231,9 @@ class RyuTestResult(result.TextTestResult):
             self.stream.flush()
 
 
-class RyuTestRunner(core.TextTestRunner):
+class OSKenTestRunner(core.TextTestRunner):
     def _makeResult(self):
-        return RyuTestResult(self.stream,
+        return OSKenTestResult(self.stream,
                              self.descriptions,
                              self.verbosity,
                              self.config)
@@ -255,7 +255,7 @@ def run_tests(c=None):
     if not c:
         return True
 
-    runner = RyuTestRunner(stream=c.stream,
+    runner = OSKenTestRunner(stream=c.stream,
                            verbosity=c.verbosity,
                            config=c)
     return not core.run(config=c, testRunner=runner)

@@ -72,7 +72,7 @@ class EventMulticastGroupStateChanged(event.EventBase):
         self.dsts = dsts
 
 
-class IgmpLib(app_manager.RyuApp):
+class IgmpLib(app_manager.OSKenApp):
     """IGMP snooping library."""
 
     # -------------------------------------------------------------------

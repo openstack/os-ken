@@ -18,7 +18,7 @@
 sample router manager.
 (un-)instantiate routers
 Usage example:
-PYTHONPATH=. ./bin/os_ken-manager --verbose \
+PYTHONPATH=. ./bin/osken-manager --verbose \
              os_ken.services.protocols.vrrp.manager \
              os_ken.services.protocols.vrrp.dumper \
              os_ken.services.protocols.vrrp.sample_manager
@@ -30,7 +30,7 @@ from os_ken.services.protocols.vrrp import event as vrrp_event
 from os_ken.services.protocols.vrrp import sample_router
 
 
-class RouterManager(app_manager.RyuApp):
+class RouterManager(app_manager.OSKenApp):
     _ROUTER_CLASSES = {
         vrrp_event.VRRPInterfaceNetworkDevice: {
             4: sample_router.RouterIPV4Linux,

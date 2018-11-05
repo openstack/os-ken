@@ -32,7 +32,7 @@ _PRIMARY_IP_ADDRESS0 = '10.0.0.2'
 _PRIMARY_IP_ADDRESS1 = '10.0.0.3'
 
 
-class VRRPCommon(app_manager.RyuApp):
+class VRRPCommon(app_manager.OSKenApp):
     _IFNAME0 = None
     _IFNAME1 = None
 

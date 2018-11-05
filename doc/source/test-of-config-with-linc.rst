@@ -183,8 +183,8 @@ Run OS-Ken test_of_config app
 
 Run test_of_config app::
 
-    # os_ken-manager --verbose os_ken.tests.integrated.test_of_config os_ken.app.rest
+    # osken-manager --verbose os_ken.tests.integrated.test_of_config os_ken.app.rest
 
 If you don't install os_ken and are working in the git repo directly::
 
-    # PYTHONPATH=. ./bin/os_ken-manager --verbose os_ken.tests.integrated.test_of_config os_ken.app.rest
+    # PYTHONPATH=. ./bin/osken-manager --verbose os_ken.tests.integrated.test_of_config os_ken.app.rest

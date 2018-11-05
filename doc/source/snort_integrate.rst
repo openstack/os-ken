@@ -87,7 +87,7 @@ Usage
 
 2. Run OS-Ken with sample application: ::
 
-    $ sudo ./bin/os_ken-manager os_ken/app/simple_switch_snort.py
+    $ sudo ./bin/osken-manager os_ken/app/simple_switch_snort.py
 
 The incoming packets will all mirror to **port 3** which should be connect to Snort network interface. You can modify the mirror port by assign a new value in the ``self.snort_port = 3`` of ``simple_switch_snort.py``
 
@@ -114,7 +114,7 @@ The incoming packets will all mirror to **port 3** which should be connect to Sn
 
 2. Run OS-Ken with sample application (On the Controller): ::
 
-    $ ./bin/os_ken-manager os_ken/app/simple_switch_snort.py
+    $ ./bin/osken-manager os_ken/app/simple_switch_snort.py
 
 3. Run Snort (On the Snort machine): ::
 

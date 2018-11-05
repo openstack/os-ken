@@ -204,7 +204,7 @@ class BMPClient(Activity):
         self._socket = socket
         # send init message
         init_info = {'type': bmp.BMP_INIT_TYPE_STRING,
-                     'value': u'This is Ryu BGP BMP message'}
+                     'value': u'This is OSKen BGP BMP message'}
         init_msg = bmp.BMPInitiation([init_info])
         self._send(init_msg)
 

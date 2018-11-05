@@ -41,7 +41,7 @@ class Peer(object):
         self.queue.put((self, data))
 
 
-class RpcVRRPManager(app_manager.RyuApp):
+class RpcVRRPManager(app_manager.OSKenApp):
     def __init__(self, *args, **kwargs):
         super(RpcVRRPManager, self).__init__(*args, **kwargs)
         self.CONF.register_opts([

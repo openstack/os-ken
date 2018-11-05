@@ -46,7 +46,7 @@ The use of contexts is discouraged for new code.
 Create a OS-Ken application
 ===========================
 A OS-Ken application is a python module which defines a subclass of
-os_ken.base.app_manager.RyuApp.
+os_ken.base.app_manager.OSKenApp.
 If two or more such classes are defined in a module, the first one
 (by name order) will be picked by app_manager.
 An OS-Ken application is singleton: only a single instance of a given OS-Ken
@@ -60,7 +60,7 @@ using os_ken.controller.handler.set_ev_cls decorator.
 Generate events
 ===============
 A OS-Ken application can raise events by calling appropriate
-os_ken.base.app_manager.RyuApp's methods like send_event or
+os_ken.base.app_manager.OSKenApp's methods like send_event or
 send_event_to_observers.
 
 Event classes
@@ -88,8 +88,8 @@ OpenFlow event classes are subclasses of the following class.
 
 See :ref:`ofproto_ref` for more info about OpenFlow messages.
 
-os_ken.base.app_manager.RyuApp
-==============================
+os_ken.base.app_manager.OSKenApp
+================================
 
 See :ref:`api_ref`.
 

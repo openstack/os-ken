@@ -15,7 +15,7 @@
 # limitations under the License.
 
 
-class RyuException(Exception):
+class OSKenException(Exception):
     message = 'An unknown exception'
 
     def __init__(self, msg=None, **kwargs):
@@ -28,18 +28,18 @@ class RyuException(Exception):
         except Exception:
             msg = self.message
 
-        super(RyuException, self).__init__(msg)
+        super(OSKenException, self).__init__(msg)
 
 
-class OFPUnknownVersion(RyuException):
+class OFPUnknownVersion(OSKenException):
     message = 'unknown version %(version)x'
 
 
-class OFPMalformedMessage(RyuException):
+class OFPMalformedMessage(OSKenException):
     message = 'malformed message'
 
 
-class OFPTruncatedMessage(RyuException):
+class OFPTruncatedMessage(OSKenException):
     message = 'truncated message: %(orig_ex)s'
 
     def __init__(self, ofpmsg, residue, original_exception,
@@ -52,30 +52,30 @@ class OFPTruncatedMessage(RyuException):
         super(OFPTruncatedMessage, self).__init__(msg, **kwargs)
 
 
-class OFPInvalidActionString(RyuException):
+class OFPInvalidActionString(OSKenException):
     message = 'unable to parse: %(action_str)s'
 
 
-class NetworkNotFound(RyuException):
+class NetworkNotFound(OSKenException):
     message = 'no such network id %(network_id)s'
 
 
-class NetworkAlreadyExist(RyuException):
+class NetworkAlreadyExist(OSKenException):
     message = 'network id %(network_id)s already exists'
 
 
-class PortNotFound(RyuException):
+class PortNotFound(OSKenException):
     message = 'no such port (%(dpid)s, %(port)s) in network %(network_id)s'
 
 
-class PortAlreadyExist(RyuException):
+class PortAlreadyExist(OSKenException):
     message = 'port (%(dpid)s, %(port)s) in network %(network_id)s ' \
               'already exists'
 
 
-class PortUnknown(RyuException):
+class PortUnknown(OSKenException):
     message = 'unknown network id for port (%(dpid)s %(port)s)'
 
 
-class MacAddressDuplicated(RyuException):
+class MacAddressDuplicated(OSKenException):
     message = 'MAC address %(mac)s is duplicated'

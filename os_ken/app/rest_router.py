@@ -30,7 +30,7 @@ from os_ken.controller import ofp_event
 from os_ken.controller.handler import set_ev_cls
 from os_ken.controller.handler import MAIN_DISPATCHER
 from os_ken.exception import OFPUnknownVersion
-from os_ken.exception import RyuException
+from os_ken.exception import OSKenException
 from os_ken.lib import dpid as dpid_lib
 from os_ken.lib import hub
 from os_ken.lib import mac as mac_lib
@@ -198,15 +198,15 @@ def get_priority_type(priority, vid):
     return priority
 
 
-class NotFoundError(RyuException):
+class NotFoundError(OSKenException):
     message = 'Router SW is not connected. : switch_id=%(switch_id)s'
 
 
-class CommandFailure(RyuException):
+class CommandFailure(OSKenException):
     pass
 
 
-class RestRouterAPI(app_manager.RyuApp):
+class RestRouterAPI(app_manager.OSKenApp):
 
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION,
                     ofproto_v1_2.OFP_VERSION,

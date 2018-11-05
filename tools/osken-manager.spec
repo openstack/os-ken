@@ -3,11 +3,11 @@
 block_cipher = None
 
 
-a = Analysis(['../bin/ryu-manager'],
-             pathex=['../ryu'],
+a = Analysis(['../bin/osken-manager'],
+             pathex=['../os_ken'],
              binaries=None,
              datas=None,
-             hiddenimports=['ryu.controller.ofp_handler'],
+             hiddenimports=['os_ken.controller.ofp_handler'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
@@ -21,7 +21,7 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name='ryu-manager',
+          name='osken-manager',
           debug=False,
           strip=False,
           upx=True,

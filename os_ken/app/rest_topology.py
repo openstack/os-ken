@@ -47,7 +47,7 @@ from os_ken.topology.api import get_switch, get_link, get_host
 # <dpid>: datapath id in 16 hex
 
 
-class TopologyAPI(app_manager.RyuApp):
+class TopologyAPI(app_manager.OSKenApp):
     _CONTEXTS = {
         'wsgi': WSGIApplication
     }

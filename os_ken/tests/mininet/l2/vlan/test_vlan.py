@@ -30,7 +30,7 @@ from os_ken.lib.mac import haddr_to_str
 LOG = logging.getLogger(__name__)
 
 
-class RunTestMininet(app_manager.RyuApp):
+class RunTestMininet(app_manager.OSKenApp):
 
     _CONTEXTS = {'dpset': dpset.DPSet}
     OFP_VERSIONS = [ofproto_v1_2.OFP_VERSION]

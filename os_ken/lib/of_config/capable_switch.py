@@ -25,8 +25,8 @@ from os_ken.lib.of_config import classes as ofc
 
 
 # TODO: When we re-organize ncclient, its NCClientError will be
-#       subclass of RyuException.
-class OFConfigCapableSwitchNotFound(os_ken_exc.RyuException,
+#       subclass of OSKenException.
+class OFConfigCapableSwitchNotFound(os_ken_exc.OSKenException,
                                     ncclient.NCClientError):
     message = 'OpenFlow Capable Switch not found'
 

@@ -48,7 +48,7 @@ class BgpSpeakerTestBase(unittest.TestCase):
         cls.q_img = 'osrg/quagga'
         cls.images.append(cls.q_img)
 
-        cls.r1 = os_kenbgp.RyuBGPContainer(name='r1', asn=64512,
+        cls.r1 = os_kenbgp.OSKenBGPContainer(name='r1', asn=64512,
                                         router_id='192.168.0.1',
                                         ctn_image_name=cls.r_img)
         cls.containers.append(cls.r1)

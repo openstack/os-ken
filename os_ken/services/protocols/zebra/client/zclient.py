@@ -22,7 +22,7 @@ import socket
 import struct
 
 from os_ken import cfg
-from os_ken.base.app_manager import RyuApp
+from os_ken.base.app_manager import OSKenApp
 from os_ken.lib import hub
 from os_ken.lib import ip
 from os_ken.lib.packet import zebra
@@ -184,7 +184,7 @@ class ZServer(object):
         self.stop()
 
 
-class ZClient(RyuApp):
+class ZClient(OSKenApp):
     """
     The base class for Zebra client application.
     """

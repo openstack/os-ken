@@ -194,7 +194,7 @@ VLANID_MAX = 4094
 COOKIE_SHIFT_VLANID = 32
 
 
-class RestFirewallAPI(app_manager.RyuApp):
+class RestFirewallAPI(app_manager.OSKenApp):
 
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION,
                     ofproto_v1_2.OFP_VERSION,

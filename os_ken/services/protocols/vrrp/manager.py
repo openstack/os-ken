@@ -20,7 +20,7 @@ VRRPManager creates/deletes VRRPRouter, VRRPInterfaceMonitor
 dynamically as requested.
 
 Usage example
-PYTHONPATH=. ./bin/os_ken-manager --verbose \
+PYTHONPATH=. ./bin/osken-manager --verbose \
              os_ken.services.protocols.vrrp.manager \
              os_ken.services.protocols.vrrp.dumper
 """
@@ -48,7 +48,7 @@ class VRRPInstance(object):
         self.state = new_state
 
 
-class VRRPManager(app_manager.RyuApp):
+class VRRPManager(app_manager.OSKenApp):
     @staticmethod
     def _instance_name(interface, vrid, is_ipv6):
         ip_version = 'ipv6' if is_ipv6 else 'ipv4'

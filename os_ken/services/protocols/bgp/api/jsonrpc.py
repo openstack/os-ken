@@ -28,7 +28,7 @@ bgp_instance_name = 'bgp_api_app'
 url = '/bgp/ws'
 
 
-class BgpWSJsonRpc(app_manager.RyuApp):
+class BgpWSJsonRpc(app_manager.OSKenApp):
     _CONTEXTS = {
         'wsgi': WSGIApplication,
     }

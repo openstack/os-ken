@@ -25,7 +25,7 @@ Open a text editor creating a new file with the following content:
 
    from os_ken.base import app_manager
 
-   class L2Switch(app_manager.RyuApp):
+   class L2Switch(app_manager.OSKenApp):
        def __init__(self, *args, **kwargs):
            super(L2Switch, self).__init__(*args, **kwargs)
 
@@ -36,12 +36,12 @@ any name, extensions, and any place you want. Let's name the file
 This application does nothing useful yet, however it's a complete OS-Ken
 application. In fact, you can run this OS-Ken application::
 
-   % os_ken-manager ~/l2.py
+   % osken-manager ~/l2.py
    loading app /Users/fujita/l2.py
    instantiating app /Users/fujita/l2.py
 
 
-All you have to do is defining needs a new subclass of RyuApp to run
+All you have to do is defining needs a new subclass of OSKenApp to run
 your Python script as a OS-Ken application.
 
 Next let's add the functionality of sending a received packet to all
@@ -55,7 +55,7 @@ the ports.
    from os_ken.controller.handler import set_ev_cls
    from os_ken.ofproto import ofproto_v1_0
 
-   class L2Switch(app_manager.RyuApp):
+   class L2Switch(app_manager.OSKenApp):
        OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION]
 
        def __init__(self, *args, **kwargs):

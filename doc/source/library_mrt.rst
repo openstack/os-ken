@@ -22,7 +22,7 @@ mrtlib.Reader.
 Writing MRT file
 ================
 
-For dumping the routing information which your RyuApp generated, you can use
+For dumping the routing information which your OSKenApp generated, you can use
 mrtlib.Writer.
 
 .. autoclass:: os_ken.lib.mrtlib.Writer

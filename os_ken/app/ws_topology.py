@@ -17,7 +17,7 @@
 Usage example
 
 1. Run this application:
-$ os_ken-manager --verbose --observe-links os_ken.app.ws_topology
+$ osken-manager --verbose --observe-links os_ken.app.ws_topology
 
 2. Connect to this application by WebSocket (use your favorite client):
 $ wscat -c ws://localhost:8080/v1.0/topology/ws
@@ -49,7 +49,7 @@ from os_ken.topology import event, switches
 from os_ken.controller.handler import set_ev_cls
 
 
-class WebSocketTopology(app_manager.RyuApp):
+class WebSocketTopology(app_manager.OSKenApp):
     _CONTEXTS = {
         'wsgi': WSGIApplication,
         'switches': switches.Switches,

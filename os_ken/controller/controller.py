@@ -18,7 +18,7 @@
 The main component of OpenFlow controller.
 
 - Handle connections from switches
-- Generate and route events to appropriate entities like Ryu applications
+- Generate and route events to appropriate entities like OSKen applications
 
 """
 

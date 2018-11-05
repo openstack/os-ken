@@ -68,7 +68,7 @@ class OFPHello(MsgBase):
     When connection is started, the hello message is exchanged between a
     switch and a controller.
 
-    This message is handled by the Ryu framework, so the Ryu application
+    This message is handled by the OSKen framework, so the OSKen application
     do not need to process this typically.
 
     ========== =========================================================
@@ -156,7 +156,7 @@ class OFPEchoRequest(MsgBase):
     """
     Echo request message
 
-    This message is handled by the Ryu framework, so the Ryu application
+    This message is handled by the OSKen framework, so the OSKen application
     do not need to process this typically.
 
     ========== =========================================================
@@ -329,7 +329,7 @@ class OFPEchoReply(MsgBase):
     """
     Echo reply message
 
-    This message is handled by the Ryu framework, so the Ryu application
+    This message is handled by the OSKen framework, so the OSKen application
     do not need to process this typically.
 
     ========== =========================================================
@@ -377,7 +377,7 @@ class OFPFeaturesRequest(MsgBase):
     The controller sends a feature request to the switch upon session
     establishment.
 
-    This message is handled by the Ryu framework, so the Ryu application
+    This message is handled by the OSKen framework, so the OSKen application
     do not need to process this typically.
 
     Example::
@@ -443,7 +443,7 @@ class OFPSwitchFeatures(MsgBase):
     The switch responds with a features reply message to a features
     request.
 
-    This message is handled by the Ryu framework, so the Ryu application
+    This message is handled by the OSKen framework, so the OSKen application
     do not need to process this typically.
 
     Example::

@@ -22,7 +22,7 @@ from os_ken.lib import ip
 # We don't bother to use cfg.py because monkey patch needs to be
 # called very early. Instead, we use an environment variable to
 # select the type of hub.
-HUB_TYPE = os.getenv('RYU_HUB_TYPE', 'eventlet')
+HUB_TYPE = os.getenv('OSKEN_HUB_TYPE', 'eventlet')
 
 LOG = logging.getLogger('os_ken.lib.hub')
 

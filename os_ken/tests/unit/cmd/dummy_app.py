@@ -17,5 +17,5 @@
 from os_ken.base import app_manager
 
 
-class DummyApp(app_manager.RyuApp):
+class DummyApp(app_manager.OSKenApp):
     pass

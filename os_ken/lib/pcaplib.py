@@ -264,7 +264,7 @@ class Writer(object):
         from os_ken.lib import pcaplib
 
 
-        class SimpleSwitch13(app_manager.RyuApp):
+        class SimpleSwitch13(app_manager.OSKenApp):
             OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
 
             def __init__(self, *args, **kwargs):

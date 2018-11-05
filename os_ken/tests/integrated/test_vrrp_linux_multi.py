@@ -16,18 +16,18 @@
 
 r"""
 Usage:
-PYTHONPATH=. ./bin/os_ken-manager --verbose \
+PYTHONPATH=. ./bin/osken-manager --verbose \
              os_ken.services.protocols.vrrp.dumper \
              os_ken.services.protocols.vrrp.sample_manager.py \
              os_ken.tests.integrated.test_vrrp_linux_multi \
              os_ken.app.rest
 
 os_ken.services.protocols.vrrp.dumper is optional.
-os_ken.app.rest is merely to prevent os_ken-manager from exiting.
+os_ken.app.rest is merely to prevent osken-manager from exiting.
 
                     ----------------
       /--<--veth0-->|              |
-   Ryu              | linux bridge |<--veth2--> command to generate packets
+   OSKen            | linux bridge |<--veth2--> command to generate packets
       \--<--veth1-->|   (vrrpbr)   |
                     ----------------
 

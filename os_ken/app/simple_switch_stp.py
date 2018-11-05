@@ -24,7 +24,7 @@ from os_ken.lib import stplib
 from os_ken.lib.mac import haddr_to_str
 
 
-class SimpleSwitchStp(app_manager.RyuApp):
+class SimpleSwitchStp(app_manager.OSKenApp):
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION]
     _CONTEXTS = {'stplib': stplib.Stp}
 

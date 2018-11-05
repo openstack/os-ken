@@ -22,7 +22,7 @@ from os_ken.controller import event
 from os_ken.controller import handler
 from os_ken.controller import ofp_event
 from os_ken.controller.handler import set_ev_cls
-from os_ken.exception import RyuException
+from os_ken.exception import OSKenException
 from os_ken.exception import OFPUnknownVersion
 from os_ken.lib import hub
 from os_ken.lib import mac
@@ -177,7 +177,7 @@ def cmp(a, b):
     return (a > b) - (a < b)
 
 
-class Stp(app_manager.RyuApp):
+class Stp(app_manager.OSKenApp):
     """ STP(spanning tree) library. """
 
     OFP_VERSIONS = [ofproto_v1_0.OFP_VERSION,
@@ -832,7 +832,7 @@ class Port(object):
                 except hub.Timeout as t:
                     if t is not timeout:
                         err_msg = 'Internal error. Not my timeout.'
-                        raise RyuException(msg=err_msg)
+                        raise OSKenException(msg=err_msg)
                     new_state = self._get_next_state()
                     self._change_status(new_state, thread_switch=False)
                 finally:
@@ -975,7 +975,7 @@ class Port(object):
             except hub.Timeout as t:
                 if t is not timeout:
                     err_msg = 'Internal error. Not my timeout.'
-                    raise RyuException(msg=err_msg)
+                    raise OSKenException(msg=err_msg)
                 self.logger.info('[port=%d] Wait BPDU timer is exceeded.',
                                  self.ofport.port_no, extra=self.dpid_str)
                 time_exceed = True

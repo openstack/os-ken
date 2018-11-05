@@ -1,5 +1,5 @@
 """
-Ryu packet library. Decoder/Encoder implementations of popular protocols
+OSKen packet library. Decoder/Encoder implementations of popular protocols
 like TCP/IP.
 """
 

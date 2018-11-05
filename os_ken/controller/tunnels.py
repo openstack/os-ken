@@ -22,16 +22,16 @@ from os_ken.base import app_manager
 from os_ken.controller import event
 
 
-class RemoteDPIDAlreadyExist(os_ken_exc.RyuException):
+class RemoteDPIDAlreadyExist(os_ken_exc.OSKenException):
     message = ('port (%(dpid)s, %(port)s) has already '
                'remote dpid %(remote_dpid)s')
 
 
-class TunnelKeyAlreadyExist(os_ken_exc.RyuException):
+class TunnelKeyAlreadyExist(os_ken_exc.OSKenException):
     message = 'tunnel key %(tunnel_key)s already exists'
 
 
-class TunnelKeyNotFound(os_ken_exc.RyuException):
+class TunnelKeyNotFound(os_ken_exc.OSKenException):
     message = 'no tunnel key for network %(network_id)s'
 
 
@@ -208,7 +208,7 @@ class DPIDs(object):
         return res[0]
 
 
-class Tunnels(app_manager.RyuApp):
+class Tunnels(app_manager.OSKenApp):
     def __init__(self):
         super(Tunnels, self).__init__()
         self.name = 'tunnels'

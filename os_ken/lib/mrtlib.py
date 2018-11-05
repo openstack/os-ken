@@ -1101,14 +1101,14 @@ class Bgp4MpMessageAs4LocalMrtMessage(Bgp4MpMessageAs4MrtMessage):
 
 
 # TODO:
-# Currently, Ryu does not provide the packet library for ISIS protocol.
+# Currently, OSKen does not provide the packet library for ISIS protocol.
 # Implement parser for ISIS MRT message.
 # class IsisMrtRecord(MrtCommonRecord):
 # class IsisMrtMessage(MrtMessage):
 
 
 # TODO:
-# Currently, Ryu does not provide the packet library for OSPFv3 protocol.
+# Currently, OSKen does not provide the packet library for OSPFv3 protocol.
 # Implement the parser for OSPFv3 MRT message.
 # class Ospf3MrtRecord(MrtCommonRecord):
 # class Ospf3MrtMessage(MrtMessage):

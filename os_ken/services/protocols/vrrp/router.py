@@ -135,7 +135,7 @@ class VRRPState(object):
         pass
 
 
-class VRRPRouter(app_manager.RyuApp):
+class VRRPRouter(app_manager.OSKenApp):
     _EVENTS = [vrrp_event.EventVRRPStateChanged]
     _CONSTRUCTORS = {}
     _STATE_MAP = {}     # should be overrided by concrete class

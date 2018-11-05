@@ -56,7 +56,7 @@ and also provides the API "create_port" for creating a port on a bridge.
     from os_ken.services.protocols.ovsdb import event as ovsdb_event
 
 
-    class MyApp(app_manager.RyuApp):
+    class MyApp(app_manager.OSKenApp):
         @set_ev_cls(ovsdb_event.EventNewOVSDBConnection)
         def handle_new_ovsdb_connection(self, ev):
             system_id = ev.system_id
