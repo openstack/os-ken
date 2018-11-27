@@ -1,2 +1,0 @@
-update-rc.d -f ryu remove >/dev/null || exit $?
-#DEBHELPER#

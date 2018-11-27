@@ -1,7 +1,0 @@
-/var/log/ryu/ryu.log {
-    daily
-    missingok
-    compress
-    delaycompress
-    notifempty
-}
