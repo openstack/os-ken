@@ -29,7 +29,7 @@ TIMEOUT = 60
 OSKEN_HOST = '127.0.0.1'
 OSKEN_PORT = 6633
 PYTHON_BIN = '.venv/bin/python'
-OSKEN_MGR = './bin/osken-manager'
+OSKEN_MGR = 'osken-manager'
 
 
 class OVS12KernelSwitch(OVSKernelSwitch):

@@ -33,7 +33,7 @@ Then run linc
 # rel/linc/bin/linc console
 
 Then run os_ken
-# PYTHONPATH=. ./bin/osken-manager --verbose \
+# osken-manager --verbose \
         os_ken/tests/integrated/test_of_config.py
 
 

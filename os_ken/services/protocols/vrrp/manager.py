@@ -20,9 +20,9 @@ VRRPManager creates/deletes VRRPRouter, VRRPInterfaceMonitor
 dynamically as requested.
 
 Usage example
-PYTHONPATH=. ./bin/osken-manager --verbose \
-             os_ken.services.protocols.vrrp.manager \
-             os_ken.services.protocols.vrrp.dumper
+osken-manager --verbose \
+    os_ken.services.protocols.vrrp.manager \
+    os_ken.services.protocols.vrrp.dumper
 """
 
 import time

@@ -102,7 +102,7 @@ Invoking Example
 ================
 The example is as follows::
 
-    % PYTHONPATH=. ./bin/osken-manager --wsapi-port 8081 --verbose --app-lists os_ken.app.simple_isolation,os_ken.app.rest
+    % osken-manager --wsapi-port 8081 --verbose --app-lists os_ken.app.simple_isolation,os_ken.app.rest
     loading app os_ken.app.simple_isolation
     loading app os_ken.app.rest
     loading app os_ken.controller.ofp_handler

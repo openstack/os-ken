@@ -90,7 +90,7 @@ run_tests() {
 run_pylint() {
   echo "Running pylint ..."
   PYLINT_OPTIONS="--rcfile=.pylintrc --output-format=parseable"
-  PYLINT_INCLUDE="os_ken bin/osken bin/osken-manager os_ken/tests/bin/osken-client"
+  PYLINT_INCLUDE="os_ken os_ken/tests/bin/osken-client"
   export PYTHONPATH=$PYTHONPATH:.os_ken
   PYLINT_LOG=pylint.log
 

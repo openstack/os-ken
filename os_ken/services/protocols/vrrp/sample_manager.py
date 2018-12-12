@@ -18,10 +18,10 @@
 sample router manager.
 (un-)instantiate routers
 Usage example:
-PYTHONPATH=. ./bin/osken-manager --verbose \
-             os_ken.services.protocols.vrrp.manager \
-             os_ken.services.protocols.vrrp.dumper \
-             os_ken.services.protocols.vrrp.sample_manager
+osken-manager --verbose \
+    os_ken.services.protocols.vrrp.manager \
+    os_ken.services.protocols.vrrp.dumper \
+    os_ken.services.protocols.vrrp.sample_manager
 """
 
 from os_ken.base import app_manager

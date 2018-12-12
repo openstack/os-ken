@@ -187,4 +187,4 @@ Run test_of_config app::
 
 If you don't install os_ken and are working in the git repo directly::
 
-    # PYTHONPATH=. ./bin/osken-manager --verbose os_ken.tests.integrated.test_of_config os_ken.app.rest
+    # osken-manager --verbose os_ken.tests.integrated.test_of_config os_ken.app.rest

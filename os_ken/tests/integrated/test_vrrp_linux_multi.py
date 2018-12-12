@@ -16,11 +16,11 @@
 
 r"""
 Usage:
-PYTHONPATH=. ./bin/osken-manager --verbose \
-             os_ken.services.protocols.vrrp.dumper \
-             os_ken.services.protocols.vrrp.sample_manager.py \
-             os_ken.tests.integrated.test_vrrp_linux_multi \
-             os_ken.app.rest
+osken-manager --verbose \
+    os_ken.services.protocols.vrrp.dumper \
+    os_ken.services.protocols.vrrp.sample_manager.py \
+    os_ken.tests.integrated.test_vrrp_linux_multi \
+    os_ken.app.rest
 
 os_ken.services.protocols.vrrp.dumper is optional.
 os_ken.app.rest is merely to prevent osken-manager from exiting.

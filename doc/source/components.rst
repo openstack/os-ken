@@ -5,7 +5,7 @@ Components of OS-Ken
 Executables
 ===========
 
-bin/osken-manager
+osken-manager
 ------------------
 
 The main executable.
