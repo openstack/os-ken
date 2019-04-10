@@ -21,7 +21,7 @@ import sys
 import unittest
 
 from os_ken.tests.integrated.common import docker_base as ctn_base
-from os_ken.tests.integrated.common import os_kenbgp
+from os_ken.tests.integrated.common import oskenbgp
 from os_ken.tests.integrated.common import quagga
 
 
@@ -48,9 +48,9 @@ class BgpSpeakerTestBase(unittest.TestCase):
         cls.q_img = 'osrg/quagga'
         cls.images.append(cls.q_img)
 
-        cls.r1 = os_kenbgp.OSKenBGPContainer(name='r1', asn=64512,
-                                        router_id='192.168.0.1',
-                                        ctn_image_name=cls.r_img)
+        cls.r1 = oskenbgp.OSKenBGPContainer(name='r1', asn=64512,
+                                            router_id='192.168.0.1',
+                                            ctn_image_name=cls.r_img)
         cls.containers.append(cls.r1)
         cls.r1.add_route('fc00:10::/64', route_info={'rf': 'ipv6'})
         cls.r1.run(wait=True)
