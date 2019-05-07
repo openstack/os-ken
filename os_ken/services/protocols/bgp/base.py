@@ -307,12 +307,11 @@ class Activity(object):
         """Stops all child threads and activities and closes associated
         sockets.
 
-        Re-initializes this activity to be able to start again.
-        Raise `ActivityException` if activity is not currently started.
+        Re-initializes this activity to be able to start again. If the activity
+        is not started (is already stopped), it will silently return.
         """
         if not self.started:
-            raise ActivityException(desc='Cannot call stop when activity is '
-                                    'not started or has been stopped already.')
+            return
 
         LOG.debug('Stopping activity %s.', self.name)
         self._stop_timers()
