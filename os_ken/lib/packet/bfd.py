@@ -162,14 +162,13 @@ class bfd(packet_base.PacketBase):
                                    session state.
     state                          The current BFD session state as seen by
                                    the transmitting system.
-    flags                          Bitmap of the following flags.
-
-                                   | BFD_FLAG_POLL
-                                   | BFD_FLAG_FINAL
-                                   | BFD_FLAG_CTRL_PLANE_INDEP
-                                   | BFD_FLAG_AUTH_PRESENT
-                                   | BFD_FLAG_DEMAND
-                                   | BFD_FLAG_MULTIPOINT
+    flags                          Bitmap of the following flags:
+                                   ``BFD_FLAG_POLL``,
+                                   ``BFD_FLAG_FINAL``,
+                                   ``BFD_FLAG_CTRL_PLANE_INDEP``,
+                                   ``BFD_FLAG_AUTH_PRESENT``,
+                                   ``BFD_FLAG_DEMAND``,
+                                   ``BFD_FLAG_MULTIPOINT``
     detect_mult                    Detection time multiplier.
     my_discr                       My Discriminator.
     your_discr                     Your Discriminator.
