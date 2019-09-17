@@ -81,3 +81,8 @@ latex_documents = [
 ]
 
 latex_use_xindy = False
+
+latex_elements = {
+    'extraclassoptions': 'openany,oneside',
+    'preamble': r'\setcounter{tocdepth}{2}',
+}

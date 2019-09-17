@@ -2,4 +2,4 @@
 References
 ==========
 
-References of os-ken.
+T.B.D.

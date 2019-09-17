@@ -2,4 +2,4 @@
 Users guide
 ===========
 
-Users guide of os-ken.
+T.B.D.

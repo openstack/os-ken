@@ -7,8 +7,6 @@
 Welcome to the documentation of os_ken
 ======================================
 
-Contents:
-
 .. toctree::
    :maxdepth: 2
 
@@ -19,27 +17,11 @@ Contents:
    user/index
    admin/index
    reference/index
-
-Archived Contents:
-
-.. note::
-
-   Contents here are imported from the upstream Ryu documentation.
-   They will be merged into the OS-Ken documentation gradually.
-
-.. toctree::
-   :maxdepth: 2
-
-   developing.rst
-   configuration.rst
-   tests.rst
-   snort_integrate.rst
-   app.rst
+   archive
 
 .. only:: html
 
-   Indices and tables
-   ==================
+   .. rubric:: Indices and tables
 
    * :ref:`genindex`
    * :ref:`modindex`

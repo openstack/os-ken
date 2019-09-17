@@ -2,4 +2,4 @@
 Administrators guide
 ====================
 
-Administrators guide of os-ken.
+T.B.D.

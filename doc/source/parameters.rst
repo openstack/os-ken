@@ -16,7 +16,7 @@ OpenFlow/openflow controller,
 please refer to `openflow org <http://www.openflow.org/>`_ .
 
 The mailing list is available at
-`OpenStack-dev ML <http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-dev>`_
+`OpenStack-dev ML <http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-discuss>`_
 
 
 Installing OS-Ken Network Operating System

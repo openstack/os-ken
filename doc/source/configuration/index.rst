@@ -2,4 +2,4 @@
 Configuration
 =============
 
-Configuration of os-ken.
+T.B.D.
