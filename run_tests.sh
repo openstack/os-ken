@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ -z "${PYTHON}" ]; then
-  PYTHON=python
+  PYTHON=python3
 fi
 
 usage() {
