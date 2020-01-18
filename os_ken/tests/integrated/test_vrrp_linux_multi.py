@@ -36,11 +36,10 @@ os_ken.app.rest is merely to prevent osken-manager from exiting.
 # ip link add veth1 type veth peer name veth1-br
 # ip link add veth2 type veth peer name veth2-br
 
-# brctl addbr vrrpbr
-# brctl addif vrrpbr veth0-br
-# brctl addif vrrpbr veth1-br
-# brctl addif vrrpbr veth2-br
-
+# ip link add vrrpbr type bridge
+# ip link set dev veth0-br master vrrpbr
+# ip link set dev veth1-br master vrrpbr
+# ip link set dev veth2-br master vrrpbr
 
 # ip link set veth0 up
 # ip link set veth0-br up

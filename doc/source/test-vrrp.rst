@@ -26,8 +26,8 @@ And then run OSKen-VRRP::
     # ip netns add gateway1
     # ip netns add gateway2
 
-    # brctl addbr vrrp-br0
-    # brctl addbr vrrp-br1
+    # ip link add dev vrrp-br0 type bridge
+    # ip link add dev vrrp-br1 type bridge
 
     # ip link add veth0 type veth peer name veth0-br0
     # ip link add veth1 type veth peer name veth1-br0
@@ -36,12 +36,12 @@ And then run OSKen-VRRP::
     # ip link add veth4 type veth peer name veth4-br1
     # ip link add veth5 type veth peer name veth5-br1
 
-    # brctl addif vrrp-br0 veth0-br0
-    # brctl addif vrrp-br0 veth1-br0
-    # brctl addif vrrp-br0 veth2-br0
-    # brctl addif vrrp-br1 veth3-br1
-    # brctl addif vrrp-br1 veth4-br1
-    # brctl addif vrrp-br1 veth5-br1
+    # ip link set dev veth0-br0 master vrrp-br0
+    # ip link set dev veth1-br0 master vrrp-br0
+    # ip link set dev veth2-br0 master vrrp-br0
+    # ip link set dev veth3-br0 master vrrp-br1
+    # ip link set dev veth4-br0 master vrrp-br1
+    # ip link set dev veth5-br0 master vrrp-br1
 
     # ip link set vrrp-br0 up
     # ip link set vrrp-br1 up

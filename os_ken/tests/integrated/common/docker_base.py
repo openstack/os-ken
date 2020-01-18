@@ -21,6 +21,7 @@ from __future__ import absolute_import
 import itertools
 import logging
 import os
+import re
 import subprocess
 import time
 
@@ -319,11 +320,13 @@ class Bridge(object):
         return bridges
 
     def get_bridges_brctl(self):
-        out = self.execute('brctl show', retry=True)
-        bridges = []
-        for line in out.splitlines()[1:]:
-            bridges.append(line.split()[0])
-        return bridges
+        br_list = []
+        bridges = glob.glob('/sys/class/net/*/bridge/bridge_id')
+        regex = re.compile(r"\/sys\/class\/net\/(.+)\/bridge\/bridge_id")
+        for bridge in bridges:
+            m = regex.match(bridge)
+            br_list.append(m.group(1))
+        return br_list
 
     def get_bridges_ovs(self):
         out = self.execute('ovs-vsctl list-br', sudo=True, retry=True)
