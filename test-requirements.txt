@@ -9,7 +9,6 @@ python-subunit>=0.0.18 # Apache-2.0/BSD
 oslotest>=1.10.0 # Apache-2.0
 stestr>=1.0.0 # Apache-2.0
 testtools>=1.4.0 # MIT
-mock>=2.0.0 # BSD
 nose>=1.3.7 # LGPL
 pycodestyle>=2.0.0 # MIT
 pylint==1.9.2 # GPLv2

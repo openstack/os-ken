@@ -15,10 +15,10 @@
 
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
+from unittest import mock
 import unittest
 from socket import error as SocketError
 
-import mock
 
 from os_ken.app.ws_topology import WebSocketTopology
 
