@@ -44,10 +44,19 @@ if HUB_TYPE == 'eventlet':
     import traceback
 
     getcurrent = eventlet.getcurrent
-    patch = eventlet.monkey_patch
     sleep = eventlet.sleep
     listen = eventlet.listen
     connect = eventlet.connect
+
+    def patch(thread=True):
+        eventlet.monkey_patch(thread=thread)
+        if thread:
+            # Monkey patch the original current_thread to use the up-to-date _active
+            # global variable. See https://bugs.launchpad.net/bugs/1863021 and
+            # https://github.com/eventlet/eventlet/issues/592
+            import __original_module_threading as orig_threading  # noqa
+            import threading  # noqa
+            orig_threading.current_thread.__globals__['_active'] = threading._active
 
     def spawn(*args, **kwargs):
         raise_error = kwargs.pop('raise_error', False)
