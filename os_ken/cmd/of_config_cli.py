@@ -23,8 +23,6 @@
 #      --peers=sw1=localhost:1830:username:password
 #     (Cmd) raw_get sw1
 
-from __future__ import print_function
-
 import cmd
 import sys
 

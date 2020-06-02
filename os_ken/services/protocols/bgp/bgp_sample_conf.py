@@ -1,6 +1,4 @@
 
-from __future__ import absolute_import
-
 import os
 
 from os_ken.services.protocols.bgp.bgpspeaker import RF_VPN_V4

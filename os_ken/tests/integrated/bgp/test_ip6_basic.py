@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-
 import time
 
 from os_ken.tests.integrated.common import docker_base as ctn_base

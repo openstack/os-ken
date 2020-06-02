@@ -18,7 +18,6 @@
 
  This API can be used by various services like RPC, CLI, IoC, etc.
 """
-from __future__ import absolute_import
 
 import logging
 import traceback

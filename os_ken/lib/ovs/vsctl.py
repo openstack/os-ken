@@ -18,8 +18,6 @@
 ``ovs-vsctl`` command like library to speak OVSDB protocol
 """
 
-from __future__ import print_function
-
 import logging
 import operator
 import os

@@ -16,8 +16,6 @@
 
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-from __future__ import print_function
-
 import unittest
 import logging
 import six

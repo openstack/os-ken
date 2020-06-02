@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 
 from os_ken.services.protocols.bgp.base import ActivityException
 from os_ken.services.protocols.bgp.operator.command import Command

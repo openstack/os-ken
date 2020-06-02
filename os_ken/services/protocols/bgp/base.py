@@ -15,7 +15,6 @@
 """
   Defines some base class related to managing green threads.
 """
-from __future__ import absolute_import
 
 import abc
 from collections import OrderedDict

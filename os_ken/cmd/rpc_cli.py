@@ -29,8 +29,6 @@
 #     NOTIFICATION from echo-server ['notify-method', ['param1', 'param2']]
 #     (Cmd)
 
-from __future__ import print_function
-
 import ast
 import cmd
 import signal
