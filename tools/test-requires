@@ -1,6 +1,5 @@
 autopep8
 coverage
-mock
 nose
 pycodestyle
 pylint

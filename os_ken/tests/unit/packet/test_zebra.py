@@ -15,15 +15,11 @@
 
 from __future__ import print_function
 
-try:
-    import mock  # Python 2
-except ImportError:
-    from unittest import mock  # Python 3
-
 import os
 import socket
 import sys
 import unittest
+from unittest import mock
 
 from nose.tools import eq_
 from nose.tools import ok_

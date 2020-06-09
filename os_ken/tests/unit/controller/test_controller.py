@@ -15,11 +15,6 @@
 # limitations under the License.
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-try:
-    import mock  # Python 2
-except ImportError:
-    from unittest import mock  # Python 3
-
 import json
 import os
 import sys
@@ -27,6 +22,7 @@ import warnings
 import logging
 import random
 import unittest
+from unittest import mock
 
 from nose.tools import eq_, raises
 

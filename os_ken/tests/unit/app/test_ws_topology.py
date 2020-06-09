@@ -15,8 +15,8 @@
 
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-from unittest import mock
 import unittest
+from unittest import mock
 from socket import error as SocketError
 
 

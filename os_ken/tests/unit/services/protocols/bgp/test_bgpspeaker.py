@@ -13,12 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
 import logging
-try:
-    import mock  # Python 2
-except ImportError:
-    from unittest import mock  # Python 3
+import unittest
+from unittest import mock
 
 from nose.tools import raises
 

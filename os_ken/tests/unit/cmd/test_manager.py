@@ -15,8 +15,9 @@
 # limitations under the License.
 
 import sys
-from unittest import mock
 import unittest
+from unittest import mock
+
 from nose.tools import eq_, raises
 
 try:

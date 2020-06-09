@@ -14,12 +14,9 @@
 # limitations under the License.
 
 from collections import OrderedDict
-import unittest
 import logging
-try:
-    import mock  # Python 2
-except ImportError:
-    from unittest import mock  # Python 3
+import unittest
+from unittest import mock
 
 from nose.tools import ok_, eq_, raises
 
