@@ -3,7 +3,6 @@ alembic==0.8.10
 amqp==2.1.1
 appdirs==1.4.3
 astroid==1.6.5
-Babel==2.3.4
 bandit==1.1.0
 bashate==0.5.1
 beautifulsoup4==4.6.0
