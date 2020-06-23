@@ -235,7 +235,7 @@ class OFConfigClient(app_manager.OSKenApp):
         self._validate(tree)
 
         name_spaces = set()
-        for e in tree.getiterator():
+        for e in tree.iter():
             name_spaces.add(capable_switch.get_ns_tag(e.tag)[0])
         print(name_spaces)
 
