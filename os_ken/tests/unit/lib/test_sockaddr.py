@@ -15,6 +15,7 @@
 import unittest
 import logging
 import platform
+import sys
 from nose.tools import eq_
 
 from os_ken.lib import sockaddr
@@ -31,7 +32,7 @@ class Test_sockaddr(unittest.TestCase):
         pass
 
     def test_sockaddr_linux_sa_in4(self):
-        if system != 'Linux':
+        if system != 'Linux' or sys.byteorder != 'little':
             return
 
         addr = '127.0.0.1'
@@ -40,7 +41,7 @@ class Test_sockaddr(unittest.TestCase):
         eq_(expected_result, sockaddr.sa_in4(addr))
 
     def test_sockaddr_linux_sa_in6(self):
-        if system != 'Linux':
+        if system != 'Linux' or sys.byteorder != 'little':
             return
 
         addr = 'dead:beef::1'
