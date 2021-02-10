@@ -1,6 +1,4 @@
-autopep8
-coverage
-nose
-pycodestyle
-pylint
-formencode
+coverage>=4.0,!=4.4
+nose>=1.3.7
+pycodestyle>=2.0.0
+pylint==1.9.2
