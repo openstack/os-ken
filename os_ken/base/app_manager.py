@@ -32,7 +32,6 @@ import gc
 
 from os_ken import cfg
 from os_ken import utils
-from os_ken.app import wsgi
 from os_ken.controller.handler import register_instance, get_dependent_services
 from os_ken.controller.controller import Datapath
 from os_ken.controller import event
@@ -363,9 +362,6 @@ class AppManager(object):
         app_mgr.load_apps(app_lists)
         contexts = app_mgr.create_contexts()
         services = app_mgr.instantiate_apps(**contexts)
-        webapp = wsgi.start_service(app_mgr)
-        if webapp:
-            services.append(hub.spawn(webapp))
         try:
             hub.joinall(services)
         finally:

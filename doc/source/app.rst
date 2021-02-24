@@ -10,6 +10,3 @@ Others provide some functionalities to other OS-Ken applications.
    :maxdepth: 1
 
    app/ofctl.rst
-   app/ofctl_rest.rst
-   app/rest_vtep.rst
-   app/bgp_application.rst

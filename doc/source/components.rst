@@ -86,14 +86,6 @@ os_ken.ofproto.ofproto_v1_5_parser
 OS-Ken applications
 ===================
 
-os_ken.app.cbench
------------------
-.. automodule:: os_ken.app.cbench
-
-os_ken.app.simple_switch
-------------------------
-.. automodule:: os_ken.app.simple_switch
-
 os_ken.topology
 ---------------
 .. automodule:: os_ken.topology
