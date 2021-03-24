@@ -42,26 +42,11 @@ It can be configured by passing configuration file like::
 
   osken-manager [generic/application specific options...]
 
-At the moment applications including the following ones are available
-(And more to come as OS-Ken evolves.)
-
-  * os_ken.app.simple_isolation.SimpleIsolation
-  * os_ken.app.rest.RestAPI
-  * os_ken.app.simple_bridge.SimpleSwitch
-
 The generic available is as follows::
 
   --app-lists: application module name to run;
     repeat this option to specify a list of values
   --help: show help
-
-The options for REST server::
-
-  --wsapi-host: webapp listen host
-    (default: '')
-  --wsapi-port: webapp listen port
-    (default: '8080')
-    (an integer)
 
 The options for openflow controller::
 
@@ -96,38 +81,3 @@ The option for oslo.config.cfg::
     individual options are over-ridden. The set is parsed after the file(s),
     if any, specified via --config-file, hence over-ridden options in the
     directory take precedence.
-
-
-Invoking Example
-================
-The example is as follows::
-
-    % osken-manager --wsapi-port 8081 --verbose --app-lists os_ken.app.simple_isolation,os_ken.app.rest
-    loading app os_ken.app.simple_isolation
-    loading app os_ken.app.rest
-    loading app os_ken.controller.ofp_handler
-    creating context dpset
-    creating context wsgi
-    creating context network
-    instantiating app os_ken.app.simple_isolation
-    instantiating app os_ken.app.rest
-    instantiating app os_ken.controller.ofp_handler
-    BRICK dpset
-      CONSUMES EventOFPStateChange
-      CONSUMES EventOFPPortStatus
-      CONSUMES EventOFPSwitchFeatures
-    BRICK ofp_event
-      PROVIDES EventOFPStateChange TO ['dpset']
-      PROVIDES EventOFPPortStatus TO ['dpset', 'SimpleIsolation']
-      PROVIDES EventOFPPacketIn TO ['SimpleIsolation']
-      PROVIDES EventOFPSwitchFeatures TO ['dpset', 'SimpleIsolation']
-      CONSUMES EventOFPEchoRequest
-      CONSUMES EventOFPErrorMsg
-      CONSUMES EventOFPSwitchFeatures
-      CONSUMES EventOFPHello
-    BRICK network
-    BRICK RestAPI
-    BRICK SimpleIsolation
-      CONSUMES EventOFPPacketIn
-      CONSUMES EventOFPPortStatus
-      CONSUMES EventOFPSwitchFeatures

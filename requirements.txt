@@ -10,5 +10,4 @@ oslo.config>=5.1.0
 ovs>=2.8.0  # OVSDB
 Routes>=2.3.1 # MIT
 six>=1.10.0
-tinyrpc>=0.6  # RPC library, BGP speaker(net_cntl)
 WebOb>=1.8.2  # wsgi

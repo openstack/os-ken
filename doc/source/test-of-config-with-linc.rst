@@ -176,15 +176,3 @@ Starting LINC OpenFlow switch
 Then run LINC::
 
     # rel/linc/bin/linc console
-
-
-Run OS-Ken test_of_config app
-=============================
-
-Run test_of_config app::
-
-    # osken-manager --verbose os_ken.tests.integrated.test_of_config os_ken.app.rest
-
-If you don't install os_ken and are working in the git repo directly::
-
-    # osken-manager --verbose os_ken.tests.integrated.test_of_config os_ken.app.rest
