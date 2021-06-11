@@ -397,6 +397,15 @@ oxm_types = [
     # EXT-233 Output match Extension
     # NOTE(yamamoto): The spec says uint64_t but I assume it's an error.
     oxm_fields.ONFExperimenter('actset_output', 43, type_desc.Int4),
+    # Support for matching/setting xreg0-7
+    oxm_fields.PacketRegs('xreg0', 0, type_desc.Int8),
+    oxm_fields.PacketRegs('xreg1', 1, type_desc.Int8),
+    oxm_fields.PacketRegs('xreg2', 2, type_desc.Int8),
+    oxm_fields.PacketRegs('xreg3', 3, type_desc.Int8),
+    oxm_fields.PacketRegs('xreg4', 4, type_desc.Int8),
+    oxm_fields.PacketRegs('xreg5', 5, type_desc.Int8),
+    oxm_fields.PacketRegs('xreg6', 6, type_desc.Int8),
+    oxm_fields.PacketRegs('xreg7', 7, type_desc.Int8),
 ] + nicira_ext.oxm_types
 
 oxm_fields.generate(__name__)
