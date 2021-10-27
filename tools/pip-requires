@@ -1,7 +1,4 @@
-# NOTE: OpenStack avoids some versions of eventlet, because of the
-# following issue.
-# https://github.com/eventlet/eventlet/issues/401
-eventlet>=0.22.0,!=0.23.0
+eventlet>=0.26.1
 msgpack>=1.0.0  # RPC library, BGP speaker(net_cntl)
 netaddr>=0.7.18
 oslo.config>=5.1.0

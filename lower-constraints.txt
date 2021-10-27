@@ -16,7 +16,7 @@ deprecation==1.0
 docutils==0.11
 dogpile.cache==0.8.0
 dulwich==0.15.0
-eventlet==0.22.0
+eventlet==0.26.1
 extras==1.0.0
 fasteners==0.7.0
 fixtures==3.0.0
@@ -42,7 +42,7 @@ logilab-common==1.4.1
 logutils==0.3.5
 Mako==0.4.0
 MarkupSafe==1.1.1
-monotonic==0.6
+monotonic==1.4
 mox3==0.20.0
 msgpack==1.0.0
 munch==2.1.0
