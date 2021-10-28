@@ -40,8 +40,8 @@ class MessageEncoder(object):
 
     def __init__(self):
         super(MessageEncoder, self).__init__()
-        self._packer = msgpack.Packer(encoding='utf-8', use_bin_type=True)
-        self._unpacker = msgpack.Unpacker(encoding='utf-8')
+        self._packer = msgpack.Packer(use_bin_type=True)
+        self._unpacker = msgpack.Unpacker(strict_map_key=False)
         self._next_msgid = 0
 
     def _create_msgid(self):
