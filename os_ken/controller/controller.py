@@ -165,6 +165,12 @@ class OpenFlowController(object):
 
     def server_loop(self, ofp_tcp_listen_port, ofp_ssl_listen_port):
         if CONF.ctl_privkey is not None and CONF.ctl_cert is not None:
+            p = 'PROTOCOL_TLS'
+
+            ssl_args = {'ssl_ctx': ssl.SSLContext(getattr(ssl, p))}
+            # Restrict non-safe versions
+            ssl_args['ssl_ctx'].options |= ssl.OP_NO_SSLv3 | ssl.OP_NO_SSLv2
+
             if CONF.ca_certs is not None:
                 server = StreamServer((CONF.ofp_listen_host,
                                        ofp_ssl_listen_port),
@@ -172,15 +178,13 @@ class OpenFlowController(object):
                                       keyfile=CONF.ctl_privkey,
                                       certfile=CONF.ctl_cert,
                                       cert_reqs=ssl.CERT_REQUIRED,
-                                      ca_certs=CONF.ca_certs,
-                                      ssl_version=ssl.PROTOCOL_TLSv1)
+                                      ca_certs=CONF.ca_certs, **ssl_args)
             else:
                 server = StreamServer((CONF.ofp_listen_host,
                                        ofp_ssl_listen_port),
                                       datapath_connection_factory,
                                       keyfile=CONF.ctl_privkey,
-                                      certfile=CONF.ctl_cert,
-                                      ssl_version=ssl.PROTOCOL_TLSv1)
+                                      certfile=CONF.ctl_cert, **ssl_args)
         else:
             server = StreamServer((CONF.ofp_listen_host,
                                    ofp_tcp_listen_port),

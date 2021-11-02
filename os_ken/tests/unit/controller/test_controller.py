@@ -17,6 +17,7 @@
 
 import json
 import os
+import ssl
 import sys
 import warnings
 import logging
@@ -29,9 +30,11 @@ from nose.tools import eq_, raises
 from os_ken.base import app_manager  # To suppress cyclic import
 from os_ken.controller import controller
 from os_ken.controller import handler
+from os_ken.lib import hub
 from os_ken.ofproto import ofproto_v1_3_parser
 from os_ken.ofproto import ofproto_v1_2_parser
 from os_ken.ofproto import ofproto_v1_0_parser
+hub.patch()
 
 
 LOG = logging.getLogger('test_controller')
@@ -173,3 +176,52 @@ class Test_Datapath(unittest.TestCase):
             self.assertEqual(state, handler.MAIN_DISPATCHER)
             self.assertEqual(kwargs, {})
         self.assertEqual(expected_json, output_json)
+
+
+class TestOpenFlowController(unittest.TestCase):
+    """
+    Test cases for OpenFlowController
+    """
+    @mock.patch("os_ken.controller.controller.CONF")
+    def _test_ssl(self, this_dir, port, conf_mock):
+        conf_mock.ofp_ssl_listen_port = port
+        conf_mock.ofp_listen_host = "127.0.0.1"
+        conf_mock.ca_certs = None
+        conf_mock.ctl_cert = os.path.join(this_dir, 'cert.crt')
+        conf_mock.ctl_privkey = os.path.join(this_dir, 'cert.key')
+        c = controller.OpenFlowController()
+        c()
+
+    def test_ssl(self):
+        """Tests SSL server functionality."""
+        # TODO: TLS version enforcement is necessary to avoid
+        # vulnerable versions. Currently, this only tests TLS
+        # connectivity.
+        this_dir = os.path.dirname(sys.modules[__name__].__file__)
+        saved_exception = None
+        try:
+            ssl_version = ssl.PROTOCOL_TLS
+        except AttributeError:
+            # For compatibility with older pythons.
+            ssl_version = ssl.PROTOCOL_TLSv1
+        for i in range(3):
+            try:
+                # Try a few times as this can fail with EADDRINUSE
+                port = random.randint(5000, 10000)
+                server = hub.spawn(self._test_ssl, this_dir, port)
+                hub.sleep(1)
+                client = hub.StreamClient(("127.0.0.1", port),
+                                          timeout=5,
+                                          ssl_version=ssl_version)
+                if client.connect() is not None:
+                    break
+            except Exception as e:
+                saved_exception = e
+                continue
+            finally:
+                try:
+                    hub.kill(server)
+                except Exception:
+                    pass
+        else:
+            self.fail("Failed to connect: " + str(saved_exception))
