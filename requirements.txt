@@ -4,7 +4,7 @@
 
 pbr>=2.0.0 # Apache-2.0
 eventlet>=0.22.0,!=0.23.0 # MIT
-msgpack>=0.5.0  # RPC library, BGP speaker(net_cntl)
+msgpack>=1.0.0  # RPC library, BGP speaker(net_cntl)
 netaddr>=0.7.18 # BSD
 oslo.config>=5.1.0
 ovs>=2.8.0  # OVSDB
