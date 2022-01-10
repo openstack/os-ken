@@ -1,3 +1,4 @@
+eventlet>=0.22.0,!=0.23.0 # MIT
 sphinx>=2.0.0,!=2.1.0 # BSD
 openstackdocstheme>=2.2.1 # Apache-2.0
 # releasenotes
