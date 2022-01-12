@@ -6,6 +6,7 @@
     check:
       jobs:
         - tempest-integrated-networking
+        - neutron-tempest-plugin-dynamic-routing
     gate:
       jobs:
         - tempest-integrated-networking

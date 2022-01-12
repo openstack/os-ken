@@ -192,10 +192,13 @@ def call(symbol, **kwargs):
     """Calls/executes BGPS public API identified by given symbol and passes
     given kwargs as param.
     """
+    if 'password' in kwargs:
+        log_str = str(
+            dict(kwargs.items() - {'password': kwargs['password']}.items()))
+    else:
+        log_str = str(kwargs)
     LOG.info(
-        "API method %s called with args: %s",
-        symbol,
-        str(dict(kwargs.items() - {'password': kwargs['password']}.items())))
+        "API method %s called with args: %s", symbol, log_str)
 
     # TODO(PH, JK) improve the way api function modules are loaded
     from . import all  # noqa
