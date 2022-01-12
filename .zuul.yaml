@@ -3,3 +3,7 @@
       - openstack-python3-ussuri-jobs
       - publish-openstack-docs-pti
       - release-notes-jobs-python3
+    check:
+      jobs:
+        - tempest-integrated-networking
+        - neutron-tempest-plugin-dynamic-routing
