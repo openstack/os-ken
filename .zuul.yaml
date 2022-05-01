@@ -6,7 +6,8 @@
     check:
       jobs:
         - tempest-integrated-networking
-        - neutron-tempest-plugin-dynamic-routing
+        - neutron-tempest-plugin-dynamic-routing:
+            voting: false
     gate:
       jobs:
         - tempest-integrated-networking
