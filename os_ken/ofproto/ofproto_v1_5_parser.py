@@ -1615,7 +1615,7 @@ class OFPPort(StringifyMixin):
     hw_addr    MAC address for the port.
     name       Null-terminated string containing a human-readable name
                for the interface.
-    config     Bitmap of port configration flags.
+    config     Bitmap of port configuration flags.
 
                | OFPPC_PORT_DOWN
                | OFPPC_NO_RECV
