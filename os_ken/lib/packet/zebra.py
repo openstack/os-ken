@@ -23,9 +23,9 @@ import abc
 import socket
 import struct
 import logging
-from distutils.version import LooseVersion
 
 import netaddr
+from packaging import version as packaging_version
 import six
 
 from os_ken import flags as cfg_flags  # For loading 'zapi' option definition
@@ -45,8 +45,8 @@ LOG = logging.getLogger(__name__)
 _DEFAULT_VERSION = 3
 _DEFAULT_FRR_VERSION = 4
 
-_FRR_VERSION_2_0 = LooseVersion('2.0')
-_FRR_VERSION_3_0 = LooseVersion('3.0')
+_FRR_VERSION_2_0 = packaging_version.Version('2.0')
+_FRR_VERSION_3_0 = packaging_version.Version('3.0')
 
 # Constants in quagga/lib/zebra.h
 
