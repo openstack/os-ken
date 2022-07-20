@@ -18,7 +18,6 @@ import unittest
 import logging
 import inspect
 
-from nose.tools import eq_
 from os_ken.lib.packet import mpls
 
 
@@ -49,13 +48,13 @@ class Test_mpls(unittest.TestCase):
                               if k in mpls_values])
         mpls_str = '%s(%s)' % (mpls.mpls.__name__, _mpls_str)
 
-        eq_(str(self.mp), mpls_str)
-        eq_(repr(self.mp), mpls_str)
+        self.assertEqual(str(self.mp), mpls_str)
+        self.assertEqual(repr(self.mp), mpls_str)
 
     def test_json(self):
         jsondict = self.mp.to_jsondict()
         mp = mpls.mpls.from_jsondict(jsondict['mpls'])
-        eq_(str(self.mp), str(mp))
+        self.assertEqual(str(self.mp), str(mp))
 
     def test_label_from_bin_true(self):
         mpls_label = 0xfffff
@@ -63,8 +62,8 @@ class Test_mpls(unittest.TestCase):
         buf = b'\xff\xff\xf1'
         mpls_label_out, is_bos_out = mpls.label_from_bin(buf)
 
-        eq_(mpls_label, mpls_label_out)
-        eq_(is_bos, is_bos_out)
+        self.assertEqual(mpls_label, mpls_label_out)
+        self.assertEqual(is_bos, is_bos_out)
 
     def test_label_from_bin_false(self):
         mpls_label = 0xfffff
@@ -72,8 +71,8 @@ class Test_mpls(unittest.TestCase):
         buf = b'\xff\xff\xf0'
         mpls_label_out, is_bos_out = mpls.label_from_bin(buf)
 
-        eq_(mpls_label, mpls_label_out)
-        eq_(is_bos, is_bos_out)
+        self.assertEqual(mpls_label, mpls_label_out)
+        self.assertEqual(is_bos, is_bos_out)
 
     def test_label_to_bin_true(self):
         mpls_label = 0xfffff
@@ -81,7 +80,7 @@ class Test_mpls(unittest.TestCase):
         label = b'\xff\xff\xf1'
         label_out = mpls.label_to_bin(mpls_label, is_bos)
 
-        eq_(label, label_out)
+        self.assertEqual(label, label_out)
 
     def test_label_to_bin_false(self):
         mpls_label = 0xfffff
@@ -89,4 +88,4 @@ class Test_mpls(unittest.TestCase):
         label = b'\xff\xff\xf0'
         label_out = mpls.label_to_bin(mpls_label, is_bos)
 
-        eq_(label, label_out)
+        self.assertEqual(label, label_out)

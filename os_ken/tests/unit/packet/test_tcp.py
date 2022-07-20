@@ -20,7 +20,6 @@ import logging
 import six
 import struct
 from struct import *
-from nose.tools import *
 from os_ken.ofproto import inet
 from os_ken.lib.packet import tcp
 from os_ken.lib.packet.ipv4 import ipv4
@@ -59,31 +58,31 @@ class Test_tcp(unittest.TestCase):
         pass
 
     def test_init(self):
-        eq_(self.src_port, self.t.src_port)
-        eq_(self.dst_port, self.t.dst_port)
-        eq_(self.seq, self.t.seq)
-        eq_(self.ack, self.t.ack)
-        eq_(self.offset, self.t.offset)
-        eq_(self.bits, self.t.bits)
-        eq_(self.window_size, self.t.window_size)
-        eq_(self.csum, self.t.csum)
-        eq_(self.urgent, self.t.urgent)
-        eq_(self.option, self.t.option)
+        self.assertEqual(self.src_port, self.t.src_port)
+        self.assertEqual(self.dst_port, self.t.dst_port)
+        self.assertEqual(self.seq, self.t.seq)
+        self.assertEqual(self.ack, self.t.ack)
+        self.assertEqual(self.offset, self.t.offset)
+        self.assertEqual(self.bits, self.t.bits)
+        self.assertEqual(self.window_size, self.t.window_size)
+        self.assertEqual(self.csum, self.t.csum)
+        self.assertEqual(self.urgent, self.t.urgent)
+        self.assertEqual(self.option, self.t.option)
 
     def test_parser(self):
         r1, r2, _ = self.t.parser(self.buf)
 
-        eq_(self.src_port, r1.src_port)
-        eq_(self.dst_port, r1.dst_port)
-        eq_(self.seq, r1.seq)
-        eq_(self.ack, r1.ack)
-        eq_(self.offset, r1.offset)
-        eq_(self.bits, r1.bits)
-        eq_(self.window_size, r1.window_size)
-        eq_(self.csum, r1.csum)
-        eq_(self.urgent, r1.urgent)
-        eq_(self.option, r1.option)
-        eq_(None, r2)
+        self.assertEqual(self.src_port, r1.src_port)
+        self.assertEqual(self.dst_port, r1.dst_port)
+        self.assertEqual(self.seq, r1.seq)
+        self.assertEqual(self.ack, r1.ack)
+        self.assertEqual(self.offset, r1.offset)
+        self.assertEqual(self.bits, r1.bits)
+        self.assertEqual(self.window_size, r1.window_size)
+        self.assertEqual(self.csum, r1.csum)
+        self.assertEqual(self.urgent, r1.urgent)
+        self.assertEqual(self.option, r1.option)
+        self.assertEqual(None, r2)
 
     def test_serialize(self):
         offset = 5
@@ -99,20 +98,20 @@ class Test_tcp(unittest.TestCase):
         buf = t.serialize(bytearray(), prev)
         res = struct.unpack(tcp.tcp._PACK_STR, six.binary_type(buf))
 
-        eq_(res[0], self.src_port)
-        eq_(res[1], self.dst_port)
-        eq_(res[2], self.seq)
-        eq_(res[3], self.ack)
-        eq_(res[4], offset << 4)
-        eq_(res[5], self.bits)
-        eq_(res[6], self.window_size)
-        eq_(res[8], self.urgent)
+        self.assertEqual(res[0], self.src_port)
+        self.assertEqual(res[1], self.dst_port)
+        self.assertEqual(res[2], self.seq)
+        self.assertEqual(res[3], self.ack)
+        self.assertEqual(res[4], offset << 4)
+        self.assertEqual(res[5], self.bits)
+        self.assertEqual(res[6], self.window_size)
+        self.assertEqual(res[8], self.urgent)
 
         # test __len__
         # offset indicates the number of 32 bit (= 4 bytes)
         # words in the TCP Header.
         # So, we compare len(tcp) with offset * 4, here.
-        eq_(offset * 4, len(t))
+        self.assertEqual(offset * 4, len(t))
 
         # checksum
         ph = struct.pack('!4s4sBBH',
@@ -120,7 +119,7 @@ class Test_tcp(unittest.TestCase):
                          addrconv.ipv4.text_to_bin(dst_ip), 0, 6, offset * 4)
         d = ph + buf
         s = packet_utils.checksum(d)
-        eq_(0, s)
+        self.assertEqual(0, s)
 
     def test_serialize_option(self):
         # prepare test data
@@ -149,16 +148,15 @@ class Test_tcp(unittest.TestCase):
                     option)
         buf = t.serialize(bytearray(), prev)
         r_option_buf = buf[tcp.tcp._MIN_LEN:tcp.tcp._MIN_LEN + len(option_buf)]
-        eq_(option_buf, r_option_buf)
+        self.assertEqual(option_buf, r_option_buf)
 
         # test parser
         (r_tcp, _, _) = tcp.tcp.parser(buf)
-        eq_(str(option), str(r_tcp.option))
+        self.assertEqual(str(option), str(r_tcp.option))
 
-    @raises(Exception)
     def test_malformed_tcp(self):
         m_short_buf = self.buf[1:tcp.tcp._MIN_LEN]
-        tcp.tcp.parser(m_short_buf)
+        self.assertRaises(Exception, tcp.tcp.parser, m_short_buf)
 
     def test_default_args(self):
         prev = ipv4(proto=inet.IPPROTO_TCP)
@@ -166,49 +164,49 @@ class Test_tcp(unittest.TestCase):
         buf = t.serialize(bytearray(), prev)
         res = struct.unpack(tcp.tcp._PACK_STR, buf)
 
-        eq_(res[0], 1)
-        eq_(res[1], 1)
-        eq_(res[2], 0)
-        eq_(res[3], 0)
-        eq_(res[4], 5 << 4)
-        eq_(res[5], 0)
-        eq_(res[6], 0)
-        eq_(res[8], 0)
+        self.assertEqual(res[0], 1)
+        self.assertEqual(res[1], 1)
+        self.assertEqual(res[2], 0)
+        self.assertEqual(res[3], 0)
+        self.assertEqual(res[4], 5 << 4)
+        self.assertEqual(res[5], 0)
+        self.assertEqual(res[6], 0)
+        self.assertEqual(res[8], 0)
 
         # with option, without offset
         t = tcp.tcp(option=[tcp.TCPOptionMaximumSegmentSize(1460)])
         buf = t.serialize(bytearray(), prev)
         res = struct.unpack(tcp.tcp._PACK_STR + '4s', buf)
 
-        eq_(res[0], 1)
-        eq_(res[1], 1)
-        eq_(res[2], 0)
-        eq_(res[3], 0)
-        eq_(res[4], 6 << 4)
-        eq_(res[5], 0)
-        eq_(res[6], 0)
-        eq_(res[8], 0)
-        eq_(res[9], b'\x02\x04\x05\xb4')
+        self.assertEqual(res[0], 1)
+        self.assertEqual(res[1], 1)
+        self.assertEqual(res[2], 0)
+        self.assertEqual(res[3], 0)
+        self.assertEqual(res[4], 6 << 4)
+        self.assertEqual(res[5], 0)
+        self.assertEqual(res[6], 0)
+        self.assertEqual(res[8], 0)
+        self.assertEqual(res[9], b'\x02\x04\x05\xb4')
 
         # with option, with long offset
         t = tcp.tcp(offset=7, option=[tcp.TCPOptionWindowScale(shift_cnt=9)])
         buf = t.serialize(bytearray(), prev)
         res = struct.unpack(tcp.tcp._PACK_STR + '8s', buf)
 
-        eq_(res[0], 1)
-        eq_(res[1], 1)
-        eq_(res[2], 0)
-        eq_(res[3], 0)
-        eq_(res[4], 7 << 4)
-        eq_(res[5], 0)
-        eq_(res[6], 0)
-        eq_(res[8], 0)
-        eq_(res[9], b'\x03\x03\x09\x00\x00\x00\x00\x00')
+        self.assertEqual(res[0], 1)
+        self.assertEqual(res[1], 1)
+        self.assertEqual(res[2], 0)
+        self.assertEqual(res[3], 0)
+        self.assertEqual(res[4], 7 << 4)
+        self.assertEqual(res[5], 0)
+        self.assertEqual(res[6], 0)
+        self.assertEqual(res[8], 0)
+        self.assertEqual(res[9], b'\x03\x03\x09\x00\x00\x00\x00\x00')
 
     def test_json(self):
         jsondict = self.t.to_jsondict()
         t = tcp.tcp.from_jsondict(jsondict['tcp'])
-        eq_(str(self.t), str(t))
+        self.assertEqual(str(self.t), str(t))
 
 
 class Test_TCPOption(unittest.TestCase):
@@ -250,7 +248,7 @@ class Test_TCPOption(unittest.TestCase):
         output_buf = bytearray()
         for option in self.input_options:
             output_buf += option.serialize()
-        eq_(self.input_buf, output_buf)
+        self.assertEqual(self.input_buf, output_buf)
 
     def test_parser(self):
         buf = self.input_buf
@@ -258,10 +256,10 @@ class Test_TCPOption(unittest.TestCase):
         while buf:
             opt, buf = tcp.TCPOption.parser(buf)
             output_options.append(opt)
-        eq_(str(self.input_options), str(output_options))
+        self.assertEqual(str(self.input_options), str(output_options))
 
     def test_json(self):
         for option in self.input_options:
             json_dict = option.to_jsondict()[option.__class__.__name__]
             output_option = option.__class__.from_jsondict(json_dict)
-            eq_(str(option), str(output_option))
+            self.assertEqual(str(option), str(output_option))

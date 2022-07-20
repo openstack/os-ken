@@ -19,7 +19,6 @@ import unittest
 import logging
 import struct
 from struct import *
-from nose.tools import *
 from os_ken.ofproto import ether, inet
 from os_ken.lib.packet.packet import Packet
 from os_ken.lib.packet.udp import udp
@@ -48,19 +47,19 @@ class Test_udp(unittest.TestCase):
         pass
 
     def test_init(self):
-        eq_(self.src_port, self.u.src_port)
-        eq_(self.dst_port, self.u.dst_port)
-        eq_(self.total_length, self.u.total_length)
-        eq_(self.csum, self.u.csum)
+        self.assertEqual(self.src_port, self.u.src_port)
+        self.assertEqual(self.dst_port, self.u.dst_port)
+        self.assertEqual(self.total_length, self.u.total_length)
+        self.assertEqual(self.csum, self.u.csum)
 
     def test_parser(self):
         r1, r2, _ = self.u.parser(self.buf)
 
-        eq_(self.src_port, r1.src_port)
-        eq_(self.dst_port, r1.dst_port)
-        eq_(self.total_length, r1.total_length)
-        eq_(self.csum, r1.csum)
-        eq_(None, r2)
+        self.assertEqual(self.src_port, r1.src_port)
+        self.assertEqual(self.dst_port, r1.dst_port)
+        self.assertEqual(self.total_length, r1.total_length)
+        self.assertEqual(self.csum, r1.csum)
+        self.assertEqual(None, r2)
 
     def test_serialize(self):
         src_port = 6431
@@ -77,9 +76,9 @@ class Test_udp(unittest.TestCase):
         buf = u.serialize(bytearray(), prev)
         res = struct.unpack(udp._PACK_STR, buf)
 
-        eq_(res[0], src_port)
-        eq_(res[1], dst_port)
-        eq_(res[2], struct.calcsize(udp._PACK_STR))
+        self.assertEqual(res[0], src_port)
+        self.assertEqual(res[1], dst_port)
+        self.assertEqual(res[2], struct.calcsize(udp._PACK_STR))
 
         # checksum
         ph = struct.pack('!4s4sBBH',
@@ -87,12 +86,11 @@ class Test_udp(unittest.TestCase):
                          addrconv.ipv4.text_to_bin(dst_ip), 0, 17, res[2])
         d = ph + buf + bytearray()
         s = packet_utils.checksum(d)
-        eq_(0, s)
+        self.assertEqual(0, s)
 
-    @raises(Exception)
     def test_malformed_udp(self):
         m_short_buf = self.buf[1:udp._MIN_LEN]
-        udp.parser(m_short_buf)
+        self.assertRaises(Exception, udp.parser, m_short_buf)
 
     def test_default_args(self):
         prev = ipv4(proto=inet.IPPROTO_UDP)
@@ -100,11 +98,11 @@ class Test_udp(unittest.TestCase):
         buf = u.serialize(bytearray(), prev)
         res = struct.unpack(udp._PACK_STR, buf)
 
-        eq_(res[0], 1)
-        eq_(res[1], 1)
-        eq_(res[2], udp._MIN_LEN)
+        self.assertEqual(res[0], 1)
+        self.assertEqual(res[1], 1)
+        self.assertEqual(res[2], udp._MIN_LEN)
 
     def test_json(self):
         jsondict = self.u.to_jsondict()
         u = udp.from_jsondict(jsondict['udp'])
-        eq_(str(self.u), str(u))
+        self.assertEqual(str(self.u), str(u))

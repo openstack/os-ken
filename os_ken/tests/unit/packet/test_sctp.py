@@ -20,8 +20,6 @@ import six
 import struct
 import unittest
 
-from nose.tools import eq_
-from nose.tools import ok_
 from os_ken.lib import addrconv
 from os_ken.lib.packet import packet
 from os_ken.lib.packet import ethernet
@@ -518,11 +516,11 @@ class Test_sctp(unittest.TestCase):
         pass
 
     def test_init(self):
-        eq_(self.src_port, self.sc.src_port)
-        eq_(self.dst_port, self.sc.dst_port)
-        eq_(self.vtag, self.sc.vtag)
-        eq_(self.csum, self.sc.csum)
-        eq_(self.chunks, self.sc.chunks)
+        self.assertEqual(self.src_port, self.sc.src_port)
+        self.assertEqual(self.dst_port, self.sc.dst_port)
+        self.assertEqual(self.vtag, self.sc.vtag)
+        self.assertEqual(self.csum, self.sc.csum)
+        self.assertEqual(self.chunks, self.sc.chunks)
 
     def test_init_with_data(self):
         self.setUp_with_data()
@@ -597,11 +595,11 @@ class Test_sctp(unittest.TestCase):
         # to calculate the lengths of parameters.
         self.sc.serialize(None, None)
 
-        eq_(self.src_port, res.src_port)
-        eq_(self.dst_port, res.dst_port)
-        eq_(self.vtag, res.vtag)
-        eq_(self.csum, res.csum)
-        eq_(str(self.chunks), str(res.chunks))
+        self.assertEqual(self.src_port, res.src_port)
+        self.assertEqual(self.dst_port, res.dst_port)
+        self.assertEqual(self.vtag, res.vtag)
+        self.assertEqual(self.csum, res.csum)
+        self.assertEqual(str(self.chunks), str(res.chunks))
 
     def test_parser_with_data(self):
         self.setUp_with_data()
@@ -670,11 +668,11 @@ class Test_sctp(unittest.TestCase):
     def _test_serialize(self):
         buf = self.sc.serialize(bytearray(), None)
         res = struct.unpack_from(sctp.sctp._PACK_STR, buf)
-        eq_(self.src_port, res[0])
-        eq_(self.dst_port, res[1])
-        eq_(self.vtag, res[2])
+        self.assertEqual(self.src_port, res[0])
+        self.assertEqual(self.dst_port, res[1])
+        self.assertEqual(self.vtag, res[2])
         # skip compare checksum
-        # eq_(self.csum, res[3])
+        # self.assertEqual(self.csum, res[3])
 
         return buf[sctp.sctp._MIN_LEN:]
 
@@ -685,71 +683,71 @@ class Test_sctp(unittest.TestCase):
         self.setUp_with_data()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_data._PACK_STR, buf)
-        eq_(sctp.chunk_data.chunk_type(), res[0])
+        self.assertEqual(sctp.chunk_data.chunk_type(), res[0])
         flags = (
             (self.unordered << 2) |
             (self.begin << 1) |
             (self.end << 0))
-        eq_(flags, res[1])
-        eq_(self.length, res[2])
-        eq_(self.tsn, res[3])
-        eq_(self.sid, res[4])
-        eq_(self.seq, res[5])
-        eq_(self.payload_id, res[6])
-        eq_(self.payload_data, buf[sctp.chunk_data._MIN_LEN:])
+        self.assertEqual(flags, res[1])
+        self.assertEqual(self.length, res[2])
+        self.assertEqual(self.tsn, res[3])
+        self.assertEqual(self.sid, res[4])
+        self.assertEqual(self.seq, res[5])
+        self.assertEqual(self.payload_id, res[6])
+        self.assertEqual(self.payload_data, buf[sctp.chunk_data._MIN_LEN:])
 
     def test_serialize_with_init(self):
         self.setUp_with_init()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_init._PACK_STR, buf)
-        eq_(sctp.chunk_init.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
-        eq_(self.init_tag, res[3])
-        eq_(self.a_rwnd, res[4])
-        eq_(self.os, res[5])
-        eq_(self.mis, res[6])
-        eq_(self.i_tsn, res[7])
+        self.assertEqual(sctp.chunk_init.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
+        self.assertEqual(self.init_tag, res[3])
+        self.assertEqual(self.a_rwnd, res[4])
+        self.assertEqual(self.os, res[5])
+        self.assertEqual(self.mis, res[6])
+        self.assertEqual(self.i_tsn, res[7])
 
         buf = buf[sctp.chunk_init._MIN_LEN:]
         res1 = struct.unpack_from(sctp.param_ipv4._PACK_STR, buf)
-        eq_(sctp.param_ipv4.param_type(), res1[0])
-        eq_(8, res1[1])
-        eq_('192.168.1.1', addrconv.ipv4.bin_to_text(
+        self.assertEqual(sctp.param_ipv4.param_type(), res1[0])
+        self.assertEqual(8, res1[1])
+        self.assertEqual('192.168.1.1', addrconv.ipv4.bin_to_text(
             buf[sctp.param_ipv4._MIN_LEN:sctp.param_ipv4._MIN_LEN + 4]))
 
         buf = buf[8:]
         res2 = struct.unpack_from(sctp.param_ipv6._PACK_STR, buf)
-        eq_(sctp.param_ipv6.param_type(), res2[0])
-        eq_(20, res2[1])
-        eq_('fe80::647e:1aff:fec4:8284', addrconv.ipv6.bin_to_text(
+        self.assertEqual(sctp.param_ipv6.param_type(), res2[0])
+        self.assertEqual(20, res2[1])
+        self.assertEqual('fe80::647e:1aff:fec4:8284', addrconv.ipv6.bin_to_text(
             buf[sctp.param_ipv6._MIN_LEN:sctp.param_ipv6._MIN_LEN + 16]))
 
         buf = buf[20:]
         res3 = struct.unpack_from(sctp.param_cookie_preserve._PACK_STR,
                                   buf)
-        eq_(sctp.param_cookie_preserve.param_type(), res3[0])
-        eq_(8, res3[1])
-        eq_(5000, res3[2])
+        self.assertEqual(sctp.param_cookie_preserve.param_type(), res3[0])
+        self.assertEqual(8, res3[1])
+        self.assertEqual(5000, res3[2])
 
         buf = buf[8:]
         res4 = struct.unpack_from(sctp.param_ecn._PACK_STR, buf)
-        eq_(sctp.param_ecn.param_type(), res4[0])
-        eq_(4, res4[1])
+        self.assertEqual(sctp.param_ecn.param_type(), res4[0])
+        self.assertEqual(4, res4[1])
 
         buf = buf[4:]
         res5 = struct.unpack_from(sctp.param_host_addr._PACK_STR, buf)
-        eq_(sctp.param_host_addr.param_type(), res5[0])
-        eq_(14, res5[1])
-        eq_(b'test host\x00',
+        self.assertEqual(sctp.param_host_addr.param_type(), res5[0])
+        self.assertEqual(14, res5[1])
+        self.assertEqual(b'test host\x00',
             buf[sctp.param_host_addr._MIN_LEN:
                 sctp.param_host_addr._MIN_LEN + 10])
 
         buf = buf[16:]
         res6 = struct.unpack_from(sctp.param_supported_addr._PACK_STR, buf)
         res6 = list(res6)
-        eq_(sctp.param_supported_addr.param_type(), res6[0])
-        eq_(14, res6[1])
+        self.assertEqual(sctp.param_supported_addr.param_type(), res6[0])
+        self.assertEqual(14, res6[1])
         buf = buf[sctp.param_supported_addr._MIN_LEN:]
         offset = 0
         tmplist = []
@@ -758,66 +756,66 @@ class Test_sctp(unittest.TestCase):
             tmplist.append(tmp)
             offset += struct.calcsize('!H')
         res6.extend(tmplist)
-        eq_(sctp.PTYPE_IPV4, res6[2])
-        eq_(sctp.PTYPE_IPV6, res6[3])
-        eq_(sctp.PTYPE_COOKIE_PRESERVE, res6[4])
-        eq_(sctp.PTYPE_ECN, res6[5])
-        eq_(sctp.PTYPE_HOST_ADDR, res6[6])
+        self.assertEqual(sctp.PTYPE_IPV4, res6[2])
+        self.assertEqual(sctp.PTYPE_IPV6, res6[3])
+        self.assertEqual(sctp.PTYPE_COOKIE_PRESERVE, res6[4])
+        self.assertEqual(sctp.PTYPE_ECN, res6[5])
+        self.assertEqual(sctp.PTYPE_HOST_ADDR, res6[6])
 
     def test_serialize_with_init_ack(self):
         self.setUp_with_init_ack()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_init_ack._PACK_STR, buf)
-        eq_(sctp.chunk_init_ack.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
-        eq_(self.init_tag, res[3])
-        eq_(self.a_rwnd, res[4])
-        eq_(self.os, res[5])
-        eq_(self.mis, res[6])
-        eq_(self.i_tsn, res[7])
+        self.assertEqual(sctp.chunk_init_ack.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
+        self.assertEqual(self.init_tag, res[3])
+        self.assertEqual(self.a_rwnd, res[4])
+        self.assertEqual(self.os, res[5])
+        self.assertEqual(self.mis, res[6])
+        self.assertEqual(self.i_tsn, res[7])
 
         buf = buf[sctp.chunk_init_ack._MIN_LEN:]
         res1 = struct.unpack_from(sctp.param_state_cookie._PACK_STR, buf)
-        eq_(sctp.param_state_cookie.param_type(), res1[0])
-        eq_(7, res1[1])
-        eq_(b'\x01\x02\x03',
+        self.assertEqual(sctp.param_state_cookie.param_type(), res1[0])
+        self.assertEqual(7, res1[1])
+        self.assertEqual(b'\x01\x02\x03',
             buf[sctp.param_state_cookie._MIN_LEN:
                 sctp.param_state_cookie._MIN_LEN + 3])
 
         buf = buf[8:]
         res2 = struct.unpack_from(sctp.param_ipv4._PACK_STR, buf)
-        eq_(sctp.param_ipv4.param_type(), res2[0])
-        eq_(8, res2[1])
-        eq_('192.168.1.1', addrconv.ipv4.bin_to_text(
+        self.assertEqual(sctp.param_ipv4.param_type(), res2[0])
+        self.assertEqual(8, res2[1])
+        self.assertEqual('192.168.1.1', addrconv.ipv4.bin_to_text(
             buf[sctp.param_ipv4._MIN_LEN:sctp.param_ipv4._MIN_LEN + 4]))
 
         buf = buf[8:]
         res3 = struct.unpack_from(sctp.param_ipv6._PACK_STR, buf)
-        eq_(sctp.param_ipv6.param_type(), res3[0])
-        eq_(20, res3[1])
-        eq_('fe80::647e:1aff:fec4:8284', addrconv.ipv6.bin_to_text(
+        self.assertEqual(sctp.param_ipv6.param_type(), res3[0])
+        self.assertEqual(20, res3[1])
+        self.assertEqual('fe80::647e:1aff:fec4:8284', addrconv.ipv6.bin_to_text(
             buf[sctp.param_ipv6._MIN_LEN:sctp.param_ipv6._MIN_LEN + 16]))
 
         buf = buf[20:]
         res4 = struct.unpack_from(
             sctp.param_unrecognized_param._PACK_STR, buf)
-        eq_(sctp.param_unrecognized_param.param_type(), res4[0])
-        eq_(8, res4[1])
-        eq_(b'\xff\xff\x00\x04',
+        self.assertEqual(sctp.param_unrecognized_param.param_type(), res4[0])
+        self.assertEqual(8, res4[1])
+        self.assertEqual(b'\xff\xff\x00\x04',
             buf[sctp.param_unrecognized_param._MIN_LEN:
                 sctp.param_unrecognized_param._MIN_LEN + 4])
 
         buf = buf[8:]
         res5 = struct.unpack_from(sctp.param_ecn._PACK_STR, buf)
-        eq_(sctp.param_ecn.param_type(), res5[0])
-        eq_(4, res5[1])
+        self.assertEqual(sctp.param_ecn.param_type(), res5[0])
+        self.assertEqual(4, res5[1])
 
         buf = buf[4:]
         res6 = struct.unpack_from(sctp.param_host_addr._PACK_STR, buf)
-        eq_(sctp.param_host_addr.param_type(), res6[0])
-        eq_(14, res6[1])
-        eq_(b'test host\x00',
+        self.assertEqual(sctp.param_host_addr.param_type(), res6[0])
+        self.assertEqual(14, res6[1])
+        self.assertEqual(b'test host\x00',
             buf[sctp.param_host_addr._MIN_LEN:
                 sctp.param_host_addr._MIN_LEN + 10])
 
@@ -825,13 +823,13 @@ class Test_sctp(unittest.TestCase):
         self.setUp_with_sack()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_sack._PACK_STR, buf)
-        eq_(sctp.chunk_sack.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
-        eq_(self.tsn_ack, res[3])
-        eq_(self.a_rwnd, res[4])
-        eq_(self.gapack_num, res[5])
-        eq_(self.duptsn_num, res[6])
+        self.assertEqual(sctp.chunk_sack.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
+        self.assertEqual(self.tsn_ack, res[3])
+        self.assertEqual(self.a_rwnd, res[4])
+        self.assertEqual(self.gapack_num, res[5])
+        self.assertEqual(self.duptsn_num, res[6])
 
         buf = buf[sctp.chunk_sack._MIN_LEN:]
         gapacks = []
@@ -847,22 +845,22 @@ class Test_sctp(unittest.TestCase):
                 sctp.chunk_sack._DUPTSN_STR, buf)
             duptsns.append(duptsn)
             buf = buf[sctp.chunk_sack._DUPTSN_LEN:]
-        eq_(self.gapacks, gapacks)
-        eq_(self.duptsns, duptsns)
+        self.assertEqual(self.gapacks, gapacks)
+        self.assertEqual(self.duptsns, duptsns)
 
     def test_serialize_with_heartbeat(self):
         self.setUp_with_heartbeat()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_heartbeat._PACK_STR, buf)
-        eq_(sctp.chunk_heartbeat.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
+        self.assertEqual(sctp.chunk_heartbeat.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
 
         buf = buf[sctp.chunk_heartbeat._MIN_LEN:]
         res1 = struct.unpack_from(sctp.param_heartbeat._PACK_STR, buf)
-        eq_(sctp.param_heartbeat.param_type(), res1[0])
-        eq_(8, res1[1])
-        eq_(b'\x01\x02\x03\x04',
+        self.assertEqual(sctp.param_heartbeat.param_type(), res1[0])
+        self.assertEqual(8, res1[1])
+        self.assertEqual(b'\x01\x02\x03\x04',
             buf[sctp.param_heartbeat._MIN_LEN:
                 sctp.param_heartbeat._MIN_LEN + 4])
 
@@ -870,15 +868,15 @@ class Test_sctp(unittest.TestCase):
         self.setUp_with_heartbeat_ack()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_heartbeat_ack._PACK_STR, buf)
-        eq_(sctp.chunk_heartbeat_ack.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
+        self.assertEqual(sctp.chunk_heartbeat_ack.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
 
         buf = buf[sctp.chunk_heartbeat_ack._MIN_LEN:]
         res1 = struct.unpack_from(sctp.param_heartbeat._PACK_STR, buf)
-        eq_(sctp.param_heartbeat.param_type(), res1[0])
-        eq_(12, res1[1])
-        eq_(b'\xff\xee\xdd\xcc\xbb\xaa\x99\x88',
+        self.assertEqual(sctp.param_heartbeat.param_type(), res1[0])
+        self.assertEqual(12, res1[1])
+        self.assertEqual(b'\xff\xee\xdd\xcc\xbb\xaa\x99\x88',
             buf[sctp.param_heartbeat._MIN_LEN:
                 sctp.param_heartbeat._MIN_LEN + 8])
 
@@ -886,50 +884,50 @@ class Test_sctp(unittest.TestCase):
         self.setUp_with_abort()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_abort._PACK_STR, buf)
-        eq_(sctp.chunk_abort.chunk_type(), res[0])
+        self.assertEqual(sctp.chunk_abort.chunk_type(), res[0])
         flags = self.tflag << 0
-        eq_(flags, res[1])
-        eq_(self.length, res[2])
+        self.assertEqual(flags, res[1])
+        self.assertEqual(self.length, res[2])
 
         buf = buf[sctp.chunk_abort._MIN_LEN:]
         res1 = struct.unpack_from(sctp.cause_invalid_stream_id._PACK_STR, buf)
-        eq_(sctp.cause_invalid_stream_id.cause_code(), res1[0])
-        eq_(8, res1[1])
-        eq_(4096, res1[2])
+        self.assertEqual(sctp.cause_invalid_stream_id.cause_code(), res1[0])
+        self.assertEqual(8, res1[1])
+        self.assertEqual(4096, res1[2])
 
         buf = buf[8:]
         res2 = struct.unpack_from(sctp.cause_missing_param._PACK_STR, buf)
-        eq_(sctp.cause_missing_param.cause_code(), res2[0])
-        eq_(16, res2[1])
-        eq_(4, res2[2])
+        self.assertEqual(sctp.cause_missing_param.cause_code(), res2[0])
+        self.assertEqual(16, res2[1])
+        self.assertEqual(4, res2[2])
         types = []
         for count in range(4):
             (tmp, ) = struct.unpack_from(
                 '!H', buf, sctp.cause_missing_param._MIN_LEN + 2 * count)
             types.append(tmp)
-        eq_(str([sctp.PTYPE_IPV4, sctp.PTYPE_IPV6,
+        self.assertEqual(str([sctp.PTYPE_IPV4, sctp.PTYPE_IPV6,
                  sctp.PTYPE_COOKIE_PRESERVE, sctp.PTYPE_HOST_ADDR]),
             str(types))
 
         buf = buf[16:]
         res3 = struct.unpack_from(sctp.cause_stale_cookie._PACK_STR, buf)
-        eq_(sctp.cause_stale_cookie.cause_code(), res3[0])
-        eq_(8, res3[1])
-        eq_(b'\x00\x00\x13\x88',
+        self.assertEqual(sctp.cause_stale_cookie.cause_code(), res3[0])
+        self.assertEqual(8, res3[1])
+        self.assertEqual(b'\x00\x00\x13\x88',
             buf[sctp.cause_stale_cookie._MIN_LEN:
                 sctp.cause_stale_cookie._MIN_LEN + 4])
 
         buf = buf[8:]
         res4 = struct.unpack_from(sctp.cause_out_of_resource._PACK_STR, buf)
-        eq_(sctp.cause_out_of_resource.cause_code(), res4[0])
-        eq_(4, res4[1])
+        self.assertEqual(sctp.cause_out_of_resource.cause_code(), res4[0])
+        self.assertEqual(4, res4[1])
 
         buf = buf[4:]
         res5 = struct.unpack_from(
             sctp.cause_unresolvable_addr._PACK_STR, buf)
-        eq_(sctp.cause_unresolvable_addr.cause_code(), res5[0])
-        eq_(20, res5[1])
-        eq_(b'\x00\x0b\x00\x0e\x74\x65\x73\x74' +
+        self.assertEqual(sctp.cause_unresolvable_addr.cause_code(), res5[0])
+        self.assertEqual(20, res5[1])
+        self.assertEqual(b'\x00\x0b\x00\x0e\x74\x65\x73\x74' +
             b'\x20\x68\x6f\x73\x74\x00\x00\x00',
             buf[sctp.cause_unresolvable_addr._MIN_LEN:
                 sctp.cause_unresolvable_addr._MIN_LEN + 16])
@@ -937,64 +935,64 @@ class Test_sctp(unittest.TestCase):
         buf = buf[20:]
         res6 = struct.unpack_from(
             sctp.cause_unrecognized_chunk._PACK_STR, buf)
-        eq_(sctp.cause_unrecognized_chunk.cause_code(), res6[0])
-        eq_(8, res6[1])
-        eq_(b'\xff\x00\x00\x04',
+        self.assertEqual(sctp.cause_unrecognized_chunk.cause_code(), res6[0])
+        self.assertEqual(8, res6[1])
+        self.assertEqual(b'\xff\x00\x00\x04',
             buf[sctp.cause_unrecognized_chunk._MIN_LEN:
                 sctp.cause_unrecognized_chunk._MIN_LEN + 4])
 
         buf = buf[8:]
         res7 = struct.unpack_from(sctp.cause_invalid_param._PACK_STR, buf)
-        eq_(sctp.cause_invalid_param.cause_code(), res7[0])
-        eq_(4, res7[1])
+        self.assertEqual(sctp.cause_invalid_param.cause_code(), res7[0])
+        self.assertEqual(4, res7[1])
 
         buf = buf[4:]
         res8 = struct.unpack_from(
             sctp.cause_unrecognized_param._PACK_STR, buf)
-        eq_(sctp.cause_unrecognized_param.cause_code(), res8[0])
-        eq_(8, res8[1])
-        eq_(b'\xff\xff\x00\x04',
+        self.assertEqual(sctp.cause_unrecognized_param.cause_code(), res8[0])
+        self.assertEqual(8, res8[1])
+        self.assertEqual(b'\xff\xff\x00\x04',
             buf[sctp.cause_unrecognized_param._MIN_LEN:
                 sctp.cause_unrecognized_param._MIN_LEN + 4])
 
         buf = buf[8:]
         res9 = struct.unpack_from(sctp.cause_no_userdata._PACK_STR, buf)
-        eq_(sctp.cause_no_userdata.cause_code(), res9[0])
-        eq_(8, res9[1])
-        eq_(b'\x00\x01\xe2\x40',
+        self.assertEqual(sctp.cause_no_userdata.cause_code(), res9[0])
+        self.assertEqual(8, res9[1])
+        self.assertEqual(b'\x00\x01\xe2\x40',
             buf[sctp.cause_no_userdata._MIN_LEN:
                 sctp.cause_no_userdata._MIN_LEN + 4])
 
         buf = buf[8:]
         res10 = struct.unpack_from(
             sctp.cause_cookie_while_shutdown._PACK_STR, buf)
-        eq_(sctp.cause_cookie_while_shutdown.cause_code(), res10[0])
-        eq_(4, res10[1])
+        self.assertEqual(sctp.cause_cookie_while_shutdown.cause_code(), res10[0])
+        self.assertEqual(4, res10[1])
 
         buf = buf[4:]
         res11 = struct.unpack_from(
             sctp.cause_restart_with_new_addr._PACK_STR, buf)
-        eq_(sctp.cause_restart_with_new_addr.cause_code(), res11[0])
-        eq_(12, res11[1])
-        eq_(b'\x00\x05\x00\x08\xc0\xa8\x01\x01',
+        self.assertEqual(sctp.cause_restart_with_new_addr.cause_code(), res11[0])
+        self.assertEqual(12, res11[1])
+        self.assertEqual(b'\x00\x05\x00\x08\xc0\xa8\x01\x01',
             buf[sctp.cause_restart_with_new_addr._MIN_LEN:
                 sctp.cause_restart_with_new_addr._MIN_LEN + 8])
 
         buf = buf[12:]
         res12 = struct.unpack_from(
             sctp.cause_user_initiated_abort._PACK_STR, buf)
-        eq_(sctp.cause_user_initiated_abort.cause_code(), res12[0])
-        eq_(19, res12[1])
-        eq_(b'Key Interrupt.\x00',
+        self.assertEqual(sctp.cause_user_initiated_abort.cause_code(), res12[0])
+        self.assertEqual(19, res12[1])
+        self.assertEqual(b'Key Interrupt.\x00',
             buf[sctp.cause_user_initiated_abort._MIN_LEN:
                 sctp.cause_user_initiated_abort._MIN_LEN + 15])
 
         buf = buf[20:]
         res13 = struct.unpack_from(
             sctp.cause_protocol_violation._PACK_STR, buf)
-        eq_(sctp.cause_protocol_violation.cause_code(), res13[0])
-        eq_(20, res13[1])
-        eq_(b'Unknown reason.\x00',
+        self.assertEqual(sctp.cause_protocol_violation.cause_code(), res13[0])
+        self.assertEqual(20, res13[1])
+        self.assertEqual(b'Unknown reason.\x00',
             buf[sctp.cause_protocol_violation._MIN_LEN:
                 sctp.cause_protocol_violation._MIN_LEN + 16])
 
@@ -1002,66 +1000,66 @@ class Test_sctp(unittest.TestCase):
         self.setUp_with_shutdown()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_shutdown._PACK_STR, buf)
-        eq_(sctp.chunk_shutdown.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
-        eq_(self.tsn_ack, res[3])
+        self.assertEqual(sctp.chunk_shutdown.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
+        self.assertEqual(self.tsn_ack, res[3])
 
     def test_serialize_with_shutdown_ack(self):
         self.setUp_with_shutdown_ack()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_shutdown_ack._PACK_STR, buf)
-        eq_(sctp.chunk_shutdown_ack.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
+        self.assertEqual(sctp.chunk_shutdown_ack.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
 
     def test_serialize_with_error(self):
         self.setUp_with_error()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_error._PACK_STR, buf)
-        eq_(sctp.chunk_error.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
+        self.assertEqual(sctp.chunk_error.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
 
         buf = buf[sctp.chunk_error._MIN_LEN:]
         res1 = struct.unpack_from(sctp.cause_invalid_stream_id._PACK_STR, buf)
-        eq_(sctp.cause_invalid_stream_id.cause_code(), res1[0])
-        eq_(8, res1[1])
-        eq_(4096, res1[2])
+        self.assertEqual(sctp.cause_invalid_stream_id.cause_code(), res1[0])
+        self.assertEqual(8, res1[1])
+        self.assertEqual(4096, res1[2])
 
         buf = buf[8:]
         res2 = struct.unpack_from(sctp.cause_missing_param._PACK_STR, buf)
-        eq_(sctp.cause_missing_param.cause_code(), res2[0])
-        eq_(16, res2[1])
-        eq_(4, res2[2])
+        self.assertEqual(sctp.cause_missing_param.cause_code(), res2[0])
+        self.assertEqual(16, res2[1])
+        self.assertEqual(4, res2[2])
         types = []
         for count in range(4):
             (tmp, ) = struct.unpack_from(
                 '!H', buf, sctp.cause_missing_param._MIN_LEN + 2 * count)
             types.append(tmp)
-        eq_(str([sctp.PTYPE_IPV4, sctp.PTYPE_IPV6,
+        self.assertEqual(str([sctp.PTYPE_IPV4, sctp.PTYPE_IPV6,
                  sctp.PTYPE_COOKIE_PRESERVE, sctp.PTYPE_HOST_ADDR]),
             str(types))
 
         buf = buf[16:]
         res3 = struct.unpack_from(sctp.cause_stale_cookie._PACK_STR, buf)
-        eq_(sctp.cause_stale_cookie.cause_code(), res3[0])
-        eq_(8, res3[1])
-        eq_(b'\x00\x00\x13\x88',
+        self.assertEqual(sctp.cause_stale_cookie.cause_code(), res3[0])
+        self.assertEqual(8, res3[1])
+        self.assertEqual(b'\x00\x00\x13\x88',
             buf[sctp.cause_stale_cookie._MIN_LEN:
                 sctp.cause_stale_cookie._MIN_LEN + 4])
 
         buf = buf[8:]
         res4 = struct.unpack_from(sctp.cause_out_of_resource._PACK_STR, buf)
-        eq_(sctp.cause_out_of_resource.cause_code(), res4[0])
-        eq_(4, res4[1])
+        self.assertEqual(sctp.cause_out_of_resource.cause_code(), res4[0])
+        self.assertEqual(4, res4[1])
 
         buf = buf[4:]
         res5 = struct.unpack_from(
             sctp.cause_unresolvable_addr._PACK_STR, buf)
-        eq_(sctp.cause_unresolvable_addr.cause_code(), res5[0])
-        eq_(20, res5[1])
-        eq_(b'\x00\x0b\x00\x0e\x74\x65\x73\x74' +
+        self.assertEqual(sctp.cause_unresolvable_addr.cause_code(), res5[0])
+        self.assertEqual(20, res5[1])
+        self.assertEqual(b'\x00\x0b\x00\x0e\x74\x65\x73\x74' +
             b'\x20\x68\x6f\x73\x74\x00\x00\x00',
             buf[sctp.cause_unresolvable_addr._MIN_LEN:
                 sctp.cause_unresolvable_addr._MIN_LEN + 16])
@@ -1069,64 +1067,64 @@ class Test_sctp(unittest.TestCase):
         buf = buf[20:]
         res6 = struct.unpack_from(
             sctp.cause_unrecognized_chunk._PACK_STR, buf)
-        eq_(sctp.cause_unrecognized_chunk.cause_code(), res6[0])
-        eq_(8, res6[1])
-        eq_(b'\xff\x00\x00\x04',
+        self.assertEqual(sctp.cause_unrecognized_chunk.cause_code(), res6[0])
+        self.assertEqual(8, res6[1])
+        self.assertEqual(b'\xff\x00\x00\x04',
             buf[sctp.cause_unrecognized_chunk._MIN_LEN:
                 sctp.cause_unrecognized_chunk._MIN_LEN + 4])
 
         buf = buf[8:]
         res7 = struct.unpack_from(sctp.cause_invalid_param._PACK_STR, buf)
-        eq_(sctp.cause_invalid_param.cause_code(), res7[0])
-        eq_(4, res7[1])
+        self.assertEqual(sctp.cause_invalid_param.cause_code(), res7[0])
+        self.assertEqual(4, res7[1])
 
         buf = buf[4:]
         res8 = struct.unpack_from(
             sctp.cause_unrecognized_param._PACK_STR, buf)
-        eq_(sctp.cause_unrecognized_param.cause_code(), res8[0])
-        eq_(8, res8[1])
-        eq_(b'\xff\xff\x00\x04',
+        self.assertEqual(sctp.cause_unrecognized_param.cause_code(), res8[0])
+        self.assertEqual(8, res8[1])
+        self.assertEqual(b'\xff\xff\x00\x04',
             buf[sctp.cause_unrecognized_param._MIN_LEN:
                 sctp.cause_unrecognized_param._MIN_LEN + 4])
 
         buf = buf[8:]
         res9 = struct.unpack_from(sctp.cause_no_userdata._PACK_STR, buf)
-        eq_(sctp.cause_no_userdata.cause_code(), res9[0])
-        eq_(8, res9[1])
-        eq_(b'\x00\x01\xe2\x40',
+        self.assertEqual(sctp.cause_no_userdata.cause_code(), res9[0])
+        self.assertEqual(8, res9[1])
+        self.assertEqual(b'\x00\x01\xe2\x40',
             buf[sctp.cause_no_userdata._MIN_LEN:
                 sctp.cause_no_userdata._MIN_LEN + 4])
 
         buf = buf[8:]
         res10 = struct.unpack_from(
             sctp.cause_cookie_while_shutdown._PACK_STR, buf)
-        eq_(sctp.cause_cookie_while_shutdown.cause_code(), res10[0])
-        eq_(4, res10[1])
+        self.assertEqual(sctp.cause_cookie_while_shutdown.cause_code(), res10[0])
+        self.assertEqual(4, res10[1])
 
         buf = buf[4:]
         res11 = struct.unpack_from(
             sctp.cause_restart_with_new_addr._PACK_STR, buf)
-        eq_(sctp.cause_restart_with_new_addr.cause_code(), res11[0])
-        eq_(12, res11[1])
-        eq_(b'\x00\x05\x00\x08\xc0\xa8\x01\x01',
+        self.assertEqual(sctp.cause_restart_with_new_addr.cause_code(), res11[0])
+        self.assertEqual(12, res11[1])
+        self.assertEqual(b'\x00\x05\x00\x08\xc0\xa8\x01\x01',
             buf[sctp.cause_restart_with_new_addr._MIN_LEN:
                 sctp.cause_restart_with_new_addr._MIN_LEN + 8])
 
         buf = buf[12:]
         res12 = struct.unpack_from(
             sctp.cause_user_initiated_abort._PACK_STR, buf)
-        eq_(sctp.cause_user_initiated_abort.cause_code(), res12[0])
-        eq_(19, res12[1])
-        eq_(b'Key Interrupt.\x00',
+        self.assertEqual(sctp.cause_user_initiated_abort.cause_code(), res12[0])
+        self.assertEqual(19, res12[1])
+        self.assertEqual(b'Key Interrupt.\x00',
             buf[sctp.cause_user_initiated_abort._MIN_LEN:
                 sctp.cause_user_initiated_abort._MIN_LEN + 15])
 
         buf = buf[20:]
         res13 = struct.unpack_from(
             sctp.cause_protocol_violation._PACK_STR, buf)
-        eq_(sctp.cause_protocol_violation.cause_code(), res13[0])
-        eq_(20, res13[1])
-        eq_(b'Unknown reason.\x00',
+        self.assertEqual(sctp.cause_protocol_violation.cause_code(), res13[0])
+        self.assertEqual(20, res13[1])
+        self.assertEqual(b'Unknown reason.\x00',
             buf[sctp.cause_protocol_violation._MIN_LEN:
                 sctp.cause_protocol_violation._MIN_LEN + 16])
 
@@ -1134,10 +1132,10 @@ class Test_sctp(unittest.TestCase):
         self.setUp_with_cookie_echo()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_cookie_echo._PACK_STR, buf)
-        eq_(sctp.chunk_cookie_echo.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
-        eq_(self.cookie,
+        self.assertEqual(sctp.chunk_cookie_echo.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
+        self.assertEqual(self.cookie,
             buf[sctp.chunk_cookie_echo._MIN_LEN:
                 sctp.chunk_cookie_echo._MIN_LEN + 4])
 
@@ -1145,81 +1143,81 @@ class Test_sctp(unittest.TestCase):
         self.setUp_with_cookie_ack()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_cookie_ack._PACK_STR, buf)
-        eq_(sctp.chunk_cookie_ack.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
+        self.assertEqual(sctp.chunk_cookie_ack.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
 
     def test_serialize_with_ecn_echo(self):
         self.setUp_with_ecn_echo()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_ecn_echo._PACK_STR, buf)
-        eq_(sctp.chunk_ecn_echo.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
-        eq_(self.low_tsn, res[3])
+        self.assertEqual(sctp.chunk_ecn_echo.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
+        self.assertEqual(self.low_tsn, res[3])
 
     def test_serialize_with_cwr(self):
         self.setUp_with_cwr()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_cwr._PACK_STR, buf)
-        eq_(sctp.chunk_cwr.chunk_type(), res[0])
-        eq_(self.flags, res[1])
-        eq_(self.length, res[2])
-        eq_(self.low_tsn, res[3])
+        self.assertEqual(sctp.chunk_cwr.chunk_type(), res[0])
+        self.assertEqual(self.flags, res[1])
+        self.assertEqual(self.length, res[2])
+        self.assertEqual(self.low_tsn, res[3])
 
     def test_serialize_with_shutdown_complete(self):
         self.setUp_with_shutdown_complete()
         buf = self._test_serialize()
         res = struct.unpack_from(
             sctp.chunk_shutdown_complete._PACK_STR, buf)
-        eq_(sctp.chunk_shutdown_complete.chunk_type(), res[0])
+        self.assertEqual(sctp.chunk_shutdown_complete.chunk_type(), res[0])
         flags = self.tflag << 0
-        eq_(flags, res[1])
-        eq_(self.length, res[2])
+        self.assertEqual(flags, res[1])
+        self.assertEqual(self.length, res[2])
 
     def test_serialize_with_multi_chunks(self):
         self.setUp_with_multi_chunks()
         buf = self._test_serialize()
         res = struct.unpack_from(sctp.chunk_sack._PACK_STR, buf)
-        eq_(sctp.chunk_sack.chunk_type(), res[0])
-        eq_(self.s_flags, res[1])
-        eq_(self.s_length, res[2])
-        eq_(self.s_tsn_ack, res[3])
-        eq_(self.s_a_rwnd, res[4])
-        eq_(self.s_gapack_num, res[5])
-        eq_(self.s_duptsn_num, res[6])
+        self.assertEqual(sctp.chunk_sack.chunk_type(), res[0])
+        self.assertEqual(self.s_flags, res[1])
+        self.assertEqual(self.s_length, res[2])
+        self.assertEqual(self.s_tsn_ack, res[3])
+        self.assertEqual(self.s_a_rwnd, res[4])
+        self.assertEqual(self.s_gapack_num, res[5])
+        self.assertEqual(self.s_duptsn_num, res[6])
 
         buf = buf[self.s_length:]
         res = struct.unpack_from(sctp.chunk_data._PACK_STR, buf)
-        eq_(sctp.chunk_data.chunk_type(), res[0])
+        self.assertEqual(sctp.chunk_data.chunk_type(), res[0])
         d1_flags = (
             (self.d1_unordered << 2) |
             (self.d1_begin << 1) |
             (self.d1_end << 0))
-        eq_(d1_flags, res[1])
-        eq_(self.d1_length, res[2])
-        eq_(self.d1_tsn, res[3])
-        eq_(self.d1_sid, res[4])
-        eq_(self.d1_seq, res[5])
-        eq_(self.d1_payload_id, res[6])
-        eq_(self.d1_payload_data,
+        self.assertEqual(d1_flags, res[1])
+        self.assertEqual(self.d1_length, res[2])
+        self.assertEqual(self.d1_tsn, res[3])
+        self.assertEqual(self.d1_sid, res[4])
+        self.assertEqual(self.d1_seq, res[5])
+        self.assertEqual(self.d1_payload_id, res[6])
+        self.assertEqual(self.d1_payload_data,
             buf[sctp.chunk_data._MIN_LEN:
                 sctp.chunk_data._MIN_LEN + 10])
 
         buf = buf[self.d1_length:]
         res = struct.unpack_from(sctp.chunk_data._PACK_STR, buf)
-        eq_(sctp.chunk_data.chunk_type(), res[0])
+        self.assertEqual(sctp.chunk_data.chunk_type(), res[0])
         d2_flags = (
             (self.d2_unordered << 2) |
             (self.d2_begin << 1) |
             (self.d2_end << 0))
-        eq_(d2_flags, res[1])
-        eq_(self.d2_length, res[2])
-        eq_(self.d2_tsn, res[3])
-        eq_(self.d2_sid, res[4])
-        eq_(self.d2_seq, res[5])
-        eq_(self.d2_payload_id, res[6])
-        eq_(self.d2_payload_data,
+        self.assertEqual(d2_flags, res[1])
+        self.assertEqual(self.d2_length, res[2])
+        self.assertEqual(self.d2_tsn, res[3])
+        self.assertEqual(self.d2_sid, res[4])
+        self.assertEqual(self.d2_seq, res[5])
+        self.assertEqual(self.d2_payload_id, res[6])
+        self.assertEqual(self.d2_payload_data,
             buf[sctp.chunk_data._MIN_LEN:
                 sctp.chunk_data._MIN_LEN + 10])
 
@@ -1231,16 +1229,16 @@ class Test_sctp(unittest.TestCase):
         pkt = eth / ip4 / self.sc
 
         eth = pkt.get_protocol(ethernet.ethernet)
-        ok_(eth)
-        eq_(eth.ethertype, ether.ETH_TYPE_IP)
+        self.assertTrue(eth)
+        self.assertEqual(eth.ethertype, ether.ETH_TYPE_IP)
 
         ip4 = pkt.get_protocol(ipv4.ipv4)
-        ok_(ip4)
-        eq_(ip4.proto, inet.IPPROTO_SCTP)
+        self.assertTrue(ip4)
+        self.assertEqual(ip4.proto, inet.IPPROTO_SCTP)
 
         sc = pkt.get_protocol(sctp.sctp)
-        ok_(sc)
-        eq_(sc, self.sc)
+        self.assertTrue(sc)
+        self.assertEqual(sc, self.sc)
 
     def test_build_sctp_with_data(self):
         self.setUp_with_data()
@@ -1317,8 +1315,8 @@ class Test_sctp(unittest.TestCase):
                               if k in sctp_values])
         sctp_str = '%s(%s)' % (sctp.sctp.__name__, _sctp_str)
 
-        eq_(str(self.sc), sctp_str)
-        eq_(repr(self.sc), sctp_str)
+        self.assertEqual(str(self.sc), sctp_str)
+        self.assertEqual(repr(self.sc), sctp_str)
 
     def test_to_string_with_data(self):
         self.setUp_with_data()
@@ -1387,7 +1385,7 @@ class Test_sctp(unittest.TestCase):
     def test_json(self):
         jsondict = self.sc.to_jsondict()
         sc = sctp.sctp.from_jsondict(jsondict['sctp'])
-        eq_(str(self.sc), str(sc))
+        self.assertEqual(str(self.sc), str(sc))
 
     def test_json_with_data(self):
         self.setUp_with_data()

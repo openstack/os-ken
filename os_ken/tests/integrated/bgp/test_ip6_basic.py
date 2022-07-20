@@ -22,7 +22,7 @@ from . import base_ip6 as base
 
 class BgpSpeakerBasicTest(base.BgpSpeakerTestBase):
     def setUp(self):
-        super(BgpSpeakerBasicTest, self).setUp()
+        super().setUp()
         self.r1.stop_os_kenbgp(retry=True)
         self.r1.start_os_kenbgp(retry=True)
 

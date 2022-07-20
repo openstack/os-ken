@@ -24,7 +24,6 @@ cover/
 .coverage*
 !.coveragerc
 .tox
-nosetests.xml
 .testrepository
 .stestr
 .venv

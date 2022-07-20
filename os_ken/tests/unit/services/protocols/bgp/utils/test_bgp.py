@@ -17,8 +17,6 @@
 import logging
 import unittest
 
-from nose.tools import eq_, raises
-
 from os_ken.lib.packet.bgp import (
     BGPFlowSpecTrafficRateCommunity,
     BGPFlowSpecTrafficActionCommunity,
@@ -28,7 +26,6 @@ from os_ken.lib.packet.bgp import (
     BGPFlowSpecTPIDActionCommunity,
 )
 
-from os_ken.services.protocols.bgp.core import BgpCoreError
 from os_ken.services.protocols.bgp.utils.bgp import create_v4flowspec_actions
 from os_ken.services.protocols.bgp.utils.bgp import create_v6flowspec_actions
 from os_ken.services.protocols.bgp.utils.bgp import create_l2vpnflowspec_actions
@@ -46,7 +43,7 @@ class Test_Utils_BGP(unittest.TestCase):
         communities = create_v4flowspec_actions(actions)
         expected_communities.sort(key=lambda x: x.subtype)
         communities.sort(key=lambda x: x.subtype)
-        eq_(str(expected_communities), str(communities))
+        self.assertEqual(str(expected_communities), str(communities))
 
     def test_create_v4flowspec_actions_all_actions(self):
         actions = {
@@ -78,7 +75,6 @@ class Test_Utils_BGP(unittest.TestCase):
         expected_communities = []
         self._test_create_v4flowspec_actions(actions, expected_communities)
 
-    @raises(ValueError)
     def test_create_v4flowspec_actions_not_exist_actions(self):
         actions = {
             'traffic_test': {
@@ -86,13 +82,14 @@ class Test_Utils_BGP(unittest.TestCase):
             },
         }
         expected_communities = []
-        self._test_create_v4flowspec_actions(actions, expected_communities)
+        self.assertRaises(ValueError, self._test_create_v4flowspec_actions,
+                          actions, expected_communities)
 
     def _test_create_v6flowspec_actions(self, actions, expected_communities):
         communities = create_v6flowspec_actions(actions)
         expected_communities.sort(key=lambda x: x.subtype)
         communities.sort(key=lambda x: x.subtype)
-        eq_(str(expected_communities), str(communities))
+        self.assertEqual(str(expected_communities), str(communities))
 
     def test_create_v6flowspec_actions_all_actions(self):
         actions = {
@@ -124,7 +121,6 @@ class Test_Utils_BGP(unittest.TestCase):
         expected_communities = []
         self._test_create_v6flowspec_actions(actions, expected_communities)
 
-    @raises(ValueError)
     def test_create_v6flowspec_actions_not_exist_actions(self):
         actions = {
             'traffic_test': {
@@ -132,13 +128,14 @@ class Test_Utils_BGP(unittest.TestCase):
             },
         }
         expected_communities = []
-        self._test_create_v6flowspec_actions(actions, expected_communities)
+        self.assertRaises(ValueError, self._test_create_v6flowspec_actions,
+                          actions, expected_communities)
 
     def _test_create_l2vpnflowspec_actions(self, actions, expected_communities):
         communities = create_l2vpnflowspec_actions(actions)
         expected_communities.sort(key=lambda x: x.subtype)
         communities.sort(key=lambda x: x.subtype)
-        eq_(str(expected_communities), str(communities))
+        self.assertEqual(str(expected_communities), str(communities))
 
     def test_create_l2vpnflowspec_actions_all_actions(self):
         actions = {
@@ -200,7 +197,6 @@ class Test_Utils_BGP(unittest.TestCase):
         expected_communities = []
         self._test_create_l2vpnflowspec_actions(actions, expected_communities)
 
-    @raises(ValueError)
     def test_create_l2vpnflowspec_actions_not_exist_actions(self):
         actions = {
             'traffic_test': {
@@ -208,4 +204,5 @@ class Test_Utils_BGP(unittest.TestCase):
             },
         }
         expected_communities = []
-        self._test_create_l2vpnflowspec_actions(actions, expected_communities)
+        self.assertRaises(ValueError, self._test_create_l2vpnflowspec_actions,
+                          actions, expected_communities)

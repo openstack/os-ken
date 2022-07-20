@@ -15,10 +15,8 @@
 # limitations under the License.
 
 import six
-import sys
 import unittest
-from nose.tools import eq_
-from nose.tools import ok_
+import testscenarios
 
 from os_ken.ofproto import ofproto_v1_2
 from os_ken.ofproto import ofproto_v1_3
@@ -26,20 +24,31 @@ from os_ken.ofproto import ofproto_v1_2_parser
 from os_ken.ofproto import ofproto_v1_3_parser
 
 from os_ken.lib import addrconv
-from os_ken.tests import test_lib
 from struct import unpack
 
 
-class Test_Parser_Compat(unittest.TestCase):
-    def __init__(self, methodName):
-        print('init %s' % methodName)
-        super(Test_Parser_Compat, self).__init__(methodName)
+def _list_test_cases():
+    ofpps = [ofproto_v1_2_parser, ofproto_v1_3_parser]
+    cases = []
+    for ofpp in ofpps:
+        mod = ofpp.__name__.split('.')[-1]
+        method_name = 'test_' + mod + '_ofpmatch_compat'
+        cases.append({'name': method_name, 'ofpp': ofpp})
+    return cases
+
+
+class Test_Parser_Compat(testscenarios.WithScenarios, unittest.TestCase):
+
+    scenarios = [(case['name'], case) for case in _list_test_cases()]
 
     def setUp(self):
         pass
 
     def tearDown(self):
         pass
+
+    def test_parser(self):
+        self._test(name=self.name, ofpp=self.ofpp)
 
     def _test(self, name, ofpp):
         ofp = {
@@ -70,17 +79,17 @@ class Test_Parser_Compat(unittest.TestCase):
                         return f
             get_value = lambda m, t: get_field(m, t).value
 
-            eq_(get_value(o, ofpp.MTInPort), old_in_port)
-            eq_(get_value(o, ofpp.MTEthSrc), old_eth_src)
-            eq_(get_value(o, ofpp.MTIPV4Src), old_ipv4_src)
-            eq_(get_value(o, ofpp.MTIPv6Src), old_ipv6_src)
+            self.assertEqual(get_value(o, ofpp.MTInPort), old_in_port)
+            self.assertEqual(get_value(o, ofpp.MTEthSrc), old_eth_src)
+            self.assertEqual(get_value(o, ofpp.MTIPV4Src), old_ipv4_src)
+            self.assertEqual(get_value(o, ofpp.MTIPv6Src), old_ipv6_src)
 
         def check_new(o):
             # new api
-            eq_(o['in_port'], in_port)
-            eq_(o['eth_src'], eth_src)
-            eq_(o['ipv4_src'], ipv4_src)
-            eq_(o['ipv6_src'], ipv6_src)
+            self.assertEqual(o['in_port'], in_port)
+            self.assertEqual(o['eth_src'], eth_src)
+            self.assertEqual(o['ipv4_src'], ipv4_src)
+            self.assertEqual(o['ipv6_src'], ipv6_src)
 
         # ensure that old and new api produces the same thing
 
@@ -117,43 +126,19 @@ class Test_Parser_Compat(unittest.TestCase):
 
         new_buf = bytearray()
         new.serialize(new_buf, 0)
-        eq_(new_buf, old_buf)
-        eq_(new_buf, old2_buf)
+        self.assertEqual(new_buf, old_buf)
+        self.assertEqual(new_buf, old2_buf)
 
         old_jsondict = old.to_jsondict()
         old2_jsondict = old2.to_jsondict()
         new_jsondict = new.to_jsondict()
-        eq_(new_jsondict, old_jsondict)
-        eq_(new_jsondict, old2_jsondict)
+        self.assertEqual(new_jsondict, old_jsondict)
+        self.assertEqual(new_jsondict, old2_jsondict)
 
-        eq_(str(new), str(old))
-        eq_(str(new), str(old2))
+        self.assertEqual(str(new), str(old))
+        self.assertEqual(str(new), str(old2))
 
         # a parsed object can be inspected by old and new api
 
         check(ofpp.OFPMatch.parser(six.binary_type(new_buf), 0))
         check(ofpp.OFPMatch.from_jsondict(list(new_jsondict.values())[0]))
-
-
-def _add_tests():
-    import functools
-    import itertools
-
-    ofpps = [ofproto_v1_2_parser, ofproto_v1_3_parser]
-    for ofpp in ofpps:
-        mod = ofpp.__name__.split('.')[-1]
-        method_name = 'test_' + mod + '_ofpmatch_compat'
-
-        def _run(self, name, ofpp):
-            print('processing %s ...' % name)
-            if six.PY3:
-                self._test(self, name, ofpp)
-            else:
-                self._test(name, ofpp)
-        print('adding %s ...' % method_name)
-        f = functools.partial(_run, name=method_name,
-                              ofpp=ofpp)
-        test_lib.add_method(Test_Parser_Compat, method_name, f)
-
-
-_add_tests()

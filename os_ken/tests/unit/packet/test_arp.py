@@ -19,7 +19,6 @@ import unittest
 import logging
 import struct
 from struct import *
-from nose.tools import *
 from os_ken.ofproto import ether
 from os_ken.lib.packet.ethernet import ethernet
 from os_ken.lib.packet.packet import Packet
@@ -67,15 +66,15 @@ class Test_arp(unittest.TestCase):
                 return p
 
     def test_init(self):
-        eq_(self.hwtype, self.a.hwtype)
-        eq_(self.proto, self.a.proto)
-        eq_(self.hlen, self.a.hlen)
-        eq_(self.plen, self.a.plen)
-        eq_(self.opcode, self.a.opcode)
-        eq_(self.src_mac, self.a.src_mac)
-        eq_(self.src_ip, self.a.src_ip)
-        eq_(self.dst_mac, self.a.dst_mac)
-        eq_(self.dst_ip, self.a.dst_ip)
+        self.assertEqual(self.hwtype, self.a.hwtype)
+        self.assertEqual(self.proto, self.a.proto)
+        self.assertEqual(self.hlen, self.a.hlen)
+        self.assertEqual(self.plen, self.a.plen)
+        self.assertEqual(self.opcode, self.a.opcode)
+        self.assertEqual(self.src_mac, self.a.src_mac)
+        self.assertEqual(self.src_ip, self.a.src_ip)
+        self.assertEqual(self.dst_mac, self.a.dst_mac)
+        self.assertEqual(self.dst_ip, self.a.dst_ip)
 
     def test_parser(self):
         _res = self.a.parser(self.buf)
@@ -84,15 +83,15 @@ class Test_arp(unittest.TestCase):
         else:
             res = _res
 
-        eq_(res.hwtype, self.hwtype)
-        eq_(res.proto, self.proto)
-        eq_(res.hlen, self.hlen)
-        eq_(res.plen, self.plen)
-        eq_(res.opcode, self.opcode)
-        eq_(res.src_mac, self.src_mac)
-        eq_(res.src_ip, self.src_ip)
-        eq_(res.dst_mac, self.dst_mac)
-        eq_(res.dst_ip, self.dst_ip)
+        self.assertEqual(res.hwtype, self.hwtype)
+        self.assertEqual(res.proto, self.proto)
+        self.assertEqual(res.hlen, self.hlen)
+        self.assertEqual(res.plen, self.plen)
+        self.assertEqual(res.opcode, self.opcode)
+        self.assertEqual(res.src_mac, self.src_mac)
+        self.assertEqual(res.src_ip, self.src_ip)
+        self.assertEqual(res.dst_mac, self.dst_mac)
+        self.assertEqual(res.dst_ip, self.dst_ip)
 
     def test_serialize(self):
         data = bytearray()
@@ -102,15 +101,15 @@ class Test_arp(unittest.TestCase):
         fmt = arp._PACK_STR
         res = struct.unpack(fmt, buf)
 
-        eq_(res[0], self.hwtype)
-        eq_(res[1], self.proto)
-        eq_(res[2], self.hlen)
-        eq_(res[3], self.plen)
-        eq_(res[4], self.opcode)
-        eq_(res[5], addrconv.mac.text_to_bin(self.src_mac))
-        eq_(res[6], addrconv.ipv4.text_to_bin(self.src_ip))
-        eq_(res[7], addrconv.mac.text_to_bin(self.dst_mac))
-        eq_(res[8], addrconv.ipv4.text_to_bin(self.dst_ip))
+        self.assertEqual(res[0], self.hwtype)
+        self.assertEqual(res[1], self.proto)
+        self.assertEqual(res[2], self.hlen)
+        self.assertEqual(res[3], self.plen)
+        self.assertEqual(res[4], self.opcode)
+        self.assertEqual(res[5], addrconv.mac.text_to_bin(self.src_mac))
+        self.assertEqual(res[6], addrconv.ipv4.text_to_bin(self.src_ip))
+        self.assertEqual(res[7], addrconv.mac.text_to_bin(self.dst_mac))
+        self.assertEqual(res[8], addrconv.ipv4.text_to_bin(self.dst_ip))
 
     def _build_arp(self, vlan_enabled):
         if vlan_enabled is True:
@@ -132,52 +131,51 @@ class Test_arp(unittest.TestCase):
         p = self._build_arp(True)
 
         e = self.find_protocol(p, "ethernet")
-        ok_(e)
-        eq_(e.ethertype, ether.ETH_TYPE_8021Q)
+        self.assertTrue(e)
+        self.assertEqual(e.ethertype, ether.ETH_TYPE_8021Q)
 
         v = self.find_protocol(p, "vlan")
-        ok_(v)
-        eq_(v.ethertype, ether.ETH_TYPE_ARP)
+        self.assertTrue(v)
+        self.assertEqual(v.ethertype, ether.ETH_TYPE_ARP)
 
         a = self.find_protocol(p, "arp")
-        ok_(a)
+        self.assertTrue(a)
 
-        eq_(a.hwtype, self.hwtype)
-        eq_(a.proto, self.proto)
-        eq_(a.hlen, self.hlen)
-        eq_(a.plen, self.plen)
-        eq_(a.opcode, self.opcode)
-        eq_(a.src_mac, self.src_mac)
-        eq_(a.src_ip, self.src_ip)
-        eq_(a.dst_mac, self.dst_mac)
-        eq_(a.dst_ip, self.dst_ip)
+        self.assertEqual(a.hwtype, self.hwtype)
+        self.assertEqual(a.proto, self.proto)
+        self.assertEqual(a.hlen, self.hlen)
+        self.assertEqual(a.plen, self.plen)
+        self.assertEqual(a.opcode, self.opcode)
+        self.assertEqual(a.src_mac, self.src_mac)
+        self.assertEqual(a.src_ip, self.src_ip)
+        self.assertEqual(a.dst_mac, self.dst_mac)
+        self.assertEqual(a.dst_ip, self.dst_ip)
 
     def test_build_arp_novlan(self):
         p = self._build_arp(False)
 
         e = self.find_protocol(p, "ethernet")
-        ok_(e)
-        eq_(e.ethertype, ether.ETH_TYPE_ARP)
+        self.assertTrue(e)
+        self.assertEqual(e.ethertype, ether.ETH_TYPE_ARP)
 
         a = self.find_protocol(p, "arp")
-        ok_(a)
+        self.assertTrue(a)
 
-        eq_(a.hwtype, self.hwtype)
-        eq_(a.proto, self.proto)
-        eq_(a.hlen, self.hlen)
-        eq_(a.plen, self.plen)
-        eq_(a.opcode, self.opcode)
-        eq_(a.src_mac, self.src_mac)
-        eq_(a.src_ip, self.src_ip)
-        eq_(a.dst_mac, self.dst_mac)
-        eq_(a.dst_ip, self.dst_ip)
+        self.assertEqual(a.hwtype, self.hwtype)
+        self.assertEqual(a.proto, self.proto)
+        self.assertEqual(a.hlen, self.hlen)
+        self.assertEqual(a.plen, self.plen)
+        self.assertEqual(a.opcode, self.opcode)
+        self.assertEqual(a.src_mac, self.src_mac)
+        self.assertEqual(a.src_ip, self.src_ip)
+        self.assertEqual(a.dst_mac, self.dst_mac)
+        self.assertEqual(a.dst_ip, self.dst_ip)
 
-    @raises(Exception)
     def test_malformed_arp(self):
         m_short_buf = self.buf[1:arp._MIN_LEN]
-        arp.parser(m_short_buf)
+        self.assertRaises(Exception, arp.parser, m_short_buf)
 
     def test_json(self):
         jsondict = self.a.to_jsondict()
         a = arp.from_jsondict(jsondict['arp'])
-        eq_(str(self.a), str(a))
+        self.assertEqual(str(self.a), str(a))

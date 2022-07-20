@@ -13,56 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-    # Python 3
-    from functools import reduce
-except ImportError:
-    # Python 2
-    pass
+from functools import reduce
 
 import six
-import sys
 import unittest
-from nose.tools import eq_
-from nose.tools import ok_
+import testscenarios
 
 from os_ken.ofproto import ofproto_v1_5
 from os_ken.ofproto import ofproto_v1_5_parser
-from os_ken.tests import test_lib
 
 
-class Test_Parser_OFPStats(unittest.TestCase):
-    _ofp = {ofproto_v1_5_parser: ofproto_v1_5}
-
-    def __init__(self, methodName):
-        print('init %s' % methodName)
-        super(Test_Parser_OFPStats, self).__init__(methodName)
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
-    def _test(self, name, ofpp, d):
-        stats = ofpp.OFPStats(**d)
-        b = bytearray()
-        stats.serialize(b, 0)
-        stats2 = stats.parser(six.binary_type(b), 0)
-        for k, v in d.items():
-            ok_(k in stats)
-            ok_(k in stats2)
-            eq_(stats[k], v)
-            eq_(stats2[k], v)
-        for k, v in stats.iteritems():
-            ok_(k in d)
-            eq_(d[k], v)
-        for k, v in stats2.iteritems():
-            ok_(k in d)
-            eq_(d[k], v)
-
-
-def _add_tests():
+def _list_test_cases():
     import functools
     import itertools
 
@@ -159,6 +120,7 @@ def _add_tests():
             return l + [i]
     flatten = lambda l: reduce(flatten_one, l, [])
 
+    cases = []
     for ofpp in ofpps:
         for n in range(1, 3):
             for C in itertools.combinations(L[ofpp], n):
@@ -191,18 +153,37 @@ def _add_tests():
                     method_name = method_name.replace(',', '_')
                     method_name = method_name.replace("'", '_')
                     method_name = method_name.replace(' ', '_')
-
-                    def _run(self, name, ofpp, d):
-                        print('processing %s ...' % name)
-                        if six.PY3:
-                            self._test(self, name, ofpp, d)
-                        else:
-                            self._test(name, ofpp, d)
-                    print('adding %s ...' % method_name)
-                    f = functools.partial(_run, name=method_name,
-                                          ofpp=ofpp, d=d)
-                    test_lib.add_method(Test_Parser_OFPStats,
-                                        method_name, f)
+                    cases.append({'name': method_name, 'ofpp': ofpp, 'd': d})
+    return cases
 
 
-_add_tests()
+class Test_Parser_OFPStats(testscenarios.WithScenarios, unittest.TestCase):
+
+    scenarios = [(case['name'], case) for case in _list_test_cases()]
+    _ofp = {ofproto_v1_5_parser: ofproto_v1_5}
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_parser(self):
+        self._test(name=self.name, ofpp=self.ofpp, d=self.d)
+
+    def _test(self, name, ofpp, d):
+        stats = ofpp.OFPStats(**d)
+        b = bytearray()
+        stats.serialize(b, 0)
+        stats2 = stats.parser(six.binary_type(b), 0)
+        for k, v in d.items():
+            self.assertTrue(k in stats)
+            self.assertTrue(k in stats2)
+            self.assertEqual(stats[k], v)
+            self.assertEqual(stats2[k], v)
+        for k, v in stats.iteritems():
+            self.assertTrue(k in d)
+            self.assertEqual(d[k], v)
+        for k, v in stats2.iteritems():
+            self.assertTrue(k in d)
+            self.assertEqual(d[k], v)

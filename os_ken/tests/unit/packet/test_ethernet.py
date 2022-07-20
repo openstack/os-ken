@@ -21,7 +21,6 @@ import six
 import struct
 import netaddr
 from struct import *
-from nose.tools import *
 from os_ken.ofproto import ether, inet
 from os_ken.lib.packet.ethernet import ethernet
 from os_ken.lib.packet.packet import Packet
@@ -58,18 +57,18 @@ class Test_ethernet(unittest.TestCase):
                 return p
 
     def test_init(self):
-        eq_(self.dst, self.e.dst)
-        eq_(self.src, self.e.src)
-        eq_(self.ethertype, self.e.ethertype)
+        self.assertEqual(self.dst, self.e.dst)
+        self.assertEqual(self.src, self.e.src)
+        self.assertEqual(self.ethertype, self.e.ethertype)
 
     def test_parser(self):
         res, ptype, _ = self.e.parser(self.buf)
         LOG.debug((res, ptype))
 
-        eq_(res.dst, self.dst)
-        eq_(res.src, self.src)
-        eq_(res.ethertype, self.ethertype)
-        eq_(ptype, arp)
+        self.assertEqual(res.dst, self.dst)
+        self.assertEqual(res.src, self.src)
+        self.assertEqual(res.ethertype, self.ethertype)
+        self.assertEqual(ptype, arp)
 
     def test_serialize(self):
         data = bytearray()
@@ -79,25 +78,24 @@ class Test_ethernet(unittest.TestCase):
         fmt = ethernet._PACK_STR
         res = struct.unpack(fmt, buf)
 
-        eq_(res[0], addrconv.mac.text_to_bin(self.dst))
-        eq_(res[1], addrconv.mac.text_to_bin(self.src))
-        eq_(res[2], self.ethertype)
+        self.assertEqual(res[0], addrconv.mac.text_to_bin(self.dst))
+        self.assertEqual(res[1], addrconv.mac.text_to_bin(self.src))
+        self.assertEqual(res[2], self.ethertype)
 
-    @raises(Exception)
     def test_malformed_ethernet(self):
         m_short_buf = self.buf[1:ethernet._MIN_LEN]
-        ethernet.parser(m_short_buf)
+        self.assertRaises(Exception, ethernet.parser, m_short_buf)
 
     def test_default_args(self):
         e = ethernet()
         buf = e.serialize(bytearray(), None)
         res = struct.unpack(e._PACK_STR, six.binary_type(buf))
 
-        eq_(res[0], addrconv.mac.text_to_bin('ff:ff:ff:ff:ff:ff'))
-        eq_(res[1], addrconv.mac.text_to_bin('00:00:00:00:00:00'))
-        eq_(res[2], ether.ETH_TYPE_IP)
+        self.assertEqual(res[0], addrconv.mac.text_to_bin('ff:ff:ff:ff:ff:ff'))
+        self.assertEqual(res[1], addrconv.mac.text_to_bin('00:00:00:00:00:00'))
+        self.assertEqual(res[2], ether.ETH_TYPE_IP)
 
     def test_json(self):
         jsondict = self.e.to_jsondict()
         e = ethernet.from_jsondict(jsondict['ethernet'])
-        eq_(str(self.e), str(e))
+        self.assertEqual(str(self.e), str(e))

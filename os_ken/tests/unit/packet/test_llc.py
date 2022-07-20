@@ -18,7 +18,6 @@
 import unittest
 import logging
 
-from nose.tools import eq_
 from os_ken.lib.packet import llc
 
 
@@ -31,7 +30,7 @@ class Test_ControlFormatI(unittest.TestCase):
     def test_json(self):
         jsondict = self.msg.to_jsondict()
         msg = llc.llc.from_jsondict(jsondict['llc'])
-        eq_(str(self.msg), str(msg))
+        self.assertEqual(str(self.msg), str(msg))
 
 
 class Test_ControlFormatS(Test_ControlFormatI):

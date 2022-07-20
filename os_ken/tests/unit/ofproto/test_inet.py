@@ -17,7 +17,6 @@
 
 import unittest
 import logging
-from nose.tools import eq_
 from os_ken.ofproto.inet import *
 
 
@@ -29,15 +28,15 @@ class TestInet(unittest.TestCase):
     """
 
     def test_ip_proto(self):
-        eq_(IPPROTO_IP, 0)
-        eq_(IPPROTO_HOPOPTS, 0)
-        eq_(IPPROTO_ICMP, 1)
-        eq_(IPPROTO_TCP, 6)
-        eq_(IPPROTO_UDP, 17)
-        eq_(IPPROTO_ROUTING, 43)
-        eq_(IPPROTO_FRAGMENT, 44)
-        eq_(IPPROTO_AH, 51)
-        eq_(IPPROTO_ICMPV6, 58)
-        eq_(IPPROTO_NONE, 59)
-        eq_(IPPROTO_DSTOPTS, 60)
-        eq_(IPPROTO_SCTP, 132)
+        self.assertEqual(IPPROTO_IP, 0)
+        self.assertEqual(IPPROTO_HOPOPTS, 0)
+        self.assertEqual(IPPROTO_ICMP, 1)
+        self.assertEqual(IPPROTO_TCP, 6)
+        self.assertEqual(IPPROTO_UDP, 17)
+        self.assertEqual(IPPROTO_ROUTING, 43)
+        self.assertEqual(IPPROTO_FRAGMENT, 44)
+        self.assertEqual(IPPROTO_AH, 51)
+        self.assertEqual(IPPROTO_ICMPV6, 58)
+        self.assertEqual(IPPROTO_NONE, 59)
+        self.assertEqual(IPPROTO_DSTOPTS, 60)
+        self.assertEqual(IPPROTO_SCTP, 132)

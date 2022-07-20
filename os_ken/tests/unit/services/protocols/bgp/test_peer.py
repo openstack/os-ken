@@ -17,8 +17,6 @@ import logging
 import unittest
 from unittest import mock
 
-from nose.tools import eq_
-
 from os_ken.lib.packet import bgp
 from os_ken.services.protocols.bgp import peer
 
@@ -44,8 +42,8 @@ class Test_Peer(unittest.TestCase):
         output_as_path_attr = _peer._construct_as_path_attr(
             input_as_path_attr, input_as4_path_attr)
 
-        eq_(bgp.BGP_ATTR_TYPE_AS_PATH, output_as_path_attr.type)
-        eq_(expected_as_path, output_as_path_attr.path_seg_list)
+        self.assertEqual(bgp.BGP_ATTR_TYPE_AS_PATH, output_as_path_attr.type)
+        self.assertEqual(expected_as_path, output_as_path_attr.path_seg_list)
 
     def test_construct_as_path_attr_sequence_only(self):
         # Test Data
@@ -154,8 +152,8 @@ class Test_Peer(unittest.TestCase):
         output_as_path_attr = _peer._construct_as_path_attr(
             input_as_path_attr, input_as4_path_attr)
 
-        eq_(bgp.BGP_ATTR_TYPE_AS_PATH, output_as_path_attr.type)
-        eq_(expected_as_path, output_as_path_attr.path_seg_list)
+        self.assertEqual(bgp.BGP_ATTR_TYPE_AS_PATH, output_as_path_attr.type)
+        self.assertEqual(expected_as_path, output_as_path_attr.path_seg_list)
 
     @mock.patch.object(
         peer.Peer, '__init__', mock.MagicMock(return_value=None))
@@ -167,8 +165,8 @@ class Test_Peer(unittest.TestCase):
         # TEST
         output_as_path, output_as4_path = _peer._trans_as_path(input_as_path)
 
-        eq_(expected_as_path, output_as_path)
-        eq_(expected_as4_path, output_as4_path)
+        self.assertEqual(expected_as_path, output_as_path)
+        self.assertEqual(expected_as4_path, output_as4_path)
 
     @mock.patch.object(
         peer.Peer, 'is_four_octet_as_number_cap_valid',
@@ -234,11 +232,11 @@ class Test_Peer(unittest.TestCase):
         as4_aggregator_attr = umsg_pattrs.get(
             bgp.BGP_ATTR_TYPE_AS4_AGGREGATOR, None)
 
-        eq_(ex_as_path_value, as_path_attr.value)
-        eq_(None, as4_path_attr)
-        eq_(ex_aggregator_as_number, aggregator_attr.as_number)
-        eq_(ex_aggregator_addr, aggregator_attr.addr)
-        eq_(None, as4_aggregator_attr)
+        self.assertEqual(ex_as_path_value, as_path_attr.value)
+        self.assertEqual(None, as4_path_attr)
+        self.assertEqual(ex_aggregator_as_number, aggregator_attr.as_number)
+        self.assertEqual(ex_aggregator_addr, aggregator_attr.addr)
+        self.assertEqual(None, as4_aggregator_attr)
 
     @mock.patch.object(
         peer.Peer, '__init__', mock.MagicMock(return_value=None))

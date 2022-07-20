@@ -18,8 +18,6 @@ import os
 import sys
 
 import unittest
-from nose.tools import eq_
-from nose.tools import ok_
 
 from os_ken.lib import pcaplib
 from os_ken.lib.packet import geneve
@@ -51,10 +49,10 @@ class Test_geneve(unittest.TestCase):
                 # Checks if message can be parsed as expected.
                 pkt = packet.Packet(buf)
                 geneve_pkt = pkt.get_protocol(geneve.geneve)
-                ok_(isinstance(geneve_pkt, geneve.geneve),
+                self.assertTrue(isinstance(geneve_pkt, geneve.geneve),
                     'Failed to parse Geneve message: %s' % pkt)
 
                 # Checks if message can be serialized as expected.
                 pkt.serialize()
-                eq_(buf, pkt.data,
+                self.assertEqual(buf, pkt.data,
                     "b'%s' != b'%s'" % (binary_str(buf), binary_str(pkt.data)))

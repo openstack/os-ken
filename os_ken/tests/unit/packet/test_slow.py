@@ -20,7 +20,6 @@ import logging
 from struct import pack, unpack_from
 import unittest
 
-from nose.tools import ok_, eq_, raises
 from os_ken.ofproto import ether
 from os_ken.lib.packet.ethernet import ethernet
 from os_ken.lib.packet.packet import Packet
@@ -303,55 +302,55 @@ class Test_lacp(unittest.TestCase):
                 return p
 
     def test_init(self):
-        eq_(self.subtype, self.l._subtype)
-        eq_(self.version, self.l.version)
-        eq_(self.actor_tag, self.l._actor_tag)
-        eq_(self.actor_length, self.l._actor_length)
-        eq_(self.actor_system_priority, self.l.actor_system_priority)
-        eq_(self.actor_system, self.l.actor_system)
-        eq_(self.actor_key, self.l.actor_key)
-        eq_(self.actor_port_priority, self.l.actor_port_priority)
-        eq_(self.actor_port, self.l.actor_port)
-        eq_(self.actor_state_activity, self.l.actor_state_activity)
-        eq_(self.actor_state_timeout, self.l.actor_state_timeout)
-        eq_(self.actor_state_aggregation,
+        self.assertEqual(self.subtype, self.l._subtype)
+        self.assertEqual(self.version, self.l.version)
+        self.assertEqual(self.actor_tag, self.l._actor_tag)
+        self.assertEqual(self.actor_length, self.l._actor_length)
+        self.assertEqual(self.actor_system_priority, self.l.actor_system_priority)
+        self.assertEqual(self.actor_system, self.l.actor_system)
+        self.assertEqual(self.actor_key, self.l.actor_key)
+        self.assertEqual(self.actor_port_priority, self.l.actor_port_priority)
+        self.assertEqual(self.actor_port, self.l.actor_port)
+        self.assertEqual(self.actor_state_activity, self.l.actor_state_activity)
+        self.assertEqual(self.actor_state_timeout, self.l.actor_state_timeout)
+        self.assertEqual(self.actor_state_aggregation,
             self.l.actor_state_aggregation)
-        eq_(self.actor_state_synchronization,
+        self.assertEqual(self.actor_state_synchronization,
             self.l.actor_state_synchronization)
-        eq_(self.actor_state_collecting,
+        self.assertEqual(self.actor_state_collecting,
             self.l.actor_state_collecting)
-        eq_(self.actor_state_distributing,
+        self.assertEqual(self.actor_state_distributing,
             self.l.actor_state_distributing)
-        eq_(self.actor_state_defaulted, self.l.actor_state_defaulted)
-        eq_(self.actor_state_expired, self.l.actor_state_expired)
-        eq_(self.actor_state, self.l._actor_state)
-        eq_(self.partner_tag, self.l._partner_tag)
-        eq_(self.partner_length, self.l._partner_length)
-        eq_(self.partner_system_priority,
+        self.assertEqual(self.actor_state_defaulted, self.l.actor_state_defaulted)
+        self.assertEqual(self.actor_state_expired, self.l.actor_state_expired)
+        self.assertEqual(self.actor_state, self.l._actor_state)
+        self.assertEqual(self.partner_tag, self.l._partner_tag)
+        self.assertEqual(self.partner_length, self.l._partner_length)
+        self.assertEqual(self.partner_system_priority,
             self.l.partner_system_priority)
-        eq_(self.partner_system, self.l.partner_system)
-        eq_(self.partner_key, self.l.partner_key)
-        eq_(self.partner_port_priority, self.l.partner_port_priority)
-        eq_(self.partner_port, self.l.partner_port)
-        eq_(self.partner_state_activity, self.l.partner_state_activity)
-        eq_(self.partner_state_timeout, self.l.partner_state_timeout)
-        eq_(self.partner_state_aggregation,
+        self.assertEqual(self.partner_system, self.l.partner_system)
+        self.assertEqual(self.partner_key, self.l.partner_key)
+        self.assertEqual(self.partner_port_priority, self.l.partner_port_priority)
+        self.assertEqual(self.partner_port, self.l.partner_port)
+        self.assertEqual(self.partner_state_activity, self.l.partner_state_activity)
+        self.assertEqual(self.partner_state_timeout, self.l.partner_state_timeout)
+        self.assertEqual(self.partner_state_aggregation,
             self.l.partner_state_aggregation)
-        eq_(self.partner_state_synchronization,
+        self.assertEqual(self.partner_state_synchronization,
             self.l.partner_state_synchronization)
-        eq_(self.partner_state_collecting,
+        self.assertEqual(self.partner_state_collecting,
             self.l.partner_state_collecting)
-        eq_(self.partner_state_distributing,
+        self.assertEqual(self.partner_state_distributing,
             self.l.partner_state_distributing)
-        eq_(self.partner_state_defaulted,
+        self.assertEqual(self.partner_state_defaulted,
             self.l.partner_state_defaulted)
-        eq_(self.partner_state_expired, self.l.partner_state_expired)
-        eq_(self.partner_state, self.l._partner_state)
-        eq_(self.collector_tag, self.l._collector_tag)
-        eq_(self.collector_length, self.l._collector_length)
-        eq_(self.collector_max_delay, self.l.collector_max_delay)
-        eq_(self.terminator_tag, self.l._terminator_tag)
-        eq_(self.terminator_length, self.l._terminator_length)
+        self.assertEqual(self.partner_state_expired, self.l.partner_state_expired)
+        self.assertEqual(self.partner_state, self.l._partner_state)
+        self.assertEqual(self.collector_tag, self.l._collector_tag)
+        self.assertEqual(self.collector_length, self.l._collector_length)
+        self.assertEqual(self.collector_max_delay, self.l.collector_max_delay)
+        self.assertEqual(self.terminator_tag, self.l._terminator_tag)
+        self.assertEqual(self.terminator_length, self.l._terminator_length)
 
     def test_parser(self):
         _res = self.l.parser(self.buf)
@@ -360,49 +359,49 @@ class Test_lacp(unittest.TestCase):
         else:
             res = _res
 
-        eq_(res._subtype, self.subtype)
-        eq_(res.version, self.version)
-        eq_(res._actor_tag, self.actor_tag)
-        eq_(res._actor_length, self.actor_length)
-        eq_(res.actor_system_priority, self.actor_system_priority)
-        eq_(res.actor_system, self.actor_system)
-        eq_(res.actor_key, self.actor_key)
-        eq_(res.actor_port_priority, self.actor_port_priority)
-        eq_(res.actor_port, self.actor_port)
-        eq_(res.actor_state_activity, self.actor_state_activity)
-        eq_(res.actor_state_timeout, self.actor_state_timeout)
-        eq_(res.actor_state_aggregation, self.actor_state_aggregation)
-        eq_(res.actor_state_synchronization,
+        self.assertEqual(res._subtype, self.subtype)
+        self.assertEqual(res.version, self.version)
+        self.assertEqual(res._actor_tag, self.actor_tag)
+        self.assertEqual(res._actor_length, self.actor_length)
+        self.assertEqual(res.actor_system_priority, self.actor_system_priority)
+        self.assertEqual(res.actor_system, self.actor_system)
+        self.assertEqual(res.actor_key, self.actor_key)
+        self.assertEqual(res.actor_port_priority, self.actor_port_priority)
+        self.assertEqual(res.actor_port, self.actor_port)
+        self.assertEqual(res.actor_state_activity, self.actor_state_activity)
+        self.assertEqual(res.actor_state_timeout, self.actor_state_timeout)
+        self.assertEqual(res.actor_state_aggregation, self.actor_state_aggregation)
+        self.assertEqual(res.actor_state_synchronization,
             self.actor_state_synchronization)
-        eq_(res.actor_state_collecting, self.actor_state_collecting)
-        eq_(res.actor_state_distributing, self.actor_state_distributing)
-        eq_(res.actor_state_defaulted, self.actor_state_defaulted)
-        eq_(res.actor_state_expired, self.actor_state_expired)
-        eq_(res._actor_state, self.actor_state)
-        eq_(res._partner_tag, self.partner_tag)
-        eq_(res._partner_length, self.partner_length)
-        eq_(res.partner_system_priority, self.partner_system_priority)
-        eq_(res.partner_system, self.partner_system)
-        eq_(res.partner_key, self.partner_key)
-        eq_(res.partner_port_priority, self.partner_port_priority)
-        eq_(res.partner_port, self.partner_port)
-        eq_(res.partner_state_activity, self.partner_state_activity)
-        eq_(res.partner_state_timeout, self.partner_state_timeout)
-        eq_(res.partner_state_aggregation,
+        self.assertEqual(res.actor_state_collecting, self.actor_state_collecting)
+        self.assertEqual(res.actor_state_distributing, self.actor_state_distributing)
+        self.assertEqual(res.actor_state_defaulted, self.actor_state_defaulted)
+        self.assertEqual(res.actor_state_expired, self.actor_state_expired)
+        self.assertEqual(res._actor_state, self.actor_state)
+        self.assertEqual(res._partner_tag, self.partner_tag)
+        self.assertEqual(res._partner_length, self.partner_length)
+        self.assertEqual(res.partner_system_priority, self.partner_system_priority)
+        self.assertEqual(res.partner_system, self.partner_system)
+        self.assertEqual(res.partner_key, self.partner_key)
+        self.assertEqual(res.partner_port_priority, self.partner_port_priority)
+        self.assertEqual(res.partner_port, self.partner_port)
+        self.assertEqual(res.partner_state_activity, self.partner_state_activity)
+        self.assertEqual(res.partner_state_timeout, self.partner_state_timeout)
+        self.assertEqual(res.partner_state_aggregation,
             self.partner_state_aggregation)
-        eq_(res.partner_state_synchronization,
+        self.assertEqual(res.partner_state_synchronization,
             self.partner_state_synchronization)
-        eq_(res.partner_state_collecting, self.partner_state_collecting)
-        eq_(res.partner_state_distributing,
+        self.assertEqual(res.partner_state_collecting, self.partner_state_collecting)
+        self.assertEqual(res.partner_state_distributing,
             self.partner_state_distributing)
-        eq_(res.partner_state_defaulted, self.partner_state_defaulted)
-        eq_(res.partner_state_expired, self.partner_state_expired)
-        eq_(res._partner_state, self.partner_state)
-        eq_(res._collector_tag, self.collector_tag)
-        eq_(res._collector_length, self.collector_length)
-        eq_(res.collector_max_delay, self.collector_max_delay)
-        eq_(res._terminator_tag, self.terminator_tag)
-        eq_(res._terminator_length, self.terminator_length)
+        self.assertEqual(res.partner_state_defaulted, self.partner_state_defaulted)
+        self.assertEqual(res.partner_state_expired, self.partner_state_expired)
+        self.assertEqual(res._partner_state, self.partner_state)
+        self.assertEqual(res._collector_tag, self.collector_tag)
+        self.assertEqual(res._collector_length, self.collector_length)
+        self.assertEqual(res.collector_max_delay, self.collector_max_delay)
+        self.assertEqual(res._terminator_tag, self.terminator_tag)
+        self.assertEqual(res._terminator_length, self.terminator_length)
 
     def test_serialize(self):
         data = bytearray()
@@ -420,33 +419,33 @@ class Test_lacp(unittest.TestCase):
         offset += self.col_len
         trm_res = unpack_from(self.trm_fmt, buf, offset)
 
-        eq_(head_res[0], self.subtype)
-        eq_(head_res[1], self.version)
+        self.assertEqual(head_res[0], self.subtype)
+        self.assertEqual(head_res[1], self.version)
 
-        eq_(act_res[0], self.actor_tag)
-        eq_(act_res[1], self.actor_length)
-        eq_(act_res[2], self.actor_system_priority)
-        eq_(act_res[3], addrconv.mac.text_to_bin(self.actor_system))
-        eq_(act_res[4], self.actor_key)
-        eq_(act_res[5], self.actor_port_priority)
-        eq_(act_res[6], self.actor_port)
-        eq_(act_res[7], self.actor_state)
+        self.assertEqual(act_res[0], self.actor_tag)
+        self.assertEqual(act_res[1], self.actor_length)
+        self.assertEqual(act_res[2], self.actor_system_priority)
+        self.assertEqual(act_res[3], addrconv.mac.text_to_bin(self.actor_system))
+        self.assertEqual(act_res[4], self.actor_key)
+        self.assertEqual(act_res[5], self.actor_port_priority)
+        self.assertEqual(act_res[6], self.actor_port)
+        self.assertEqual(act_res[7], self.actor_state)
 
-        eq_(prt_res[0], self.partner_tag)
-        eq_(prt_res[1], self.partner_length)
-        eq_(prt_res[2], self.partner_system_priority)
-        eq_(prt_res[3], addrconv.mac.text_to_bin(self.partner_system))
-        eq_(prt_res[4], self.partner_key)
-        eq_(prt_res[5], self.partner_port_priority)
-        eq_(prt_res[6], self.partner_port)
-        eq_(prt_res[7], self.partner_state)
+        self.assertEqual(prt_res[0], self.partner_tag)
+        self.assertEqual(prt_res[1], self.partner_length)
+        self.assertEqual(prt_res[2], self.partner_system_priority)
+        self.assertEqual(prt_res[3], addrconv.mac.text_to_bin(self.partner_system))
+        self.assertEqual(prt_res[4], self.partner_key)
+        self.assertEqual(prt_res[5], self.partner_port_priority)
+        self.assertEqual(prt_res[6], self.partner_port)
+        self.assertEqual(prt_res[7], self.partner_state)
 
-        eq_(col_res[0], self.collector_tag)
-        eq_(col_res[1], self.collector_length)
-        eq_(col_res[2], self.collector_max_delay)
+        self.assertEqual(col_res[0], self.collector_tag)
+        self.assertEqual(col_res[1], self.collector_length)
+        self.assertEqual(col_res[2], self.collector_max_delay)
 
-        eq_(trm_res[0], self.terminator_tag)
-        eq_(trm_res[1], self.terminator_length)
+        self.assertEqual(trm_res[0], self.terminator_tag)
+        self.assertEqual(trm_res[1], self.terminator_length)
 
     def _build_lacp(self):
         ethertype = ether.ETH_TYPE_SLOW
@@ -463,643 +462,645 @@ class Test_lacp(unittest.TestCase):
         p = self._build_lacp()
 
         e = self.find_protocol(p, "ethernet")
-        ok_(e)
-        eq_(e.ethertype, ether.ETH_TYPE_SLOW)
+        self.assertTrue(e)
+        self.assertEqual(e.ethertype, ether.ETH_TYPE_SLOW)
 
         l = self.find_protocol(p, "lacp")
-        ok_(l)
+        self.assertTrue(l)
 
-        eq_(l._subtype, self.subtype)
-        eq_(l.version, self.version)
-        eq_(l._actor_tag, self.actor_tag)
-        eq_(l._actor_length, self.actor_length)
-        eq_(l.actor_system_priority, self.actor_system_priority)
-        eq_(l.actor_system, self.actor_system)
-        eq_(l.actor_key, self.actor_key)
-        eq_(l.actor_port_priority, self.actor_port_priority)
-        eq_(l.actor_port, self.actor_port)
-        eq_(l.actor_state_activity, self.actor_state_activity)
-        eq_(l.actor_state_timeout, self.actor_state_timeout)
-        eq_(l.actor_state_aggregation, self.actor_state_aggregation)
-        eq_(l.actor_state_synchronization,
+        self.assertEqual(l._subtype, self.subtype)
+        self.assertEqual(l.version, self.version)
+        self.assertEqual(l._actor_tag, self.actor_tag)
+        self.assertEqual(l._actor_length, self.actor_length)
+        self.assertEqual(l.actor_system_priority, self.actor_system_priority)
+        self.assertEqual(l.actor_system, self.actor_system)
+        self.assertEqual(l.actor_key, self.actor_key)
+        self.assertEqual(l.actor_port_priority, self.actor_port_priority)
+        self.assertEqual(l.actor_port, self.actor_port)
+        self.assertEqual(l.actor_state_activity, self.actor_state_activity)
+        self.assertEqual(l.actor_state_timeout, self.actor_state_timeout)
+        self.assertEqual(l.actor_state_aggregation, self.actor_state_aggregation)
+        self.assertEqual(l.actor_state_synchronization,
             self.actor_state_synchronization)
-        eq_(l.actor_state_collecting, self.actor_state_collecting)
-        eq_(l.actor_state_distributing, self.actor_state_distributing)
-        eq_(l.actor_state_defaulted, self.actor_state_defaulted)
-        eq_(l.actor_state_expired, self.actor_state_expired)
-        eq_(l._actor_state, self.actor_state)
-        eq_(l._partner_tag, self.partner_tag)
-        eq_(l._partner_length, self.partner_length)
-        eq_(l.partner_system_priority, self.partner_system_priority)
-        eq_(l.partner_system, self.partner_system)
-        eq_(l.partner_key, self.partner_key)
-        eq_(l.partner_port_priority, self.partner_port_priority)
-        eq_(l.partner_port, self.partner_port)
-        eq_(l.partner_state_activity, self.partner_state_activity)
-        eq_(l.partner_state_timeout, self.partner_state_timeout)
-        eq_(l.partner_state_aggregation, self.partner_state_aggregation)
-        eq_(l.partner_state_synchronization,
+        self.assertEqual(l.actor_state_collecting, self.actor_state_collecting)
+        self.assertEqual(l.actor_state_distributing, self.actor_state_distributing)
+        self.assertEqual(l.actor_state_defaulted, self.actor_state_defaulted)
+        self.assertEqual(l.actor_state_expired, self.actor_state_expired)
+        self.assertEqual(l._actor_state, self.actor_state)
+        self.assertEqual(l._partner_tag, self.partner_tag)
+        self.assertEqual(l._partner_length, self.partner_length)
+        self.assertEqual(l.partner_system_priority, self.partner_system_priority)
+        self.assertEqual(l.partner_system, self.partner_system)
+        self.assertEqual(l.partner_key, self.partner_key)
+        self.assertEqual(l.partner_port_priority, self.partner_port_priority)
+        self.assertEqual(l.partner_port, self.partner_port)
+        self.assertEqual(l.partner_state_activity, self.partner_state_activity)
+        self.assertEqual(l.partner_state_timeout, self.partner_state_timeout)
+        self.assertEqual(l.partner_state_aggregation, self.partner_state_aggregation)
+        self.assertEqual(l.partner_state_synchronization,
             self.partner_state_synchronization)
-        eq_(l.partner_state_collecting, self.partner_state_collecting)
-        eq_(l.partner_state_distributing,
+        self.assertEqual(l.partner_state_collecting, self.partner_state_collecting)
+        self.assertEqual(l.partner_state_distributing,
             self.partner_state_distributing)
-        eq_(l.partner_state_defaulted, self.partner_state_defaulted)
-        eq_(l.partner_state_expired, self.partner_state_expired)
-        eq_(l._partner_state, self.partner_state)
-        eq_(l._collector_tag, self.collector_tag)
-        eq_(l._collector_length, self.collector_length)
-        eq_(l.collector_max_delay, self.collector_max_delay)
-        eq_(l._terminator_tag, self.terminator_tag)
-        eq_(l._terminator_length, self.terminator_length)
+        self.assertEqual(l.partner_state_defaulted, self.partner_state_defaulted)
+        self.assertEqual(l.partner_state_expired, self.partner_state_expired)
+        self.assertEqual(l._partner_state, self.partner_state)
+        self.assertEqual(l._collector_tag, self.collector_tag)
+        self.assertEqual(l._collector_length, self.collector_length)
+        self.assertEqual(l.collector_max_delay, self.collector_max_delay)
+        self.assertEqual(l._terminator_tag, self.terminator_tag)
+        self.assertEqual(l._terminator_length, self.terminator_length)
 
-    @raises(Exception)
     def test_malformed_lacp(self):
         m_short_buf = self.buf[1:self.length]
-        slow.parser(m_short_buf)
+        self.assertRaises(Exception, slow.parser, m_short_buf)
 
-    @raises(Exception)
     def test_invalid_subtype(self):
+        self.skipTest('This test needs to be refactored: "serialize" method '
+                      'requires two input parameters that are not provided '
+                      'here.')
         invalid_lacv = copy.deepcopy(self.l)
         invalid_lacv.subtype = 0xff
         invalid_buf = invalid_lacv.serialize()
         slow.parser(invalid_buf)
 
-    @raises(Exception)
     def test_invalid_version(self):
+        self.skipTest('This test needs to be refactored: "serialize" method '
+                      'requires two input parameters that are not provided '
+                      'here.')
         invalid_lacv = copy.deepcopy(self.l)
         invalid_lacv.version = 0xff
         invalid_buf = invalid_lacv.serialize()
         slow.parser(invalid_buf)
 
-    @raises(Exception)
     def test_invalid_actor_tag(self):
+        self.skipTest('This test needs to be refactored: "serialize" method '
+                      'requires two input parameters that are not provided '
+                      'here.')
         invalid_lacv = copy.deepcopy(self.l)
         invalid_lacv.actor_tag = 0x04
         invalid_buf = invalid_lacv.serialize()
         slow.parser(invalid_buf)
 
-    @raises(Exception)
     def test_invalid_actor_length(self):
+        self.skipTest('This test needs to be refactored: "serialize" method '
+                      'requires two input parameters that are not provided '
+                      'here.')
         invalid_lacv = copy.deepcopy(self.l)
         invalid_lacv.actor_length = 50
         invalid_buf = invalid_lacv.serialize()
         slow.parser(invalid_buf)
 
-    @raises(Exception)
     def test_invalid_partner_tag(self):
+        self.skipTest('This test needs to be refactored: "serialize" method '
+                      'requires two input parameters that are not provided '
+                      'here.')
         invalid_lacv = copy.deepcopy(self.l)
         invalid_lacv.partner_tag = 0x01
         invalid_buf = invalid_lacv.serialize()
         slow.parser(invalid_buf)
 
-    @raises(Exception)
     def test_invalid_partner_length(self):
+        self.skipTest('This test needs to be refactored: "serialize" method '
+                      'requires two input parameters that are not provided '
+                      'here.')
         invalid_lacv = copy.deepcopy(self.l)
         invalid_lacv.partner_length = 0
         invalid_buf = invalid_lacv.serialize()
         slow.parser(invalid_buf)
 
-    @raises(Exception)
     def test_invalid_collector_tag(self):
+        self.skipTest('This test needs to be refactored: "serialize" method '
+                      'requires two input parameters that are not provided '
+                      'here.')
         invalid_lacv = copy.deepcopy(self.l)
         invalid_lacv.collector_tag = 0x00
         invalid_buf = invalid_lacv.serialize()
         slow.parser(invalid_buf)
 
-    @raises(Exception)
     def test_invalid_collector_length(self):
+        self.skipTest('This test needs to be refactored: "serialize" method '
+                      'requires two input parameters that are not provided '
+                      'here.')
         invalid_lacv = copy.deepcopy(self.l)
         invalid_lacv.collector_length = 20
         invalid_buf = invalid_lacv.serialize()
         slow.parser(invalid_buf)
 
-    @raises(Exception)
     def test_invalid_terminator_tag(self):
+        self.skipTest('This test needs to be refactored: "serialize" method '
+                      'requires two input parameters that are not provided '
+                      'here.')
         invalid_lacv = copy.deepcopy(self.l)
         invalid_lacv.terminator_tag = 0x04
         invalid_buf = invalid_lacv.serialize()
         slow.parser(invalid_buf)
 
-    @raises(Exception)
     def test_invalid_terminator_length(self):
+        self.skipTest('This test needs to be refactored: "serialize" method '
+                      'requires two input parameters that are not provided '
+                      'here.')
         invalid_lacv = copy.deepcopy(self.l)
         invalid_lacv.terminator_length = self.trm_len
         invalid_buf = invalid_lacv.serialize()
         slow.parser(invalid_buf)
 
-    @raises(Exception)
     def test_invalid_actor_state_activity(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 2,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          2,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_actor_state_timeout(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 2,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          2,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_actor_state_aggregation(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 2,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          2,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_actor_state_synchronization(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 2,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          2,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_actor_state_collecting(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 2,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          2,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_actor_state_distributing(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 2,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          2,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_actor_state_defaulted(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 2,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          2,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_actor_state_expired(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 2,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          2,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_partner_state_activity(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 -1,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          -1,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_partner_state_timeout(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 -1,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          -1,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_partner_state_aggregation(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 -1,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          -1,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_partner_state_synchronization(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 -1,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          -1,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_partner_state_collecting(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 -1,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          -1,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_partner_state_distributing(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 -1,
-                 self.partner_state_defaulted,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          -1,
+                          self.partner_state_defaulted,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_partner_state_defaulted(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 -1,
-                 self.partner_state_expired,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          -1,
+                          self.partner_state_expired,
+                          self.collector_max_delay)
 
-    @raises(Exception)
     def test_invalid_partner_state_expired(self):
-        l = lacp(self.version,
-                 self.actor_system_priority,
-                 self.actor_system,
-                 self.actor_key,
-                 self.actor_port_priority,
-                 self.actor_port,
-                 self.actor_state_activity,
-                 self.actor_state_timeout,
-                 self.actor_state_aggregation,
-                 self.actor_state_synchronization,
-                 self.actor_state_collecting,
-                 self.actor_state_distributing,
-                 self.actor_state_defaulted,
-                 self.actor_state_expired,
-                 self.partner_system_priority,
-                 self.partner_system,
-                 self.partner_key,
-                 self.partner_port_priority,
-                 self.partner_port,
-                 self.partner_state_activity,
-                 self.partner_state_timeout,
-                 self.partner_state_aggregation,
-                 self.partner_state_synchronization,
-                 self.partner_state_collecting,
-                 self.partner_state_distributing,
-                 self.partner_state_defaulted,
-                 -1,
-                 self.collector_max_delay)
-        l.serialize()
+        self.assertRaises(AssertionError, lacp,
+                          self.version,
+                          self.actor_system_priority,
+                          self.actor_system,
+                          self.actor_key,
+                          self.actor_port_priority,
+                          self.actor_port,
+                          self.actor_state_activity,
+                          self.actor_state_timeout,
+                          self.actor_state_aggregation,
+                          self.actor_state_synchronization,
+                          self.actor_state_collecting,
+                          self.actor_state_distributing,
+                          self.actor_state_defaulted,
+                          self.actor_state_expired,
+                          self.partner_system_priority,
+                          self.partner_system,
+                          self.partner_key,
+                          self.partner_port_priority,
+                          self.partner_port,
+                          self.partner_state_activity,
+                          self.partner_state_timeout,
+                          self.partner_state_aggregation,
+                          self.partner_state_synchronization,
+                          self.partner_state_collecting,
+                          self.partner_state_distributing,
+                          self.partner_state_defaulted,
+                          -1,
+                          self.collector_max_delay)
 
     def test_json(self):
         jsondict = self.l.to_jsondict()
         l = lacp.from_jsondict(jsondict['lacp'])
-        eq_(str(self.l), str(l))
+        self.assertEqual(str(self.l), str(l))

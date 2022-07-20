@@ -19,7 +19,6 @@ import unittest
 import logging
 import struct
 import inspect
-from nose.tools import ok_, eq_
 import six
 from os_ken.ofproto import ether, inet
 from os_ken.lib.packet import arp
@@ -106,7 +105,7 @@ class TestPacket(unittest.TestCase):
         pad_len = 60 - len(buf)
         if pad_len > 0:
             buf += b'\x00' * pad_len
-        eq_(buf, p.data)
+        self.assertEqual(buf, p.data)
 
         # parse
         pkt = packet.Packet(p.data)
@@ -115,22 +114,22 @@ class TestPacket(unittest.TestCase):
         p_arp = protocols['arp']
 
         # ethernet
-        ok_(p_eth)
-        eq_(self.dst_mac, p_eth.dst)
-        eq_(self.src_mac, p_eth.src)
-        eq_(ether.ETH_TYPE_ARP, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual(self.dst_mac, p_eth.dst)
+        self.assertEqual(self.src_mac, p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_ARP, p_eth.ethertype)
 
         # arp
-        ok_(p_arp)
-        eq_(1, p_arp.hwtype)
-        eq_(ether.ETH_TYPE_IP, p_arp.proto)
-        eq_(6, p_arp.hlen)
-        eq_(4, p_arp.plen)
-        eq_(2, p_arp.opcode)
-        eq_(self.src_mac, p_arp.src_mac)
-        eq_(self.src_ip, p_arp.src_ip)
-        eq_(self.dst_mac, p_arp.dst_mac)
-        eq_(self.dst_ip, p_arp.dst_ip)
+        self.assertTrue(p_arp)
+        self.assertEqual(1, p_arp.hwtype)
+        self.assertEqual(ether.ETH_TYPE_IP, p_arp.proto)
+        self.assertEqual(6, p_arp.hlen)
+        self.assertEqual(4, p_arp.plen)
+        self.assertEqual(2, p_arp.opcode)
+        self.assertEqual(self.src_mac, p_arp.src_mac)
+        self.assertEqual(self.src_ip, p_arp.src_ip)
+        self.assertEqual(self.dst_mac, p_arp.dst_mac)
+        self.assertEqual(self.dst_ip, p_arp.dst_ip)
 
         # to string
         eth_values = {'dst': self.dst_mac,
@@ -157,14 +156,14 @@ class TestPacket(unittest.TestCase):
 
         pkt_str = '%s, %s' % (eth_str, arp_str)
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(arp_str, str(p_arp))
-        eq_(arp_str, repr(p_arp))
+        self.assertEqual(arp_str, str(p_arp))
+        self.assertEqual(arp_str, repr(p_arp))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_vlan_arp(self):
         # buid packet
@@ -206,7 +205,7 @@ class TestPacket(unittest.TestCase):
         pad_len = 60 - len(buf)
         if pad_len > 0:
             buf += b'\x00' * pad_len
-        eq_(buf, p.data)
+        self.assertEqual(buf, p.data)
 
         # parse
         pkt = packet.Packet(p.data)
@@ -216,29 +215,29 @@ class TestPacket(unittest.TestCase):
         p_arp = protocols['arp']
 
         # ethernet
-        ok_(p_eth)
-        eq_(self.dst_mac, p_eth.dst)
-        eq_(self.src_mac, p_eth.src)
-        eq_(ether.ETH_TYPE_8021Q, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual(self.dst_mac, p_eth.dst)
+        self.assertEqual(self.src_mac, p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_8021Q, p_eth.ethertype)
 
         # vlan
-        ok_(p_vlan)
-        eq_(0b111, p_vlan.pcp)
-        eq_(0b1, p_vlan.cfi)
-        eq_(3, p_vlan.vid)
-        eq_(ether.ETH_TYPE_ARP, p_vlan.ethertype)
+        self.assertTrue(p_vlan)
+        self.assertEqual(0b111, p_vlan.pcp)
+        self.assertEqual(0b1, p_vlan.cfi)
+        self.assertEqual(3, p_vlan.vid)
+        self.assertEqual(ether.ETH_TYPE_ARP, p_vlan.ethertype)
 
         # arp
-        ok_(p_arp)
-        eq_(1, p_arp.hwtype)
-        eq_(ether.ETH_TYPE_IP, p_arp.proto)
-        eq_(6, p_arp.hlen)
-        eq_(4, p_arp.plen)
-        eq_(2, p_arp.opcode)
-        eq_(self.src_mac, p_arp.src_mac)
-        eq_(self.src_ip, p_arp.src_ip)
-        eq_(self.dst_mac, p_arp.dst_mac)
-        eq_(self.dst_ip, p_arp.dst_ip)
+        self.assertTrue(p_arp)
+        self.assertEqual(1, p_arp.hwtype)
+        self.assertEqual(ether.ETH_TYPE_IP, p_arp.proto)
+        self.assertEqual(6, p_arp.hlen)
+        self.assertEqual(4, p_arp.plen)
+        self.assertEqual(2, p_arp.opcode)
+        self.assertEqual(self.src_mac, p_arp.src_mac)
+        self.assertEqual(self.src_ip, p_arp.src_ip)
+        self.assertEqual(self.dst_mac, p_arp.dst_mac)
+        self.assertEqual(self.dst_ip, p_arp.dst_ip)
 
         # to string
         eth_values = {'dst': self.dst_mac,
@@ -274,17 +273,17 @@ class TestPacket(unittest.TestCase):
 
         pkt_str = '%s, %s, %s' % (eth_str, vlan_str, arp_str)
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(vlan_str, str(p_vlan))
-        eq_(vlan_str, repr(p_vlan))
+        self.assertEqual(vlan_str, str(p_vlan))
+        self.assertEqual(vlan_str, repr(p_vlan))
 
-        eq_(arp_str, str(p_arp))
-        eq_(arp_str, repr(p_arp))
+        self.assertEqual(arp_str, str(p_arp))
+        self.assertEqual(arp_str, repr(p_arp))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_ipv4_udp(self):
         # buid packet
@@ -334,44 +333,44 @@ class TestPacket(unittest.TestCase):
         p_udp = protocols['udp']
 
         # ethernet
-        ok_(p_eth)
-        eq_(self.dst_mac, p_eth.dst)
-        eq_(self.src_mac, p_eth.src)
-        eq_(ether.ETH_TYPE_IP, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual(self.dst_mac, p_eth.dst)
+        self.assertEqual(self.src_mac, p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_IP, p_eth.ethertype)
 
         # ipv4
-        ok_(p_ipv4)
-        eq_(4, p_ipv4.version)
-        eq_(5, p_ipv4.header_length)
-        eq_(1, p_ipv4.tos)
+        self.assertTrue(p_ipv4)
+        self.assertEqual(4, p_ipv4.version)
+        self.assertEqual(5, p_ipv4.header_length)
+        self.assertEqual(1, p_ipv4.tos)
         l = len(ip_buf) + len(u_buf) + len(self.payload)
-        eq_(l, p_ipv4.total_length)
-        eq_(3, p_ipv4.identification)
-        eq_(1, p_ipv4.flags)
-        eq_(64, p_ipv4.ttl)
-        eq_(inet.IPPROTO_UDP, p_ipv4.proto)
-        eq_(self.src_ip, p_ipv4.src)
-        eq_(self.dst_ip, p_ipv4.dst)
+        self.assertEqual(l, p_ipv4.total_length)
+        self.assertEqual(3, p_ipv4.identification)
+        self.assertEqual(1, p_ipv4.flags)
+        self.assertEqual(64, p_ipv4.ttl)
+        self.assertEqual(inet.IPPROTO_UDP, p_ipv4.proto)
+        self.assertEqual(self.src_ip, p_ipv4.src)
+        self.assertEqual(self.dst_ip, p_ipv4.dst)
         t = bytearray(ip_buf)
         struct.pack_into('!H', t, 10, p_ipv4.csum)
-        eq_(packet_utils.checksum(t), 0)
+        self.assertEqual(packet_utils.checksum(t), 0)
 
         # udp
-        ok_(p_udp)
-        eq_(0x190f, p_udp.src_port)
-        eq_(0x1F90, p_udp.dst_port)
-        eq_(len(u_buf) + len(self.payload), p_udp.total_length)
-        eq_(0x77b2, p_udp.csum)
+        self.assertTrue(p_udp)
+        self.assertEqual(0x190f, p_udp.src_port)
+        self.assertEqual(0x1F90, p_udp.dst_port)
+        self.assertEqual(len(u_buf) + len(self.payload), p_udp.total_length)
+        self.assertEqual(0x77b2, p_udp.csum)
         t = bytearray(u_buf)
         struct.pack_into('!H', t, 6, p_udp.csum)
         ph = struct.pack('!4s4sBBH', self.src_ip_bin, self.dst_ip_bin, 0,
                          17, len(u_buf) + len(self.payload))
         t = ph + t + self.payload
-        eq_(packet_utils.checksum(t), 0)
+        self.assertEqual(packet_utils.checksum(t), 0)
 
         # payload
-        ok_('payload' in protocols)
-        eq_(self.payload, protocols['payload'])
+        self.assertTrue('payload' in protocols)
+        self.assertEqual(self.payload, protocols['payload'])
 
         # to string
         eth_values = {'dst': self.dst_mac,
@@ -412,17 +411,17 @@ class TestPacket(unittest.TestCase):
         pkt_str = '%s, %s, %s, %s' % (eth_str, ipv4_str, udp_str,
                                       repr(protocols['payload']))
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(ipv4_str, str(p_ipv4))
-        eq_(ipv4_str, repr(p_ipv4))
+        self.assertEqual(ipv4_str, str(p_ipv4))
+        self.assertEqual(ipv4_str, repr(p_ipv4))
 
-        eq_(udp_str, str(p_udp))
-        eq_(udp_str, repr(p_udp))
+        self.assertEqual(udp_str, str(p_udp))
+        self.assertEqual(udp_str, repr(p_udp))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_ipv4_tcp(self):
         # buid packet
@@ -479,49 +478,49 @@ class TestPacket(unittest.TestCase):
         p_tcp = protocols['tcp']
 
         # ethernet
-        ok_(p_eth)
-        eq_(self.dst_mac, p_eth.dst)
-        eq_(self.src_mac, p_eth.src)
-        eq_(ether.ETH_TYPE_IP, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual(self.dst_mac, p_eth.dst)
+        self.assertEqual(self.src_mac, p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_IP, p_eth.ethertype)
 
         # ipv4
-        ok_(p_ipv4)
-        eq_(4, p_ipv4.version)
-        eq_(5, p_ipv4.header_length)
-        eq_(0, p_ipv4.tos)
+        self.assertTrue(p_ipv4)
+        self.assertEqual(4, p_ipv4.version)
+        self.assertEqual(5, p_ipv4.header_length)
+        self.assertEqual(0, p_ipv4.tos)
         l = len(ip_buf) + len(t_buf) + len(self.payload)
-        eq_(l, p_ipv4.total_length)
-        eq_(0, p_ipv4.identification)
-        eq_(0, p_ipv4.flags)
-        eq_(64, p_ipv4.ttl)
-        eq_(inet.IPPROTO_TCP, p_ipv4.proto)
-        eq_(self.src_ip, p_ipv4.src)
-        eq_(self.dst_ip, p_ipv4.dst)
+        self.assertEqual(l, p_ipv4.total_length)
+        self.assertEqual(0, p_ipv4.identification)
+        self.assertEqual(0, p_ipv4.flags)
+        self.assertEqual(64, p_ipv4.ttl)
+        self.assertEqual(inet.IPPROTO_TCP, p_ipv4.proto)
+        self.assertEqual(self.src_ip, p_ipv4.src)
+        self.assertEqual(self.dst_ip, p_ipv4.dst)
         t = bytearray(ip_buf)
         struct.pack_into('!H', t, 10, p_ipv4.csum)
-        eq_(packet_utils.checksum(t), 0)
+        self.assertEqual(packet_utils.checksum(t), 0)
 
         # tcp
-        ok_(p_tcp)
-        eq_(0x190f, p_tcp.src_port)
-        eq_(0x1F90, p_tcp.dst_port)
-        eq_(0x123, p_tcp.seq)
-        eq_(1, p_tcp.ack)
-        eq_(6, p_tcp.offset)
-        eq_(0b101010, p_tcp.bits)
-        eq_(2048, p_tcp.window_size)
-        eq_(0x6f, p_tcp.urgent)
-        eq_(len(t_buf), len(p_tcp))
+        self.assertTrue(p_tcp)
+        self.assertEqual(0x190f, p_tcp.src_port)
+        self.assertEqual(0x1F90, p_tcp.dst_port)
+        self.assertEqual(0x123, p_tcp.seq)
+        self.assertEqual(1, p_tcp.ack)
+        self.assertEqual(6, p_tcp.offset)
+        self.assertEqual(0b101010, p_tcp.bits)
+        self.assertEqual(2048, p_tcp.window_size)
+        self.assertEqual(0x6f, p_tcp.urgent)
+        self.assertEqual(len(t_buf), len(p_tcp))
         t = bytearray(t_buf)
         struct.pack_into('!H', t, 16, p_tcp.csum)
         ph = struct.pack('!4s4sBBH', self.src_ip_bin, self.dst_ip_bin, 0,
                          6, len(t_buf) + len(self.payload))
         t = ph + t + self.payload
-        eq_(packet_utils.checksum(t), 0)
+        self.assertEqual(packet_utils.checksum(t), 0)
 
         # payload
-        ok_('payload' in protocols)
-        eq_(self.payload, protocols['payload'])
+        self.assertTrue('payload' in protocols)
+        self.assertEqual(self.payload, protocols['payload'])
 
         # to string
         eth_values = {'dst': self.dst_mac,
@@ -568,17 +567,17 @@ class TestPacket(unittest.TestCase):
         pkt_str = '%s, %s, %s, %s' % (eth_str, ipv4_str, tcp_str,
                                       repr(protocols['payload']))
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(ipv4_str, str(p_ipv4))
-        eq_(ipv4_str, repr(p_ipv4))
+        self.assertEqual(ipv4_str, str(p_ipv4))
+        self.assertEqual(ipv4_str, repr(p_ipv4))
 
-        eq_(tcp_str, str(p_tcp))
-        eq_(tcp_str, repr(p_tcp))
+        self.assertEqual(tcp_str, str(p_tcp))
+        self.assertEqual(tcp_str, repr(p_tcp))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_ipv4_sctp(self):
         # build packet
@@ -632,45 +631,45 @@ class TestPacket(unittest.TestCase):
         p_sctp = protocols['sctp']
 
         # ethernet
-        ok_(p_eth)
-        eq_('ff:ff:ff:ff:ff:ff', p_eth.dst)
-        eq_('00:00:00:00:00:00', p_eth.src)
-        eq_(ether.ETH_TYPE_IP, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual('ff:ff:ff:ff:ff:ff', p_eth.dst)
+        self.assertEqual('00:00:00:00:00:00', p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_IP, p_eth.ethertype)
 
         # ipv4
-        ok_(p_ipv4)
-        eq_(4, p_ipv4.version)
-        eq_(5, p_ipv4.header_length)
-        eq_(0, p_ipv4.tos)
+        self.assertTrue(p_ipv4)
+        self.assertEqual(4, p_ipv4.version)
+        self.assertEqual(5, p_ipv4.header_length)
+        self.assertEqual(0, p_ipv4.tos)
         l = len(ip_buf) + len(s_buf)
-        eq_(l, p_ipv4.total_length)
-        eq_(0, p_ipv4.identification)
-        eq_(0, p_ipv4.flags)
-        eq_(255, p_ipv4.ttl)
-        eq_(inet.IPPROTO_SCTP, p_ipv4.proto)
-        eq_('10.0.0.1', p_ipv4.src)
-        eq_('10.0.0.2', p_ipv4.dst)
+        self.assertEqual(l, p_ipv4.total_length)
+        self.assertEqual(0, p_ipv4.identification)
+        self.assertEqual(0, p_ipv4.flags)
+        self.assertEqual(255, p_ipv4.ttl)
+        self.assertEqual(inet.IPPROTO_SCTP, p_ipv4.proto)
+        self.assertEqual('10.0.0.1', p_ipv4.src)
+        self.assertEqual('10.0.0.2', p_ipv4.dst)
         t = bytearray(ip_buf)
         struct.pack_into('!H', t, 10, p_ipv4.csum)
-        eq_(packet_utils.checksum(t), 0x1403)
+        self.assertEqual(packet_utils.checksum(t), 0x1403)
 
         # sctp
-        ok_(p_sctp)
-        eq_(1, p_sctp.src_port)
-        eq_(1, p_sctp.dst_port)
-        eq_(0, p_sctp.vtag)
+        self.assertTrue(p_sctp)
+        self.assertEqual(1, p_sctp.src_port)
+        self.assertEqual(1, p_sctp.dst_port)
+        self.assertEqual(0, p_sctp.vtag)
         assert isinstance(p_sctp.chunks[0], sctp.chunk_data)
-        eq_(0, p_sctp.chunks[0]._type)
-        eq_(0, p_sctp.chunks[0].unordered)
-        eq_(0, p_sctp.chunks[0].begin)
-        eq_(0, p_sctp.chunks[0].end)
-        eq_(16 + len(self.payload), p_sctp.chunks[0].length)
-        eq_(0, p_sctp.chunks[0].tsn)
-        eq_(0, p_sctp.chunks[0].sid)
-        eq_(0, p_sctp.chunks[0].seq)
-        eq_(0, p_sctp.chunks[0].payload_id)
-        eq_(self.payload, p_sctp.chunks[0].payload_data)
-        eq_(len(s_buf), len(p_sctp))
+        self.assertEqual(0, p_sctp.chunks[0]._type)
+        self.assertEqual(0, p_sctp.chunks[0].unordered)
+        self.assertEqual(0, p_sctp.chunks[0].begin)
+        self.assertEqual(0, p_sctp.chunks[0].end)
+        self.assertEqual(16 + len(self.payload), p_sctp.chunks[0].length)
+        self.assertEqual(0, p_sctp.chunks[0].tsn)
+        self.assertEqual(0, p_sctp.chunks[0].sid)
+        self.assertEqual(0, p_sctp.chunks[0].seq)
+        self.assertEqual(0, p_sctp.chunks[0].payload_id)
+        self.assertEqual(self.payload, p_sctp.chunks[0].payload_data)
+        self.assertEqual(len(s_buf), len(p_sctp))
 
         # to string
         eth_values = {'dst': 'ff:ff:ff:ff:ff:ff',
@@ -724,17 +723,17 @@ class TestPacket(unittest.TestCase):
 
         pkt_str = '%s, %s, %s' % (eth_str, ipv4_str, sctp_str)
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(ipv4_str, str(p_ipv4))
-        eq_(ipv4_str, repr(p_ipv4))
+        self.assertEqual(ipv4_str, str(p_ipv4))
+        self.assertEqual(ipv4_str, repr(p_ipv4))
 
-        eq_(sctp_str, str(p_sctp))
-        eq_(sctp_str, repr(p_sctp))
+        self.assertEqual(sctp_str, str(p_sctp))
+        self.assertEqual(sctp_str, repr(p_sctp))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_ipv4_icmp(self):
         # buid packet
@@ -781,38 +780,38 @@ class TestPacket(unittest.TestCase):
         p_icmp = protocols['icmp']
 
         # ethernet
-        ok_(p_eth)
-        eq_('ff:ff:ff:ff:ff:ff', p_eth.dst)
-        eq_('00:00:00:00:00:00', p_eth.src)
-        eq_(ether.ETH_TYPE_IP, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual('ff:ff:ff:ff:ff:ff', p_eth.dst)
+        self.assertEqual('00:00:00:00:00:00', p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_IP, p_eth.ethertype)
 
         # ipv4
-        ok_(p_ipv4)
-        eq_(4, p_ipv4.version)
-        eq_(5, p_ipv4.header_length)
-        eq_(0, p_ipv4.tos)
+        self.assertTrue(p_ipv4)
+        self.assertEqual(4, p_ipv4.version)
+        self.assertEqual(5, p_ipv4.header_length)
+        self.assertEqual(0, p_ipv4.tos)
         l = len(ip_buf) + len(ic_buf)
-        eq_(l, p_ipv4.total_length)
-        eq_(0, p_ipv4.identification)
-        eq_(0, p_ipv4.flags)
-        eq_(255, p_ipv4.ttl)
-        eq_(inet.IPPROTO_ICMP, p_ipv4.proto)
-        eq_('10.0.0.1', p_ipv4.src)
-        eq_('10.0.0.2', p_ipv4.dst)
+        self.assertEqual(l, p_ipv4.total_length)
+        self.assertEqual(0, p_ipv4.identification)
+        self.assertEqual(0, p_ipv4.flags)
+        self.assertEqual(255, p_ipv4.ttl)
+        self.assertEqual(inet.IPPROTO_ICMP, p_ipv4.proto)
+        self.assertEqual('10.0.0.1', p_ipv4.src)
+        self.assertEqual('10.0.0.2', p_ipv4.dst)
         t = bytearray(ip_buf)
         struct.pack_into('!H', t, 10, p_ipv4.csum)
-        eq_(packet_utils.checksum(t), 0x1403)
+        self.assertEqual(packet_utils.checksum(t), 0x1403)
 
         # icmp
-        ok_(p_icmp)
-        eq_(8, p_icmp.type)
-        eq_(0, p_icmp.code)
-        eq_(0, p_icmp.data.id)
-        eq_(0, p_icmp.data.seq)
-        eq_(len(ic_buf), len(p_icmp))
+        self.assertTrue(p_icmp)
+        self.assertEqual(8, p_icmp.type)
+        self.assertEqual(0, p_icmp.code)
+        self.assertEqual(0, p_icmp.data.id)
+        self.assertEqual(0, p_icmp.data.seq)
+        self.assertEqual(len(ic_buf), len(p_icmp))
         t = bytearray(ic_buf)
         struct.pack_into('!H', t, 2, p_icmp.csum)
-        eq_(packet_utils.checksum(t), 0)
+        self.assertEqual(packet_utils.checksum(t), 0)
 
         # to string
         eth_values = {'dst': 'ff:ff:ff:ff:ff:ff',
@@ -858,17 +857,17 @@ class TestPacket(unittest.TestCase):
 
         pkt_str = '%s, %s, %s' % (eth_str, ipv4_str, icmp_str)
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(ipv4_str, str(p_ipv4))
-        eq_(ipv4_str, repr(p_ipv4))
+        self.assertEqual(ipv4_str, str(p_ipv4))
+        self.assertEqual(ipv4_str, repr(p_ipv4))
 
-        eq_(icmp_str, str(p_icmp))
-        eq_(icmp_str, repr(p_icmp))
+        self.assertEqual(icmp_str, str(p_icmp))
+        self.assertEqual(icmp_str, repr(p_icmp))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_ipv6_udp(self):
         # build packet
@@ -911,38 +910,38 @@ class TestPacket(unittest.TestCase):
         p_udp = protocols['udp']
 
         # ethernet
-        ok_(p_eth)
-        eq_('ff:ff:ff:ff:ff:ff', p_eth.dst)
-        eq_('00:00:00:00:00:00', p_eth.src)
-        eq_(ether.ETH_TYPE_IPV6, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual('ff:ff:ff:ff:ff:ff', p_eth.dst)
+        self.assertEqual('00:00:00:00:00:00', p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_IPV6, p_eth.ethertype)
 
         # ipv6
-        ok_(p_ipv6)
-        eq_(6, p_ipv6.version)
-        eq_(0, p_ipv6.traffic_class)
-        eq_(0, p_ipv6.flow_label)
-        eq_(len(u_buf) + len(self.payload), p_ipv6.payload_length)
-        eq_(inet.IPPROTO_UDP, p_ipv6.nxt)
-        eq_(255, p_ipv6.hop_limit)
-        eq_('10::10', p_ipv6.src)
-        eq_('20::20', p_ipv6.dst)
+        self.assertTrue(p_ipv6)
+        self.assertEqual(6, p_ipv6.version)
+        self.assertEqual(0, p_ipv6.traffic_class)
+        self.assertEqual(0, p_ipv6.flow_label)
+        self.assertEqual(len(u_buf) + len(self.payload), p_ipv6.payload_length)
+        self.assertEqual(inet.IPPROTO_UDP, p_ipv6.nxt)
+        self.assertEqual(255, p_ipv6.hop_limit)
+        self.assertEqual('10::10', p_ipv6.src)
+        self.assertEqual('20::20', p_ipv6.dst)
 
         # udp
-        ok_(p_udp)
-        eq_(1, p_udp.src_port)
-        eq_(1, p_udp.dst_port)
-        eq_(len(u_buf) + len(self.payload), p_udp.total_length)
-        eq_(0x2B60, p_udp.csum)
+        self.assertTrue(p_udp)
+        self.assertEqual(1, p_udp.src_port)
+        self.assertEqual(1, p_udp.dst_port)
+        self.assertEqual(len(u_buf) + len(self.payload), p_udp.total_length)
+        self.assertEqual(0x2B60, p_udp.csum)
         t = bytearray(u_buf)
         struct.pack_into('!H', t, 6, p_udp.csum)
         ph = struct.pack('!16s16sI3xB', ipaddr, ipaddr,
                          len(u_buf) + len(self.payload), 17)
         t = ph + t + self.payload
-        eq_(packet_utils.checksum(t), 0x62)
+        self.assertEqual(packet_utils.checksum(t), 0x62)
 
         # payload
-        ok_('payload' in protocols)
-        eq_(self.payload, protocols['payload'])
+        self.assertTrue('payload' in protocols)
+        self.assertEqual(self.payload, protocols['payload'])
 
         # to string
         eth_values = {'dst': 'ff:ff:ff:ff:ff:ff',
@@ -979,17 +978,17 @@ class TestPacket(unittest.TestCase):
         pkt_str = '%s, %s, %s, %s' % (eth_str, ipv6_str, udp_str,
                                       repr(protocols['payload']))
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(ipv6_str, str(p_ipv6))
-        eq_(ipv6_str, repr(p_ipv6))
+        self.assertEqual(ipv6_str, str(p_ipv6))
+        self.assertEqual(ipv6_str, repr(p_ipv6))
 
-        eq_(udp_str, str(p_udp))
-        eq_(udp_str, repr(p_udp))
+        self.assertEqual(udp_str, str(p_udp))
+        self.assertEqual(udp_str, repr(p_udp))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_ipv6_tcp(self):
         # build packet
@@ -1038,43 +1037,43 @@ class TestPacket(unittest.TestCase):
         p_tcp = protocols['tcp']
 
         # ethernet
-        ok_(p_eth)
-        eq_('ff:ff:ff:ff:ff:ff', p_eth.dst)
-        eq_('00:00:00:00:00:00', p_eth.src)
-        eq_(ether.ETH_TYPE_IPV6, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual('ff:ff:ff:ff:ff:ff', p_eth.dst)
+        self.assertEqual('00:00:00:00:00:00', p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_IPV6, p_eth.ethertype)
 
         # ipv6
-        ok_(p_ipv6)
-        eq_(6, p_ipv6.version)
-        eq_(0, p_ipv6.traffic_class)
-        eq_(0, p_ipv6.flow_label)
-        eq_(len(t_buf) + len(self.payload), p_ipv6.payload_length)
-        eq_(inet.IPPROTO_TCP, p_ipv6.nxt)
-        eq_(255, p_ipv6.hop_limit)
-        eq_('10::10', p_ipv6.src)
-        eq_('20::20', p_ipv6.dst)
+        self.assertTrue(p_ipv6)
+        self.assertEqual(6, p_ipv6.version)
+        self.assertEqual(0, p_ipv6.traffic_class)
+        self.assertEqual(0, p_ipv6.flow_label)
+        self.assertEqual(len(t_buf) + len(self.payload), p_ipv6.payload_length)
+        self.assertEqual(inet.IPPROTO_TCP, p_ipv6.nxt)
+        self.assertEqual(255, p_ipv6.hop_limit)
+        self.assertEqual('10::10', p_ipv6.src)
+        self.assertEqual('20::20', p_ipv6.dst)
 
         # tcp
-        ok_(p_tcp)
-        eq_(1, p_tcp.src_port)
-        eq_(1, p_tcp.dst_port)
-        eq_(0, p_tcp.seq)
-        eq_(0, p_tcp.ack)
-        eq_(6, p_tcp.offset)
-        eq_(0, p_tcp.bits)
-        eq_(0, p_tcp.window_size)
-        eq_(0, p_tcp.urgent)
-        eq_(len(t_buf), len(p_tcp))
+        self.assertTrue(p_tcp)
+        self.assertEqual(1, p_tcp.src_port)
+        self.assertEqual(1, p_tcp.dst_port)
+        self.assertEqual(0, p_tcp.seq)
+        self.assertEqual(0, p_tcp.ack)
+        self.assertEqual(6, p_tcp.offset)
+        self.assertEqual(0, p_tcp.bits)
+        self.assertEqual(0, p_tcp.window_size)
+        self.assertEqual(0, p_tcp.urgent)
+        self.assertEqual(len(t_buf), len(p_tcp))
         t = bytearray(t_buf)
         struct.pack_into('!H', t, 16, p_tcp.csum)
         ph = struct.pack('!16s16sI3xB', ipaddr, ipaddr,
                          len(t_buf) + len(self.payload), 6)
         t = ph + t + self.payload
-        eq_(packet_utils.checksum(t), 0x62)
+        self.assertEqual(packet_utils.checksum(t), 0x62)
 
         # payload
-        ok_('payload' in protocols)
-        eq_(self.payload, protocols['payload'])
+        self.assertTrue('payload' in protocols)
+        self.assertEqual(self.payload, protocols['payload'])
 
         # to string
         eth_values = {'dst': 'ff:ff:ff:ff:ff:ff',
@@ -1117,17 +1116,17 @@ class TestPacket(unittest.TestCase):
         pkt_str = '%s, %s, %s, %s' % (eth_str, ipv6_str, tcp_str,
                                       repr(protocols['payload']))
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(ipv6_str, str(p_ipv6))
-        eq_(ipv6_str, repr(p_ipv6))
+        self.assertEqual(ipv6_str, str(p_ipv6))
+        self.assertEqual(ipv6_str, repr(p_ipv6))
 
-        eq_(tcp_str, str(p_tcp))
-        eq_(tcp_str, repr(p_tcp))
+        self.assertEqual(tcp_str, str(p_tcp))
+        self.assertEqual(tcp_str, repr(p_tcp))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_ipv6_sctp(self):
         # build packet
@@ -1178,39 +1177,39 @@ class TestPacket(unittest.TestCase):
         p_sctp = protocols['sctp']
 
         # ethernet
-        ok_(p_eth)
-        eq_('ff:ff:ff:ff:ff:ff', p_eth.dst)
-        eq_('00:00:00:00:00:00', p_eth.src)
-        eq_(ether.ETH_TYPE_IPV6, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual('ff:ff:ff:ff:ff:ff', p_eth.dst)
+        self.assertEqual('00:00:00:00:00:00', p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_IPV6, p_eth.ethertype)
 
         # ipv6
-        ok_(p_ipv6)
-        eq_(6, p_ipv6.version)
-        eq_(0, p_ipv6.traffic_class)
-        eq_(0, p_ipv6.flow_label)
-        eq_(len(s_buf), p_ipv6.payload_length)
-        eq_(inet.IPPROTO_SCTP, p_ipv6.nxt)
-        eq_(255, p_ipv6.hop_limit)
-        eq_('10::10', p_ipv6.src)
-        eq_('20::20', p_ipv6.dst)
+        self.assertTrue(p_ipv6)
+        self.assertEqual(6, p_ipv6.version)
+        self.assertEqual(0, p_ipv6.traffic_class)
+        self.assertEqual(0, p_ipv6.flow_label)
+        self.assertEqual(len(s_buf), p_ipv6.payload_length)
+        self.assertEqual(inet.IPPROTO_SCTP, p_ipv6.nxt)
+        self.assertEqual(255, p_ipv6.hop_limit)
+        self.assertEqual('10::10', p_ipv6.src)
+        self.assertEqual('20::20', p_ipv6.dst)
 
         # sctp
-        ok_(p_sctp)
-        eq_(1, p_sctp.src_port)
-        eq_(1, p_sctp.dst_port)
-        eq_(0, p_sctp.vtag)
+        self.assertTrue(p_sctp)
+        self.assertEqual(1, p_sctp.src_port)
+        self.assertEqual(1, p_sctp.dst_port)
+        self.assertEqual(0, p_sctp.vtag)
         assert isinstance(p_sctp.chunks[0], sctp.chunk_data)
-        eq_(0, p_sctp.chunks[0]._type)
-        eq_(0, p_sctp.chunks[0].unordered)
-        eq_(0, p_sctp.chunks[0].begin)
-        eq_(0, p_sctp.chunks[0].end)
-        eq_(16 + len(self.payload), p_sctp.chunks[0].length)
-        eq_(0, p_sctp.chunks[0].tsn)
-        eq_(0, p_sctp.chunks[0].sid)
-        eq_(0, p_sctp.chunks[0].seq)
-        eq_(0, p_sctp.chunks[0].payload_id)
-        eq_(self.payload, p_sctp.chunks[0].payload_data)
-        eq_(len(s_buf), len(p_sctp))
+        self.assertEqual(0, p_sctp.chunks[0]._type)
+        self.assertEqual(0, p_sctp.chunks[0].unordered)
+        self.assertEqual(0, p_sctp.chunks[0].begin)
+        self.assertEqual(0, p_sctp.chunks[0].end)
+        self.assertEqual(16 + len(self.payload), p_sctp.chunks[0].length)
+        self.assertEqual(0, p_sctp.chunks[0].tsn)
+        self.assertEqual(0, p_sctp.chunks[0].sid)
+        self.assertEqual(0, p_sctp.chunks[0].seq)
+        self.assertEqual(0, p_sctp.chunks[0].payload_id)
+        self.assertEqual(self.payload, p_sctp.chunks[0].payload_data)
+        self.assertEqual(len(s_buf), len(p_sctp))
 
         # to string
         eth_values = {'dst': 'ff:ff:ff:ff:ff:ff',
@@ -1260,17 +1259,17 @@ class TestPacket(unittest.TestCase):
 
         pkt_str = '%s, %s, %s' % (eth_str, ipv6_str, sctp_str)
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(ipv6_str, str(p_ipv6))
-        eq_(ipv6_str, repr(p_ipv6))
+        self.assertEqual(ipv6_str, str(p_ipv6))
+        self.assertEqual(ipv6_str, repr(p_ipv6))
 
-        eq_(sctp_str, str(p_sctp))
-        eq_(sctp_str, repr(p_sctp))
+        self.assertEqual(sctp_str, str(p_sctp))
+        self.assertEqual(sctp_str, repr(p_sctp))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_ipv6_icmpv6(self):
         # build packet
@@ -1312,32 +1311,32 @@ class TestPacket(unittest.TestCase):
         p_icmpv6 = protocols['icmpv6']
 
         # ethernet
-        ok_(p_eth)
-        eq_('ff:ff:ff:ff:ff:ff', p_eth.dst)
-        eq_('00:00:00:00:00:00', p_eth.src)
-        eq_(ether.ETH_TYPE_IPV6, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual('ff:ff:ff:ff:ff:ff', p_eth.dst)
+        self.assertEqual('00:00:00:00:00:00', p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_IPV6, p_eth.ethertype)
 
         # ipv6
-        ok_(p_ipv6)
-        eq_(6, p_ipv6.version)
-        eq_(0, p_ipv6.traffic_class)
-        eq_(0, p_ipv6.flow_label)
-        eq_(len(ic_buf), p_ipv6.payload_length)
-        eq_(inet.IPPROTO_ICMPV6, p_ipv6.nxt)
-        eq_(255, p_ipv6.hop_limit)
-        eq_('10::10', p_ipv6.src)
-        eq_('20::20', p_ipv6.dst)
+        self.assertTrue(p_ipv6)
+        self.assertEqual(6, p_ipv6.version)
+        self.assertEqual(0, p_ipv6.traffic_class)
+        self.assertEqual(0, p_ipv6.flow_label)
+        self.assertEqual(len(ic_buf), p_ipv6.payload_length)
+        self.assertEqual(inet.IPPROTO_ICMPV6, p_ipv6.nxt)
+        self.assertEqual(255, p_ipv6.hop_limit)
+        self.assertEqual('10::10', p_ipv6.src)
+        self.assertEqual('20::20', p_ipv6.dst)
 
         # icmpv6
-        ok_(p_icmpv6)
-        eq_(0, p_icmpv6.type_)
-        eq_(0, p_icmpv6.code)
-        eq_(len(ic_buf), len(p_icmpv6))
+        self.assertTrue(p_icmpv6)
+        self.assertEqual(0, p_icmpv6.type_)
+        self.assertEqual(0, p_icmpv6.code)
+        self.assertEqual(len(ic_buf), len(p_icmpv6))
         t = bytearray(ic_buf)
         struct.pack_into('!H', t, 2, p_icmpv6.csum)
         ph = struct.pack('!16s16sI3xB', ipaddr, ipaddr, len(ic_buf), 58)
         t = ph + t
-        eq_(packet_utils.checksum(t), 0x60)
+        self.assertEqual(packet_utils.checksum(t), 0x60)
 
         # to string
         eth_values = {'dst': 'ff:ff:ff:ff:ff:ff',
@@ -1373,17 +1372,17 @@ class TestPacket(unittest.TestCase):
 
         pkt_str = '%s, %s, %s' % (eth_str, ipv6_str, icmpv6_str)
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(ipv6_str, str(p_ipv6))
-        eq_(ipv6_str, repr(p_ipv6))
+        self.assertEqual(ipv6_str, str(p_ipv6))
+        self.assertEqual(ipv6_str, repr(p_ipv6))
 
-        eq_(icmpv6_str, str(p_icmpv6))
-        eq_(icmpv6_str, repr(p_icmpv6))
+        self.assertEqual(icmpv6_str, str(p_icmpv6))
+        self.assertEqual(icmpv6_str, repr(p_icmpv6))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_llc_bpdu(self):
         # buid packet
@@ -1440,7 +1439,7 @@ class TestPacket(unittest.TestCase):
         pad_len = 60 - len(buf)
         if pad_len > 0:
             buf += b'\x00' * pad_len
-        eq_(buf, p.data)
+        self.assertEqual(buf, p.data)
 
         # parse
         pkt = packet.Packet(p.data)
@@ -1450,38 +1449,38 @@ class TestPacket(unittest.TestCase):
         p_bpdu = protocols['ConfigurationBPDUs']
 
         # ethernet
-        ok_(p_eth)
-        eq_(self.dst_mac, p_eth.dst)
-        eq_(self.src_mac, p_eth.src)
-        eq_(ether.ETH_TYPE_IEEE802_3, p_eth.ethertype)
+        self.assertTrue(p_eth)
+        self.assertEqual(self.dst_mac, p_eth.dst)
+        self.assertEqual(self.src_mac, p_eth.src)
+        self.assertEqual(ether.ETH_TYPE_IEEE802_3, p_eth.ethertype)
 
         # llc
-        ok_(p_llc)
-        eq_(llc.SAP_BPDU, p_llc.dsap_addr)
-        eq_(llc.SAP_BPDU, p_llc.ssap_addr)
-        eq_(0, p_llc.control.modifier_function1)
-        eq_(0, p_llc.control.pf_bit)
-        eq_(0, p_llc.control.modifier_function2)
+        self.assertTrue(p_llc)
+        self.assertEqual(llc.SAP_BPDU, p_llc.dsap_addr)
+        self.assertEqual(llc.SAP_BPDU, p_llc.ssap_addr)
+        self.assertEqual(0, p_llc.control.modifier_function1)
+        self.assertEqual(0, p_llc.control.pf_bit)
+        self.assertEqual(0, p_llc.control.modifier_function2)
 
         # bpdu
-        ok_(p_bpdu)
-        eq_(bpdu.PROTOCOL_IDENTIFIER, p_bpdu._protocol_id)
-        eq_(bpdu.PROTOCOLVERSION_ID_BPDU, p_bpdu._version_id)
-        eq_(bpdu.TYPE_CONFIG_BPDU, p_bpdu._bpdu_type)
-        eq_(0, p_bpdu.flags)
-        eq_(32768, p_bpdu.root_priority)
-        eq_(0, p_bpdu.root_system_id_extension)
-        eq_(self.src_mac, p_bpdu.root_mac_address)
-        eq_(0, p_bpdu.root_path_cost)
-        eq_(32768, p_bpdu.bridge_priority)
-        eq_(0, p_bpdu.bridge_system_id_extension)
-        eq_(self.dst_mac, p_bpdu.bridge_mac_address)
-        eq_(128, p_bpdu.port_priority)
-        eq_(4, p_bpdu.port_number)
-        eq_(1, p_bpdu.message_age)
-        eq_(20, p_bpdu.max_age)
-        eq_(2, p_bpdu.hello_time)
-        eq_(15, p_bpdu.forward_delay)
+        self.assertTrue(p_bpdu)
+        self.assertEqual(bpdu.PROTOCOL_IDENTIFIER, p_bpdu._protocol_id)
+        self.assertEqual(bpdu.PROTOCOLVERSION_ID_BPDU, p_bpdu._version_id)
+        self.assertEqual(bpdu.TYPE_CONFIG_BPDU, p_bpdu._bpdu_type)
+        self.assertEqual(0, p_bpdu.flags)
+        self.assertEqual(32768, p_bpdu.root_priority)
+        self.assertEqual(0, p_bpdu.root_system_id_extension)
+        self.assertEqual(self.src_mac, p_bpdu.root_mac_address)
+        self.assertEqual(0, p_bpdu.root_path_cost)
+        self.assertEqual(32768, p_bpdu.bridge_priority)
+        self.assertEqual(0, p_bpdu.bridge_system_id_extension)
+        self.assertEqual(self.dst_mac, p_bpdu.bridge_mac_address)
+        self.assertEqual(128, p_bpdu.port_priority)
+        self.assertEqual(4, p_bpdu.port_number)
+        self.assertEqual(1, p_bpdu.message_age)
+        self.assertEqual(20, p_bpdu.max_age)
+        self.assertEqual(2, p_bpdu.hello_time)
+        self.assertEqual(15, p_bpdu.forward_delay)
 
         # to string
         eth_values = {'dst': self.dst_mac,
@@ -1530,24 +1529,24 @@ class TestPacket(unittest.TestCase):
 
         pkt_str = '%s, %s, %s' % (eth_str, llc_str, bpdu_str)
 
-        eq_(eth_str, str(p_eth))
-        eq_(eth_str, repr(p_eth))
+        self.assertEqual(eth_str, str(p_eth))
+        self.assertEqual(eth_str, repr(p_eth))
 
-        eq_(llc_str, str(p_llc))
-        eq_(llc_str, repr(p_llc))
+        self.assertEqual(llc_str, str(p_llc))
+        self.assertEqual(llc_str, repr(p_llc))
 
-        eq_(bpdu_str, str(p_bpdu))
-        eq_(bpdu_str, repr(p_bpdu))
+        self.assertEqual(bpdu_str, str(p_bpdu))
+        self.assertEqual(bpdu_str, repr(p_bpdu))
 
-        eq_(pkt_str, str(pkt))
-        eq_(pkt_str, repr(pkt))
+        self.assertEqual(pkt_str, str(pkt))
+        self.assertEqual(pkt_str, repr(pkt))
 
     def test_div_api(self):
         e = ethernet.ethernet(self.dst_mac, self.src_mac, ether.ETH_TYPE_IP)
         i = ipv4.ipv4()
         u = udp.udp(self.src_port, self.dst_port)
         pkt = e / i / u
-        ok_(isinstance(pkt, packet.Packet))
-        ok_(isinstance(pkt.protocols[0], ethernet.ethernet))
-        ok_(isinstance(pkt.protocols[1], ipv4.ipv4))
-        ok_(isinstance(pkt.protocols[2], udp.udp))
+        self.assertTrue(isinstance(pkt, packet.Packet))
+        self.assertTrue(isinstance(pkt.protocols[0], ethernet.ethernet))
+        self.assertTrue(isinstance(pkt.protocols[1], ipv4.ipv4))
+        self.assertTrue(isinstance(pkt.protocols[2], udp.udp))

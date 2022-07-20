@@ -14,8 +14,6 @@
 # limitations under the License.
 
 import unittest
-from nose.tools import eq_
-from nose.tools import ok_
 
 from os_ken.lib.packet import ospf
 
@@ -37,18 +35,18 @@ class Test_ospf(unittest.TestCase):
                              links=[link1])
         binmsg = msg.serialize()
         msg2, cls, rest = ospf.LSA.parser(binmsg)
-        eq_(msg.header.checksum, msg2.header.checksum)
-        eq_(str(msg), str(msg2))
-        eq_(rest, b'')
+        self.assertEqual(msg.header.checksum, msg2.header.checksum)
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(rest, b'')
 
     def test_network_lsa(self):
         msg = ospf.NetworkLSA(id_='192.168.0.1', adv_router='192.168.0.2',
                               mask='255.255.255.0', routers=['192.168.0.2'])
         binmsg = msg.serialize()
         msg2, cls, rest = ospf.LSA.parser(binmsg)
-        eq_(msg.header.checksum, msg2.header.checksum)
-        eq_(str(msg), str(msg2))
-        eq_(rest, b'')
+        self.assertEqual(msg.header.checksum, msg2.header.checksum)
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(rest, b'')
 
     def test_as_external_lsa(self):
         extnw1 = ospf.ASExternalLSA.ExternalNetwork(mask='255.255.255.0',
@@ -58,18 +56,18 @@ class Test_ospf(unittest.TestCase):
                                  extnws=[extnw1])
         binmsg = msg.serialize()
         msg2, cls, rest = ospf.LSA.parser(binmsg)
-        eq_(msg.header.checksum, msg2.header.checksum)
-        eq_(str(msg), str(msg2))
-        eq_(rest, b'')
+        self.assertEqual(msg.header.checksum, msg2.header.checksum)
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(rest, b'')
 
     def test_hello(self):
         msg = ospf.OSPFHello(router_id='192.168.0.1',
                              neighbors=['192.168.0.2'])
         binmsg = msg.serialize()
         msg2, cls, rest = ospf.OSPFMessage.parser(binmsg)
-        eq_(msg.checksum, msg2.checksum)
-        eq_(str(msg), str(msg2))
-        eq_(rest, b'')
+        self.assertEqual(msg.checksum, msg2.checksum)
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(rest, b'')
 
     def test_dbdesc(self):
         link1 = ospf.RouterLSA.Link(id_='10.0.0.1', data='255.255.255.0',
@@ -80,9 +78,9 @@ class Test_ospf(unittest.TestCase):
                               lsa_headers=[lsa1.header])
         binmsg = msg.serialize()
         msg2, cls, rest = ospf.OSPFMessage.parser(binmsg)
-        eq_(msg.checksum, msg2.checksum)
-        eq_(str(msg), str(msg2))
-        eq_(rest, b'')
+        self.assertEqual(msg.checksum, msg2.checksum)
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(rest, b'')
 
     def test_lsreq(self):
         req = ospf.OSPFLSReq.Request(type_=ospf.OSPF_ROUTER_LSA,
@@ -91,9 +89,9 @@ class Test_ospf(unittest.TestCase):
         msg = ospf.OSPFLSReq(router_id='192.168.0.1', lsa_requests=[req])
         binmsg = msg.serialize()
         msg2, cls, rest = ospf.OSPFMessage.parser(binmsg)
-        eq_(msg.checksum, msg2.checksum)
-        eq_(str(msg), str(msg2))
-        eq_(rest, b'')
+        self.assertEqual(msg.checksum, msg2.checksum)
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(rest, b'')
 
     def test_lsupd(self):
         link1 = ospf.RouterLSA.Link(id_='10.0.0.1', data='255.255.255.0',
@@ -103,9 +101,9 @@ class Test_ospf(unittest.TestCase):
         msg = ospf.OSPFLSUpd(router_id='192.168.0.1', lsas=[lsa1])
         binmsg = msg.serialize()
         msg2, cls, rest = ospf.OSPFMessage.parser(binmsg)
-        eq_(msg.checksum, msg2.checksum)
-        eq_(str(msg), str(msg2))
-        eq_(rest, b'')
+        self.assertEqual(msg.checksum, msg2.checksum)
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(rest, b'')
 
     def test_lsack(self):
         link1 = ospf.RouterLSA.Link(id_='10.0.0.1', data='255.255.255.0',
@@ -116,6 +114,6 @@ class Test_ospf(unittest.TestCase):
                              lsa_headers=[lsa1.header])
         binmsg = msg.serialize()
         msg2, cls, rest = ospf.OSPFMessage.parser(binmsg)
-        eq_(msg.checksum, msg2.checksum)
-        eq_(str(msg), str(msg2))
-        eq_(rest, b'')
+        self.assertEqual(msg.checksum, msg2.checksum)
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(rest, b'')

@@ -18,8 +18,6 @@ import os
 import sys
 
 import unittest
-from nose.tools import eq_
-from nose.tools import ok_
 
 from os_ken.lib import pcaplib
 from os_ken.lib.packet import gre
@@ -53,41 +51,41 @@ class Test_gre(unittest.TestCase):
 
     def test_key_setter(self):
         self.gre.key = self.key
-        eq_(self.gre._key, self.key)
-        eq_(self.gre._vsid, self.vsid)
-        eq_(self.gre._flow_id, self.flow_id)
+        self.assertEqual(self.gre._key, self.key)
+        self.assertEqual(self.gre._vsid, self.vsid)
+        self.assertEqual(self.gre._flow_id, self.flow_id)
 
     def test_key_setter_none(self):
         self.gre.key = None
-        eq_(self.gre._key, None)
-        eq_(self.gre._vsid, None)
-        eq_(self.gre._flow_id, None)
+        self.assertEqual(self.gre._key, None)
+        self.assertEqual(self.gre._vsid, None)
+        self.assertEqual(self.gre._flow_id, None)
 
         self.gre.key = self.key
 
     def test_vsid_setter(self):
         self.gre.vsid = self.vsid
-        eq_(self.gre._key, self.key)
-        eq_(self.gre._vsid, self.vsid)
-        eq_(self.gre._flow_id, self.flow_id)
+        self.assertEqual(self.gre._key, self.key)
+        self.assertEqual(self.gre._vsid, self.vsid)
+        self.assertEqual(self.gre._flow_id, self.flow_id)
 
     def test_flowid_setter(self):
         self.gre.flow_id = self.flow_id
-        eq_(self.gre._key, self.key)
-        eq_(self.gre._vsid, self.vsid)
-        eq_(self.gre._flow_id, self.flow_id)
+        self.assertEqual(self.gre._key, self.key)
+        self.assertEqual(self.gre._vsid, self.vsid)
+        self.assertEqual(self.gre._flow_id, self.flow_id)
 
     def test_nvgre_init(self):
         nvgre = gre.nvgre(version=self.version, vsid=self.vsid,
                           flow_id=self.flow_id)
 
-        eq_(nvgre.version, self.version)
-        eq_(nvgre.protocol, self.nvgre_proto)
-        eq_(nvgre.checksum, None)
-        eq_(nvgre.seq_number, None)
-        eq_(nvgre._key, self.key)
-        eq_(nvgre._vsid, self.vsid)
-        eq_(nvgre._flow_id, self.flow_id)
+        self.assertEqual(nvgre.version, self.version)
+        self.assertEqual(nvgre.protocol, self.nvgre_proto)
+        self.assertEqual(nvgre.checksum, None)
+        self.assertEqual(nvgre.seq_number, None)
+        self.assertEqual(nvgre._key, self.key)
+        self.assertEqual(nvgre._vsid, self.vsid)
+        self.assertEqual(nvgre._flow_id, self.flow_id)
 
     def test_parser(self):
         files = [
@@ -103,11 +101,11 @@ class Test_gre(unittest.TestCase):
                 # Checks if message can be parsed as expected.
                 pkt = packet.Packet(buf)
                 gre_pkt = pkt.get_protocol(gre.gre)
-                ok_(isinstance(gre_pkt, gre.gre),
+                self.assertTrue(isinstance(gre_pkt, gre.gre),
                     'Failed to parse Gre message: %s' % pkt)
 
                 # Checks if message can be serialized as expected.
                 pkt.serialize()
 
-                eq_(buf, pkt.data,
+                self.assertEqual(buf, pkt.data,
                     "b'%s' != b'%s'" % (binary_str(buf), binary_str(pkt.data)))

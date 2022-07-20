@@ -14,10 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os.path
 import six
 import sys
 import unittest
-from nose.tools import eq_
+import testscenarios
 
 from os_ken.ofproto import ofproto_parser
 from os_ken.ofproto import ofproto_protocol
@@ -26,7 +27,6 @@ from os_ken.ofproto import ofproto_v1_2
 from os_ken.ofproto import ofproto_v1_3
 from os_ken.ofproto import ofproto_v1_4
 from os_ken.ofproto import ofproto_v1_5
-from os_ken.tests import test_lib
 from os_ken import exception
 import json
 
@@ -153,13 +153,53 @@ implemented = {
 }
 
 
-class Test_Parser(unittest.TestCase):
-    """ Test case for os_ken.ofproto, especially json representation
-    """
+def _list_test_cases():
+    this_dir = os.path.dirname(sys.modules[__name__].__file__)
+    packet_data_dir = os.path.join(this_dir, '../../packet_data')
+    json_dir = os.path.join(this_dir, 'json')
+    ofvers = [
+        'of10',
+        'of12',
+        'of13',
+        'of14',
+        'of15',
+    ]
+    cases = []
+    for ver in ofvers:
+        pdir = packet_data_dir + '/' + ver
+        jdir = json_dir + '/' + ver
+        for file in os.listdir(pdir):
+            if file.endswith('.packet'):
+                truncated = None
+            elif '.truncated' in file:
+                # contents of .truncated files aren't relevant
+                s1, s2 = file.split('.truncated')
+                try:
+                    truncated = int(s2)
+                except ValueError:
+                    continue
+                file = s1 + '.packet'
+            else:
+                continue
+            wire_msg = open(pdir + '/' + file, 'rb').read()
+            if not truncated:
+                json_str = open(jdir + '/' + file + '.json', 'r').read()
+            else:
+                json_str = open(jdir + '/' + file +
+                                '.truncated%d.json' % truncated, 'r').read()
+                wire_msg = wire_msg[:truncated]
+            method_name = ('test_' + file).replace('-', '_').replace('.', '_')
+            if truncated:
+                method_name += '_truncated%d' % truncated
+            cases.append({'name': method_name, 'wire_msg': wire_msg,
+                          'json_str': json_str})
+    return cases
 
-    def __init__(self, methodName):
-        print('init %s' % methodName)
-        super(Test_Parser, self).__init__(methodName)
+
+class Test_Parser(testscenarios.WithScenarios, unittest.TestCase):
+    """Test case for os_ken.ofproto, especially json representation"""
+
+    scenarios = [(case['name'], case) for case in _list_test_cases()]
 
     def setUp(self):
         pass
@@ -174,6 +214,10 @@ class Test_Parser(unittest.TestCase):
     @staticmethod
     def _jsondict_to_msg(dp, jsondict):
         return ofproto_parser.ofp_msg_from_jsondict(dp, jsondict)
+
+    def test_parser(self):
+        self._test_msg(name=self.name, wire_msg=self.wire_msg,
+                       json_str=self.json_str)
 
     def _test_msg(self, name, wire_msg, json_str):
         def bytes_eq(buf1, buf2):
@@ -206,8 +250,9 @@ class Test_Parser(unittest.TestCase):
                 json_dict2 = {'OFPTruncatedMessage':
                               self._msg_to_jsondict(e.ofpmsg)}
             # XXXdebug code
-            open(('/tmp/%s.json' % name), 'w').write(json.dumps(json_dict2))
-            eq_(json_dict, json_dict2)
+            with open(('/tmp/%s.json' % name), 'w') as _file:
+                _file.write(json.dumps(json_dict2))
+            self.assertEqual(json_dict, json_dict2)
             if 'OFPTruncatedMessage' in json_dict2:
                 return
 
@@ -217,7 +262,7 @@ class Test_Parser(unittest.TestCase):
         msg2.set_xid(xid)
         if has_serializer:
             msg2.serialize()
-            eq_(self._msg_to_jsondict(msg2), json_dict)
+            self.assertEqual(self._msg_to_jsondict(msg2), json_dict)
             bytes_eq(wire_msg, msg2.buf)
 
             # check if "len" "length" fields can be omitted
@@ -243,67 +288,3 @@ class Test_Parser(unittest.TestCase):
 
             msg2.serialize()
             bytes_eq(wire_msg, msg2.buf)
-
-
-def _add_tests():
-    import os
-    import os.path
-    import functools
-
-    this_dir = os.path.dirname(sys.modules[__name__].__file__)
-    packet_data_dir = os.path.join(this_dir, '../../packet_data')
-    json_dir = os.path.join(this_dir, 'json')
-    ofvers = [
-        'of10',
-        'of12',
-        'of13',
-        'of14',
-        'of15',
-    ]
-    cases = set()
-    for ver in ofvers:
-        pdir = packet_data_dir + '/' + ver
-        jdir = json_dir + '/' + ver
-        n_added = 0
-        for file in os.listdir(pdir):
-            if file.endswith('.packet'):
-                truncated = None
-            elif '.truncated' in file:
-                # contents of .truncated files aren't relevant
-                s1, s2 = file.split('.truncated')
-                try:
-                    truncated = int(s2)
-                except ValueError:
-                    continue
-                file = s1 + '.packet'
-            else:
-                continue
-            wire_msg = open(pdir + '/' + file, 'rb').read()
-            if not truncated:
-                json_str = open(jdir + '/' + file + '.json', 'r').read()
-            else:
-                json_str = open(jdir + '/' + file +
-                                '.truncated%d.json' % truncated, 'r').read()
-                wire_msg = wire_msg[:truncated]
-            method_name = ('test_' + file).replace('-', '_').replace('.', '_')
-            if truncated:
-                method_name += '_truncated%d' % truncated
-
-            def _run(self, name, wire_msg, json_str):
-                print('processing %s ...' % name)
-                if six.PY3:
-                    self._test_msg(self, name, wire_msg, json_str)
-                else:
-                    self._test_msg(name, wire_msg, json_str)
-            print('adding %s ...' % method_name)
-            f = functools.partial(_run, name=method_name, wire_msg=wire_msg,
-                                  json_str=json_str)
-            test_lib.add_method(Test_Parser, method_name, f)
-            cases.add(method_name)
-            n_added += 1
-        assert n_added > 0
-    assert (cases ==
-            set(unittest.defaultTestLoader.getTestCaseNames(Test_Parser)))
-
-
-_add_tests()

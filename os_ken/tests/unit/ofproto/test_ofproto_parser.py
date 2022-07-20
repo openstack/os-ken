@@ -19,7 +19,6 @@ import six
 
 import binascii
 import unittest
-from nose.tools import *
 import struct
 from os_ken import exception
 
@@ -68,10 +67,10 @@ class TestOfproto_Parser(unittest.TestCase):
          msg_type,
          msg_len,
          xid) = ofproto_parser.header(self.bufHello)
-        eq_(version, 1)
-        eq_(msg_type, 0)
-        eq_(msg_len, 8)
-        eq_(xid, 1)
+        self.assertEqual(version, 1)
+        self.assertEqual(msg_type, 0)
+        self.assertEqual(msg_len, 8)
+        self.assertEqual(xid, 1)
 
     def testFeaturesReply(self):
         (version,
@@ -87,11 +86,11 @@ class TestOfproto_Parser(unittest.TestCase):
                                  self.bufFeaturesReply)
         LOG.debug(msg)
 
-        ok_(isinstance(msg, ofproto_v1_0_parser.OFPSwitchFeatures))
+        self.assertTrue(isinstance(msg, ofproto_v1_0_parser.OFPSwitchFeatures))
         LOG.debug(msg.ports[65534])
-        ok_(isinstance(msg.ports[1], ofproto_v1_0_parser.OFPPhyPort))
-        ok_(isinstance(msg.ports[2], ofproto_v1_0_parser.OFPPhyPort))
-        ok_(isinstance(msg.ports[65534], ofproto_v1_0_parser.OFPPhyPort))
+        self.assertTrue(isinstance(msg.ports[1], ofproto_v1_0_parser.OFPPhyPort))
+        self.assertTrue(isinstance(msg.ports[2], ofproto_v1_0_parser.OFPPhyPort))
+        self.assertTrue(isinstance(msg.ports[65534], ofproto_v1_0_parser.OFPPhyPort))
 
     def testPacketIn(self):
         (version,
@@ -106,9 +105,8 @@ class TestOfproto_Parser(unittest.TestCase):
                                  xid,
                                  self.bufPacketIn)
         LOG.debug(msg)
-        ok_(isinstance(msg, ofproto_v1_0_parser.OFPPacketIn))
+        self.assertTrue(isinstance(msg, ofproto_v1_0_parser.OFPPacketIn))
 
-    @raises(AssertionError)
     def test_check_msg_len(self):
         (version,
          msg_type,
@@ -116,14 +114,9 @@ class TestOfproto_Parser(unittest.TestCase):
          xid) = ofproto_parser.header(self.bufPacketIn)
 
         msg_len = len(self.bufPacketIn) + 1
-        ofproto_parser.msg(self,
-                           version,
-                           msg_type,
-                           msg_len,
-                           xid,
-                           self.bufPacketIn)
+        self.assertRaises(AssertionError, ofproto_parser.msg, self, version,
+                          msg_type, msg_len, xid, self.bufPacketIn)
 
-    @raises(exception.OFPUnknownVersion)
     def test_check_msg_parser(self):
         (version,
          msg_type,
@@ -131,12 +124,9 @@ class TestOfproto_Parser(unittest.TestCase):
          xid) = ofproto_parser.header(self.bufPacketIn)
 
         version = 0xff
-        ofproto_parser.msg(self,
-                           version,
-                           msg_type,
-                           msg_len,
-                           xid,
-                           self.bufPacketIn)
+        self.assertRaises(exception.OFPUnknownVersion, ofproto_parser.msg,
+                          self, version, msg_type, msg_len, xid,
+                          self.bufPacketIn)
 
 
 class TestMsgBase(unittest.TestCase):
@@ -156,14 +146,13 @@ class TestMsgBase(unittest.TestCase):
         xid = 3841413783
         c = ofproto_parser.MsgBase(object)
         c.set_xid(xid)
-        eq_(xid, c.xid)
+        self.assertEqual(xid, c.xid)
 
-    @raises(AssertionError)
     def test_set_xid_check_xid(self):
         xid = 2160492514
         c = ofproto_parser.MsgBase(object)
         c.xid = xid
-        c.set_xid(xid)
+        self.assertRaises(AssertionError, c.set_xid, xid)
 
     def _test_parser(self, msg_type=ofproto_v1_0.OFPT_HELLO):
         version = ofproto_v1_0.OFP_VERSION
@@ -178,11 +167,11 @@ class TestMsgBase(unittest.TestCase):
         res = ofproto_v1_0_parser.OFPHello.parser(
             object, version, msg_type, msg_len, xid, bytearray(buf))
 
-        eq_(version, res.version)
-        eq_(msg_type, res.msg_type)
-        eq_(msg_len, res.msg_len)
-        eq_(xid, res.xid)
-        eq_(buffer(buf), res.buf)
+        self.assertEqual(version, res.version)
+        self.assertEqual(msg_type, res.msg_type)
+        self.assertEqual(msg_len, res.msg_len)
+        self.assertEqual(xid, res.xid)
+        self.assertEqual(buffer(buf), res.buf)
 
         # test __str__()
         list_ = ('version', 'msg_type', 'msg_len', 'xid')
@@ -193,19 +182,19 @@ class TestMsgBase(unittest.TestCase):
                 if k in list_:
                     check[k] = v
 
-        eq_(hex(ofproto_v1_0.OFP_VERSION), check['version'])
-        eq_(hex(ofproto_v1_0.OFPT_HELLO), check['msg_type'])
-        eq_(hex(msg_len), check['msg_len'])
-        eq_(hex(xid), check['xid'])
+        self.assertEqual(hex(ofproto_v1_0.OFP_VERSION), check['version'])
+        self.assertEqual(hex(ofproto_v1_0.OFPT_HELLO), check['msg_type'])
+        self.assertEqual(hex(msg_len), check['msg_len'])
+        self.assertEqual(hex(xid), check['xid'])
 
         return True
 
     def test_parser(self):
-        ok_(self._test_parser())
+        self.assertTrue(self._test_parser())
 
-    @raises(AssertionError)
     def test_parser_check_msg_type(self):
-        self._test_parser(ofproto_v1_0.OFPT_ERROR)
+        self.assertRaises(AssertionError, self._test_parser,
+                          ofproto_v1_0.OFPT_ERROR)
 
     def _test_serialize(self):
 
@@ -216,14 +205,14 @@ class TestMsgBase(unittest.TestCase):
         c = ofproto_v1_0_parser.OFPHello(Datapath)
 
         c.serialize()
-        eq_(ofproto_v1_0.OFP_VERSION, c.version)
-        eq_(ofproto_v1_0.OFPT_HELLO, c.msg_type)
-        eq_(0, c.xid)
+        self.assertEqual(ofproto_v1_0.OFP_VERSION, c.version)
+        self.assertEqual(ofproto_v1_0.OFPT_HELLO, c.msg_type)
+        self.assertEqual(0, c.xid)
 
         return True
 
     def test_serialize(self):
-        ok_(self._test_serialize())
+        self.assertTrue(self._test_serialize())
 
 
 class TestMsgStrAttr(unittest.TestCase):
@@ -240,5 +229,5 @@ class TestMsgStrAttr(unittest.TestCase):
         res = ofproto_parser.msg_str_attr(c, buf, ('check',))
         str_ = str(res)
         str_ = str_.rsplit()
-        eq_('check', str_[0])
-        eq_('msg_str_attr_test', str_[1])
+        self.assertEqual('check', str_[0])
+        self.assertEqual('msg_str_attr_test', str_[1])

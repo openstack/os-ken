@@ -14,17 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-    # Python 3
-    from functools import reduce
-except ImportError:
-    # Python 2
-    pass
-
+import functools
+import itertools
 import six
 import unittest
-from nose.tools import eq_
-from nose.tools import ok_
+import testscenarios
 
 from os_ken.ofproto import ofproto_v1_2
 from os_ken.ofproto import ofproto_v1_3
@@ -34,50 +28,9 @@ from os_ken.ofproto import ofproto_v1_2_parser
 from os_ken.ofproto import ofproto_v1_3_parser
 from os_ken.ofproto import ofproto_v1_4_parser
 from os_ken.ofproto import ofproto_v1_5_parser
-from os_ken.tests import test_lib
 
 
-class Test_Parser_OFPMatch(unittest.TestCase):
-    _ofp = {ofproto_v1_2_parser: ofproto_v1_2,
-            ofproto_v1_3_parser: ofproto_v1_3,
-            ofproto_v1_4_parser: ofproto_v1_4,
-            ofproto_v1_5_parser: ofproto_v1_5}
-
-    def __init__(self, methodName):
-        print('init %s' % methodName)
-        super(Test_Parser_OFPMatch, self).__init__(methodName)
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
-    def _test(self, name, ofpp, d, domask):
-        if domask:
-            d = dict(self._ofp[ofpp].oxm_normalize_user(k, uv)
-                     for (k, uv)
-                     in d.items())
-        match = ofpp.OFPMatch(**d)
-        b = bytearray()
-        match.serialize(b, 0)
-        match2 = match.parser(six.binary_type(b), 0)
-        for k, v in d.items():
-            ok_(k in match)
-            ok_(k in match2)
-            eq_(match[k], v)
-            eq_(match2[k], v)
-        for k, v in match.iteritems():
-            ok_(k in d)
-            eq_(d[k], v)
-        for k, v in match2.iteritems():
-            ok_(k in d)
-            eq_(d[k], v)
-
-
-def _add_tests():
-    import functools
-    import itertools
+def _list_test_cases():
 
     class Field(object):
         @classmethod
@@ -238,8 +191,9 @@ def _add_tests():
             return l + flatten(i)
         else:
             return l + [i]
-    flatten = lambda l: reduce(flatten_one, l, [])
+    flatten = lambda l: functools.reduce(flatten_one, l, [])
 
+    cases = []
     for ofpp in ofpps:
         for n in range(1, 3):
             for C in itertools.combinations(L[ofpp], n):
@@ -272,18 +226,47 @@ def _add_tests():
                         method_name = method_name.replace(',', '_')
                         method_name = method_name.replace("'", '_')
                         method_name = method_name.replace(' ', '_')
-
-                        def _run(self, name, ofpp, d, domask):
-                            print('processing %s ...' % name)
-                            if six.PY3:
-                                self._test(self, name, ofpp, d, domask)
-                            else:
-                                self._test(name, ofpp, d, domask)
-                        print('adding %s ...' % method_name)
-                        f = functools.partial(_run, name=method_name,
-                                              ofpp=ofpp, d=d, domask=domask)
-                        test_lib.add_method(Test_Parser_OFPMatch,
-                                            method_name, f)
+                        cases.append({'name': method_name, 'ofpp': ofpp,
+                                      'd': d, 'domask': domask})
+    return cases
 
 
-_add_tests()
+class Test_Parser_OFPMatch(testscenarios.WithScenarios, unittest.TestCase):
+
+    scenarios = [(case['name'], case) for case in _list_test_cases()]
+
+    _ofp = {ofproto_v1_2_parser: ofproto_v1_2,
+            ofproto_v1_3_parser: ofproto_v1_3,
+            ofproto_v1_4_parser: ofproto_v1_4,
+            ofproto_v1_5_parser: ofproto_v1_5}
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_parser(self):
+        self._test(name=self.name, ofpp=self.ofpp, d=self.d,
+                   domask=self.domask)
+
+    def _test(self, name, ofpp, d, domask):
+        if domask:
+            d = dict(self._ofp[ofpp].oxm_normalize_user(k, uv)
+                     for (k, uv)
+                     in d.items())
+        match = ofpp.OFPMatch(**d)
+        b = bytearray()
+        match.serialize(b, 0)
+        match2 = match.parser(six.binary_type(b), 0)
+        for k, v in d.items():
+            self.assertTrue(k in match)
+            self.assertTrue(k in match2)
+            self.assertEqual(match[k], v)
+            self.assertEqual(match2[k], v)
+        for k, v in match.iteritems():
+            self.assertTrue(k in d)
+            self.assertEqual(d[k], v)
+        for k, v in match2.iteritems():
+            self.assertTrue(k in d)
+            self.assertEqual(d[k], v)

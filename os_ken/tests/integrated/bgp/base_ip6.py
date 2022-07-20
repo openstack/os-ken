@@ -32,42 +32,44 @@ class BgpSpeakerTestBase(unittest.TestCase):
     bridges = []
     checktime = 120
 
-    @classmethod
-    def setUpClass(cls):
-        cls.brdc1 = ctn_base.Bridge(name='brip6dc1',
-                                    subnet='2001:10::/32')
-        cls.bridges.append(cls.brdc1)
+    def setUp(self):
+        self.skipTest('These tests require to have "docker" configured in the '
+                      'system. Regardless of if we move them to functional or '
+                      'fix them, now we need to disable them.')
+        self.brdc1 = ctn_base.Bridge(name='brip6dc1', subnet='2001:10::/32')
+        self.bridges.append(self.brdc1)
 
-        cls.dockerimg = ctn_base.DockerImage()
+        self.dockerimg = ctn_base.DockerImage()
         image = 'python:%d.%d' % (
             sys.version_info.major, sys.version_info.minor)
-        cls.r_img = cls.dockerimg.create_os_ken(image=image, check_exist=True)
-        cls.images.append(cls.r_img)
-        cls.q_img = 'osrg/quagga'
-        cls.images.append(cls.q_img)
+        self.r_img = self.dockerimg.create_os_ken(image=image,
+                                                  check_exist=True)
+        self.images.append(self.r_img)
+        self.q_img = 'osrg/quagga'
+        self.images.append(self.q_img)
 
-        cls.r1 = oskenbgp.OSKenBGPContainer(name='r1', asn=64512,
-                                            router_id='192.168.0.1',
-                                            ctn_image_name=cls.r_img)
-        cls.containers.append(cls.r1)
-        cls.r1.add_route('fc00:10::/64', route_info={'rf': 'ipv6'})
-        cls.r1.run(wait=True)
-        cls.r1_ip_cidr = cls.brdc1.addif(cls.r1)
-        cls.r1_ip = cls.r1_ip_cidr.split('/')[0]
+        self.r1 = oskenbgp.OSKenBGPContainer(name='r1', asn=64512,
+                                             router_id='192.168.0.1',
+                                             ctn_image_name=self.r_img)
+        self.containers.append(self.r1)
+        self.r1.add_route('fc00:10::/64', route_info={'rf': 'ipv6'})
+        self.r1.run(wait=True)
+        self.r1_ip_cidr = self.brdc1.addif(self.r1)
+        self.r1_ip = self.r1_ip_cidr.split('/')[0]
 
-        cls.q1 = quagga.QuaggaBGPContainer(name='q1', asn=64522,
-                                           router_id='192.168.0.2',
-                                           ctn_image_name=cls.q_img)
-        cls.containers.append(cls.q1)
-        cls.q1.add_route('fc00:100::/64', route_info={'rf': 'ipv6'})
-        cls.q1.run(wait=True)
-        cls.q1_ip_cidr = cls.brdc1.addif(cls.q1)
-        cls.q1_ip = cls.q1_ip_cidr.split('/')[0]
+        self.q1 = quagga.QuaggaBGPContainer(name='q1', asn=64522,
+                                            router_id='192.168.0.2',
+                                            ctn_image_name=self.q_img)
+        self.containers.append(self.q1)
+        self.q1.add_route('fc00:100::/64', route_info={'rf': 'ipv6'})
+        self.q1.run(wait=True)
+        self.q1_ip_cidr = self.brdc1.addif(self.q1)
+        self.q1_ip = self.q1_ip_cidr.split('/')[0]
 
-        cls.r1.add_peer(cls.q1, bridge=cls.brdc1.name, v6=True)
-        cls.q1.add_peer(cls.r1, bridge=cls.brdc1.name, v6=True)
+        self.r1.add_peer(self.q1, bridge=self.brdc1.name, v6=True)
+        self.q1.add_peer(self.r1, bridge=self.brdc1.name, v6=True)
 
-        super(BgpSpeakerTestBase, cls).setUpClass()
+        super().setUp()
 
     @classmethod
     def tearDownClass(cls):

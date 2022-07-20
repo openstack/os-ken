@@ -14,8 +14,6 @@
 # limitations under the License.
 
 import unittest
-from nose.tools import eq_
-from nose.tools import ok_
 from time import time
 
 from os_ken.lib.packet import bmp
@@ -51,8 +49,8 @@ class Test_bmp(unittest.TestCase):
                                      timestamp=self._time())
         binmsg = msg.serialize()
         msg2, rest = bmp.BMPMessage.parser(binmsg)
-        eq_(msg.to_jsondict(), msg2.to_jsondict())
-        eq_(rest, b'')
+        self.assertEqual(msg.to_jsondict(), msg2.to_jsondict())
+        self.assertEqual(rest, b'')
 
     def test_route_monitoring_adj_rib_out(self):
         update = bgp.BGPUpdate()
@@ -67,8 +65,8 @@ class Test_bmp(unittest.TestCase):
                                      timestamp=self._time())
         binmsg = msg.serialize()
         msg2, rest = bmp.BMPMessage.parser(binmsg)
-        eq_(msg.to_jsondict(), msg2.to_jsondict())
-        eq_(rest, b'')
+        self.assertEqual(msg.to_jsondict(), msg2.to_jsondict())
+        self.assertEqual(rest, b'')
 
     def test_statistics_report(self):
         stats = [{'type': bmp.BMP_STAT_TYPE_REJECTED, 'value': 100},
@@ -89,8 +87,8 @@ class Test_bmp(unittest.TestCase):
                                       timestamp=self._time())
         binmsg = msg.serialize()
         msg2, rest = bmp.BMPMessage.parser(binmsg)
-        eq_(msg.to_jsondict(), msg2.to_jsondict())
-        eq_(rest, b'')
+        self.assertEqual(msg.to_jsondict(), msg2.to_jsondict())
+        self.assertEqual(rest, b'')
 
     def test_peer_down_notification(self):
         reason = bmp.BMP_PEER_DOWN_REASON_LOCAL_BGP_NOTIFICATION
@@ -106,8 +104,8 @@ class Test_bmp(unittest.TestCase):
                                           timestamp=self._time())
         binmsg = msg.serialize()
         msg2, rest = bmp.BMPMessage.parser(binmsg)
-        eq_(msg.to_jsondict(), msg2.to_jsondict())
-        eq_(rest, b'')
+        self.assertEqual(msg.to_jsondict(), msg2.to_jsondict())
+        self.assertEqual(rest, b'')
 
     def test_peer_up_notification(self):
         opt_param = [bgp.BGPOptParamCapabilityUnknown(cap_code=200,
@@ -131,8 +129,8 @@ class Test_bmp(unittest.TestCase):
                                         timestamp=self._time())
         binmsg = msg.serialize()
         msg2, rest = bmp.BMPMessage.parser(binmsg)
-        eq_(msg.to_jsondict(), msg2.to_jsondict())
-        eq_(rest, b'')
+        self.assertEqual(msg.to_jsondict(), msg2.to_jsondict())
+        self.assertEqual(rest, b'')
 
     def test_initiation(self):
         initiation_info = [{'type': bmp.BMP_INIT_TYPE_STRING,
@@ -140,8 +138,8 @@ class Test_bmp(unittest.TestCase):
         msg = bmp.BMPInitiation(info=initiation_info)
         binmsg = msg.serialize()
         msg2, rest = bmp.BMPMessage.parser(binmsg)
-        eq_(msg.to_jsondict(lambda v: v), msg2.to_jsondict(lambda v: v))
-        eq_(rest, b'')
+        self.assertEqual(msg.to_jsondict(lambda v: v), msg2.to_jsondict(lambda v: v))
+        self.assertEqual(rest, b'')
 
     def test_termination(self):
         termination_info = [{'type': bmp.BMP_TERM_TYPE_STRING,
@@ -151,5 +149,5 @@ class Test_bmp(unittest.TestCase):
         msg = bmp.BMPTermination(info=termination_info)
         binmsg = msg.serialize()
         msg2, rest = bmp.BMPMessage.parser(binmsg)
-        eq_(msg.to_jsondict(lambda v: v), msg2.to_jsondict(lambda v: v))
-        eq_(rest, b'')
+        self.assertEqual(msg.to_jsondict(lambda v: v), msg2.to_jsondict(lambda v: v))
+        self.assertEqual(rest, b'')

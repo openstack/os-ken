@@ -17,7 +17,6 @@ import unittest
 import logging
 import struct
 import inspect
-from nose.tools import ok_, eq_, nottest
 
 from os_ken.ofproto import ether
 from os_ken.ofproto import inet
@@ -95,52 +94,52 @@ class TestBFD(unittest.TestCase):
         pkt = packet.Packet(buf)
         i = iter(pkt)
 
-        eq_(type(next(i)), ethernet.ethernet)
-        eq_(type(next(i)), ipv4.ipv4)
-        eq_(type(next(i)), udp.udp)
-        eq_(type(bfd.bfd.parser(next(i))[0]), bfd.bfd)
+        self.assertEqual(type(next(i)), ethernet.ethernet)
+        self.assertEqual(type(next(i)), ipv4.ipv4)
+        self.assertEqual(type(next(i)), udp.udp)
+        self.assertEqual(type(bfd.bfd.parser(next(i))[0]), bfd.bfd)
 
     def test_parse_with_auth_simple(self):
         buf = self.data_auth_simple
         pkt = packet.Packet(buf)
         i = iter(pkt)
 
-        eq_(type(next(i)), ethernet.ethernet)
-        eq_(type(next(i)), ipv4.ipv4)
-        eq_(type(next(i)), udp.udp)
+        self.assertEqual(type(next(i)), ethernet.ethernet)
+        self.assertEqual(type(next(i)), ipv4.ipv4)
+        self.assertEqual(type(next(i)), udp.udp)
 
         bfd_obj = bfd.bfd.parser(next(i))[0]
-        eq_(type(bfd_obj), bfd.bfd)
-        eq_(type(bfd_obj.auth_cls), bfd.SimplePassword)
-        ok_(bfd_obj.authenticate(self.auth_keys))
+        self.assertEqual(type(bfd_obj), bfd.bfd)
+        self.assertEqual(type(bfd_obj.auth_cls), bfd.SimplePassword)
+        self.assertTrue(bfd_obj.authenticate(self.auth_keys))
 
     def test_parse_with_auth_md5(self):
         buf = self.data_auth_md5
         pkt = packet.Packet(buf)
         i = iter(pkt)
 
-        eq_(type(next(i)), ethernet.ethernet)
-        eq_(type(next(i)), ipv4.ipv4)
-        eq_(type(next(i)), udp.udp)
+        self.assertEqual(type(next(i)), ethernet.ethernet)
+        self.assertEqual(type(next(i)), ipv4.ipv4)
+        self.assertEqual(type(next(i)), udp.udp)
 
         bfd_obj = bfd.bfd.parser(next(i))[0]
-        eq_(type(bfd_obj), bfd.bfd)
-        eq_(type(bfd_obj.auth_cls), bfd.KeyedMD5)
-        ok_(bfd_obj.authenticate(self.auth_keys))
+        self.assertEqual(type(bfd_obj), bfd.bfd)
+        self.assertEqual(type(bfd_obj.auth_cls), bfd.KeyedMD5)
+        self.assertTrue(bfd_obj.authenticate(self.auth_keys))
 
     def test_parse_with_auth_sha1(self):
         buf = self.data_auth_sha1
         pkt = packet.Packet(buf)
         i = iter(pkt)
 
-        eq_(type(next(i)), ethernet.ethernet)
-        eq_(type(next(i)), ipv4.ipv4)
-        eq_(type(next(i)), udp.udp)
+        self.assertEqual(type(next(i)), ethernet.ethernet)
+        self.assertEqual(type(next(i)), ipv4.ipv4)
+        self.assertEqual(type(next(i)), udp.udp)
 
         bfd_obj = bfd.bfd.parser(next(i))[0]
-        eq_(type(bfd_obj), bfd.bfd)
-        eq_(type(bfd_obj.auth_cls), bfd.KeyedSHA1)
-        ok_(bfd_obj.authenticate(self.auth_keys))
+        self.assertEqual(type(bfd_obj), bfd.bfd)
+        self.assertEqual(type(bfd_obj.auth_cls), bfd.KeyedSHA1)
+        self.assertTrue(bfd_obj.authenticate(self.auth_keys))
 
     def test_serialize(self):
         pkt = packet.Packet()
@@ -162,10 +161,10 @@ class TestBFD(unittest.TestCase):
                           required_min_echo_rx_interval=0)
         pkt.add_protocol(bfd_pkt)
 
-        eq_(len(pkt.protocols), 4)
+        self.assertEqual(len(pkt.protocols), 4)
 
         pkt.serialize()
-        eq_(pkt.data, self.data)
+        self.assertEqual(pkt.data, self.data)
 
     def test_serialize_with_auth_simple(self):
         pkt = packet.Packet()
@@ -193,10 +192,10 @@ class TestBFD(unittest.TestCase):
 
         pkt.add_protocol(bfd_pkt)
 
-        eq_(len(pkt.protocols), 4)
+        self.assertEqual(len(pkt.protocols), 4)
 
         pkt.serialize()
-        eq_(pkt.data, self.data_auth_simple)
+        self.assertEqual(pkt.data, self.data_auth_simple)
 
     def test_serialize_with_auth_md5(self):
         pkt = packet.Packet()
@@ -224,10 +223,10 @@ class TestBFD(unittest.TestCase):
 
         pkt.add_protocol(bfd_pkt)
 
-        eq_(len(pkt.protocols), 4)
+        self.assertEqual(len(pkt.protocols), 4)
 
         pkt.serialize()
-        eq_(pkt.data, self.data_auth_md5)
+        self.assertEqual(pkt.data, self.data_auth_md5)
 
     def test_serialize_with_auth_sha1(self):
         pkt = packet.Packet()
@@ -255,10 +254,10 @@ class TestBFD(unittest.TestCase):
 
         pkt.add_protocol(bfd_pkt)
 
-        eq_(len(pkt.protocols), 4)
+        self.assertEqual(len(pkt.protocols), 4)
 
         pkt.serialize()
-        eq_(pkt.data, self.data_auth_sha1)
+        self.assertEqual(pkt.data, self.data_auth_sha1)
 
     def test_json(self):
         bfd1 = bfd.bfd(ver=1, diag=bfd.BFD_DIAG_CTRL_DETECT_TIME_EXPIRED,
@@ -269,7 +268,7 @@ class TestBFD(unittest.TestCase):
 
         jsondict = bfd1.to_jsondict()
         bfd2 = bfd.bfd.from_jsondict(jsondict['bfd'])
-        eq_(str(bfd1), str(bfd2))
+        self.assertEqual(str(bfd1), str(bfd2))
 
     def test_json_with_auth_simple(self):
         auth_cls = bfd.SimplePassword(auth_key_id=2,
@@ -285,7 +284,7 @@ class TestBFD(unittest.TestCase):
 
         jsondict = bfd1.to_jsondict()
         bfd2 = bfd.bfd.from_jsondict(jsondict['bfd'])
-        eq_(str(bfd1), str(bfd2))
+        self.assertEqual(str(bfd1), str(bfd2))
 
     def test_json_with_auth_md5(self):
         auth_cls = bfd.KeyedMD5(auth_key_id=2, seq=16859,
@@ -301,7 +300,7 @@ class TestBFD(unittest.TestCase):
 
         jsondict = bfd1.to_jsondict()
         bfd2 = bfd.bfd.from_jsondict(jsondict['bfd'])
-        eq_(str(bfd1), str(bfd2))
+        self.assertEqual(str(bfd1), str(bfd2))
 
     def test_json_with_auth_sha1(self):
         auth_cls = bfd.KeyedSHA1(auth_key_id=2, seq=16859,
@@ -317,4 +316,4 @@ class TestBFD(unittest.TestCase):
 
         jsondict = bfd1.to_jsondict()
         bfd2 = bfd.bfd.from_jsondict(jsondict['bfd'])
-        eq_(str(bfd1), str(bfd2))
+        self.assertEqual(str(bfd1), str(bfd2))

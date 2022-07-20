@@ -19,8 +19,6 @@ import os
 import sys
 
 import unittest
-from nose.tools import eq_
-from nose.tools import ok_
 
 from os_ken.utils import binary_str
 from os_ken.lib import pcaplib
@@ -150,9 +148,9 @@ class Test_bgp(unittest.TestCase):
         msg = bgp.BGPOpen(my_as=30000, bgp_identifier='192.0.2.1')
         binmsg = msg.serialize()
         msg2, _, rest = bgp.BGPMessage.parser(binmsg)
-        eq_(str(msg), str(msg2))
-        eq_(len(msg), 29)
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(len(msg), 29)
+        self.assertEqual(rest, b'')
 
     def test_open2(self):
         opt_param = [bgp.BGPOptParamCapabilityUnknown(cap_code=200,
@@ -172,17 +170,17 @@ class Test_bgp(unittest.TestCase):
                           opt_param=opt_param)
         binmsg = msg.serialize()
         msg2, _, rest = bgp.BGPMessage.parser(binmsg)
-        eq_(str(msg), str(msg2))
-        ok_(len(msg) > 29)
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg2))
+        self.assertTrue(len(msg) > 29)
+        self.assertEqual(rest, b'')
 
     def test_update1(self):
         msg = bgp.BGPUpdate()
         binmsg = msg.serialize()
         msg2, _, rest = bgp.BGPMessage.parser(binmsg)
-        eq_(str(msg), str(msg2))
-        eq_(len(msg), 23)
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(len(msg), 23)
+        self.assertEqual(rest, b'')
 
     def test_update2(self):
         withdrawn_routes = [bgp.BGPWithdrawnRoute(length=0,
@@ -313,34 +311,34 @@ class Test_bgp(unittest.TestCase):
                             nlri=nlri)
         binmsg = msg.serialize()
         msg2, _, rest = bgp.BGPMessage.parser(binmsg)
-        eq_(str(msg), str(msg2))
-        ok_(len(msg) > 23)
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg2))
+        self.assertTrue(len(msg) > 23)
+        self.assertEqual(rest, b'')
 
     def test_keepalive(self):
         msg = bgp.BGPKeepAlive()
         binmsg = msg.serialize()
         msg2, _, rest = bgp.BGPMessage.parser(binmsg)
-        eq_(str(msg), str(msg2))
-        eq_(len(msg), 19)
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(len(msg), 19)
+        self.assertEqual(rest, b'')
 
     def test_notification(self):
         data = b'hoge'
         msg = bgp.BGPNotification(error_code=1, error_subcode=2, data=data)
         binmsg = msg.serialize()
         msg2, _, rest = bgp.BGPMessage.parser(binmsg)
-        eq_(str(msg), str(msg2))
-        eq_(len(msg), 21 + len(data))
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(len(msg), 21 + len(data))
+        self.assertEqual(rest, b'')
 
     def test_route_refresh(self):
         msg = bgp.BGPRouteRefresh(afi=afi.IP, safi=safi.MPLS_VPN)
         binmsg = msg.serialize()
         msg2, _, rest = bgp.BGPMessage.parser(binmsg)
-        eq_(str(msg), str(msg2))
-        eq_(len(msg), 23)
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(len(msg), 23)
+        self.assertEqual(rest, b'')
 
     def test_stream_parser(self):
         msgs = [
@@ -354,7 +352,7 @@ class Test_bgp(unittest.TestCase):
         for b in binmsgs:
             for m in sp.parse(b):
                 results.append(m)
-        eq_(str(results), str(msgs))
+        self.assertEqual(str(results), str(msgs))
 
     def test_parser(self):
         files = [
@@ -391,12 +389,12 @@ class Test_bgp(unittest.TestCase):
                     open(BGP4_PACKET_DATA_DIR + f + '.pcap', 'rb')):
                 # Checks if BGP message can be parsed as expected.
                 pkt = packet.Packet(buf)
-                ok_(isinstance(pkt.protocols[-1], bgp.BGPMessage),
+                self.assertTrue(isinstance(pkt.protocols[-1], bgp.BGPMessage),
                     'Failed to parse BGP message: %s' % pkt)
 
                 # Checks if BGP message can be serialized as expected.
                 pkt.serialize()
-                eq_(buf, pkt.data,
+                self.assertEqual(buf, pkt.data,
                     "b'%s' != b'%s'" % (binary_str(buf), binary_str(pkt.data)))
 
     def test_vlan_action_parser(self):
@@ -411,8 +409,8 @@ class Test_bgp(unittest.TestCase):
         )
         binmsg = action.serialize()
         msg, rest = bgp.BGPFlowSpecVlanActionCommunity.parse(binmsg)
-        eq_(str(action), str(msg))
-        eq_(rest, b'')
+        self.assertEqual(str(action), str(msg))
+        self.assertEqual(rest, b'')
 
     def test_tpid_action_parser(self):
         action = bgp.BGPFlowSpecTPIDActionCommunity(
@@ -423,8 +421,8 @@ class Test_bgp(unittest.TestCase):
         )
         binmsg = action.serialize()
         msg, rest = bgp.BGPFlowSpecTPIDActionCommunity.parse(binmsg)
-        eq_(str(action), str(msg))
-        eq_(rest, b'')
+        self.assertEqual(str(action), str(msg))
+        self.assertEqual(rest, b'')
 
     def test_json1(self):
         opt_param = [bgp.BGPOptParamCapabilityUnknown(cap_code=200,
@@ -439,7 +437,7 @@ class Test_bgp(unittest.TestCase):
                            opt_param=opt_param)
         jsondict = msg1.to_jsondict()
         msg2 = bgp.BGPOpen.from_jsondict(jsondict['BGPOpen'])
-        eq_(str(msg1), str(msg2))
+        self.assertEqual(str(msg1), str(msg2))
 
     def test_json2(self):
         withdrawn_routes = [bgp.BGPWithdrawnRoute(length=0,
@@ -568,7 +566,7 @@ class Test_bgp(unittest.TestCase):
                              nlri=nlri)
         jsondict = msg1.to_jsondict()
         msg2 = bgp.BGPUpdate.from_jsondict(jsondict['BGPUpdate'])
-        eq_(str(msg1), str(msg2))
+        self.assertEqual(str(msg1), str(msg2))
 
     def test_flowspec_user_interface_ipv4(self):
         rules = RULES_BASE + [
@@ -614,11 +612,11 @@ class Test_bgp(unittest.TestCase):
         msg2 = bgp.FlowSpecIPv4NLRI(rules=rules)
         binmsg = msg.serialize()
         binmsg2 = msg2.serialize()
-        eq_(str(msg), str(msg2))
-        eq_(binary_str(binmsg), binary_str(binmsg2))
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(binary_str(binmsg), binary_str(binmsg2))
         msg3, rest = bgp.FlowSpecIPv4NLRI.parser(binmsg)
-        eq_(str(msg), str(msg3))
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg3))
+        self.assertEqual(rest, b'')
 
     def test_flowspec_user_interface_vpv4(self):
         rules = RULES_BASE + [
@@ -664,11 +662,11 @@ class Test_bgp(unittest.TestCase):
         msg2 = bgp.FlowSpecVPNv4NLRI(route_dist='65001:250', rules=rules)
         binmsg = msg.serialize()
         binmsg2 = msg2.serialize()
-        eq_(str(msg), str(msg2))
-        eq_(binary_str(binmsg), binary_str(binmsg2))
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(binary_str(binmsg), binary_str(binmsg2))
         msg3, rest = bgp.FlowSpecVPNv4NLRI.parser(binmsg)
-        eq_(str(msg), str(msg3))
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg3))
+        self.assertEqual(rest, b'')
 
     def test_flowspec_user_interface_ipv6(self):
         rules = RULES_BASE + [
@@ -721,11 +719,11 @@ class Test_bgp(unittest.TestCase):
         msg2 = bgp.FlowSpecIPv6NLRI(rules=rules)
         binmsg = msg.serialize()
         binmsg2 = msg2.serialize()
-        eq_(str(msg), str(msg2))
-        eq_(binary_str(binmsg), binary_str(binmsg2))
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(binary_str(binmsg), binary_str(binmsg2))
         msg3, rest = bgp.FlowSpecIPv6NLRI.parser(binmsg)
-        eq_(str(msg), str(msg3))
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg3))
+        self.assertEqual(rest, b'')
 
     def test_flowspec_user_interface_vpnv6(self):
         rules = RULES_BASE + [
@@ -779,11 +777,11 @@ class Test_bgp(unittest.TestCase):
         msg2 = bgp.FlowSpecVPNv6NLRI(route_dist='65001:250', rules=rules)
         binmsg = msg.serialize()
         binmsg2 = msg2.serialize()
-        eq_(str(msg), str(msg2))
-        eq_(binary_str(binmsg), binary_str(binmsg2))
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(binary_str(binmsg), binary_str(binmsg2))
         msg3, rest = bgp.FlowSpecVPNv6NLRI.parser(binmsg)
-        eq_(str(msg), str(msg3))
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg3))
+        self.assertEqual(rest, b'')
 
     def test_flowspec_user_interface_l2vpn(self):
         rules = RULES_L2VPN_BASE
@@ -804,8 +802,8 @@ class Test_bgp(unittest.TestCase):
         msg2 = bgp.FlowSpecL2VPNNLRI(route_dist='65001:250', rules=rules)
         binmsg = msg.serialize()
         binmsg2 = msg2.serialize()
-        eq_(str(msg), str(msg2))
-        eq_(binary_str(binmsg), binary_str(binmsg2))
+        self.assertEqual(str(msg), str(msg2))
+        self.assertEqual(binary_str(binmsg), binary_str(binmsg2))
         msg3, rest = bgp.FlowSpecL2VPNNLRI.parser(binmsg)
-        eq_(str(msg), str(msg3))
-        eq_(rest, b'')
+        self.assertEqual(str(msg), str(msg3))
+        self.assertEqual(rest, b'')

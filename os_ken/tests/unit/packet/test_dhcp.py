@@ -20,8 +20,6 @@ import struct
 import unittest
 
 import six
-from nose.tools import eq_
-from nose.tools import ok_
 
 from os_ken.lib import addrconv
 from os_ken.lib.packet import dhcp
@@ -92,57 +90,57 @@ class Test_dhcp_offer(unittest.TestCase):
         pass
 
     def test_init(self):
-        eq_(self.op, self.dh.op)
-        eq_(self.htype, self.dh.htype)
-        eq_(self.hlen, self.dh.hlen)
-        eq_(self.hops, self.dh.hops)
-        eq_(self.xid, self.dh.xid)
-        eq_(self.secs, self.dh.secs)
-        eq_(self.flags, self.dh.flags)
-        eq_(self.ciaddr, self.dh.ciaddr)
-        eq_(self.yiaddr, self.dh.yiaddr)
-        eq_(self.siaddr, self.dh.siaddr)
-        eq_(self.giaddr, self.dh.giaddr)
-        eq_(self.chaddr, self.dh.chaddr)
-        eq_(self.sname, self.dh.sname)
-        eq_(self.boot_file, self.dh.boot_file)
-        eq_(str(self.options), str(self.dh.options))
+        self.assertEqual(self.op, self.dh.op)
+        self.assertEqual(self.htype, self.dh.htype)
+        self.assertEqual(self.hlen, self.dh.hlen)
+        self.assertEqual(self.hops, self.dh.hops)
+        self.assertEqual(self.xid, self.dh.xid)
+        self.assertEqual(self.secs, self.dh.secs)
+        self.assertEqual(self.flags, self.dh.flags)
+        self.assertEqual(self.ciaddr, self.dh.ciaddr)
+        self.assertEqual(self.yiaddr, self.dh.yiaddr)
+        self.assertEqual(self.siaddr, self.dh.siaddr)
+        self.assertEqual(self.giaddr, self.dh.giaddr)
+        self.assertEqual(self.chaddr, self.dh.chaddr)
+        self.assertEqual(self.sname, self.dh.sname)
+        self.assertEqual(self.boot_file, self.dh.boot_file)
+        self.assertEqual(str(self.options), str(self.dh.options))
 
     def test_parser(self):
         res, _, rest = dhcp.dhcp.parser(self.buf)
 
-        eq_(self.op, res.op)
-        eq_(self.htype, res.htype)
-        eq_(self.hlen, res.hlen)
-        eq_(self.hops, res.hops)
-        eq_(self.xid, res.xid)
-        eq_(self.secs, res.secs)
-        eq_(self.flags, res.flags)
-        eq_(self.ciaddr, res.ciaddr)
-        eq_(self.yiaddr, res.yiaddr)
-        eq_(self.siaddr, res.siaddr)
-        eq_(self.giaddr, res.giaddr)
-        eq_(self.chaddr, res.chaddr)
+        self.assertEqual(self.op, res.op)
+        self.assertEqual(self.htype, res.htype)
+        self.assertEqual(self.hlen, res.hlen)
+        self.assertEqual(self.hops, res.hops)
+        self.assertEqual(self.xid, res.xid)
+        self.assertEqual(self.secs, res.secs)
+        self.assertEqual(self.flags, res.flags)
+        self.assertEqual(self.ciaddr, res.ciaddr)
+        self.assertEqual(self.yiaddr, res.yiaddr)
+        self.assertEqual(self.siaddr, res.siaddr)
+        self.assertEqual(self.giaddr, res.giaddr)
+        self.assertEqual(self.chaddr, res.chaddr)
         # sname is 64 byte length. rest of data is filled by '\x00'.
-        eq_(self.sname.ljust(64, '\x00'), res.sname)
+        self.assertEqual(self.sname.ljust(64, '\x00'), res.sname)
         # boof_file is 128 byte length. rest of data is filled by '\x00'.
-        eq_(self.boot_file.ljust(128, '\x00'), res.boot_file)
-        eq_(str(self.options), str(res.options))
-        eq_(b'', rest)
+        self.assertEqual(self.boot_file.ljust(128, '\x00'), res.boot_file)
+        self.assertEqual(str(self.options), str(res.options))
+        self.assertEqual(b'', rest)
 
     def test_parser_corrupted(self):
         corrupt_buf = self.buf[:-4]
         pkt, _, rest = dhcp.dhcp.parser(corrupt_buf)
 
-        ok_(isinstance(pkt, dhcp.dhcp))
-        ok_(isinstance(pkt.options, dhcp.options))
+        self.assertTrue(isinstance(pkt, dhcp.dhcp))
+        self.assertTrue(isinstance(pkt.options, dhcp.options))
         for opt in pkt.options.option_list[:-1]:
-            ok_(isinstance(opt, dhcp.option))
-        ok_(isinstance(pkt.options.option_list[-1], six.binary_type))
+            self.assertTrue(isinstance(opt, dhcp.option))
+        self.assertTrue(isinstance(pkt.options.option_list[-1], six.binary_type))
 
         buf = pkt.serialize()
-        eq_(str(buf), str(corrupt_buf))
-        eq_(b'', rest)
+        self.assertEqual(str(buf), str(corrupt_buf))
+        self.assertEqual(b'', rest)
 
     def test_serialize(self):
         buf = self.dh.serialize()
@@ -150,25 +148,25 @@ class Test_dhcp_offer(unittest.TestCase):
         res = struct.unpack_from(dhcp.dhcp._DHCP_PACK_STR,
                                  six.binary_type(buf))
 
-        eq_(self.op, res[0])
-        eq_(self.htype, res[1])
-        eq_(self.hlen, res[2])
-        eq_(self.hops, res[3])
-        eq_(self.xid, res[4])
-        eq_(self.secs, res[5])
-        eq_(self.flags, res[6])
-        eq_(self.ciaddr, addrconv.ipv4.bin_to_text(res[7]))
-        eq_(self.yiaddr, addrconv.ipv4.bin_to_text(res[8]))
-        eq_(self.siaddr, addrconv.ipv4.bin_to_text(res[9]))
-        eq_(self.giaddr, addrconv.ipv4.bin_to_text(res[10]))
-        eq_(self.chaddr, addrconv.mac.bin_to_text(res[11][:6]))
+        self.assertEqual(self.op, res[0])
+        self.assertEqual(self.htype, res[1])
+        self.assertEqual(self.hlen, res[2])
+        self.assertEqual(self.hops, res[3])
+        self.assertEqual(self.xid, res[4])
+        self.assertEqual(self.secs, res[5])
+        self.assertEqual(self.flags, res[6])
+        self.assertEqual(self.ciaddr, addrconv.ipv4.bin_to_text(res[7]))
+        self.assertEqual(self.yiaddr, addrconv.ipv4.bin_to_text(res[8]))
+        self.assertEqual(self.siaddr, addrconv.ipv4.bin_to_text(res[9]))
+        self.assertEqual(self.giaddr, addrconv.ipv4.bin_to_text(res[10]))
+        self.assertEqual(self.chaddr, addrconv.mac.bin_to_text(res[11][:6]))
         # sname is 64 byte length. rest of data is filled by '\x00'.
-        eq_(self.sname.ljust(64, '\x00'), res[12].decode('ascii'))
+        self.assertEqual(self.sname.ljust(64, '\x00'), res[12].decode('ascii'))
         # boof_file is 128 byte length. rest of data is filled by '\x00'.
-        eq_(self.boot_file.ljust(128, '\x00'), res[13].decode('ascii'))
+        self.assertEqual(self.boot_file.ljust(128, '\x00'), res[13].decode('ascii'))
         options = dhcp.options.parser(
             buf[struct.calcsize(dhcp.dhcp._DHCP_PACK_STR):])
-        eq_(str(self.options), str(options))
+        self.assertEqual(str(self.options), str(options))
 
     def test_to_string(self):
         option_values = ['tag', 'length', 'value']
@@ -209,10 +207,10 @@ class Test_dhcp_offer(unittest.TestCase):
                             if k in dhcp_values])
         dh_str = '%s(%s)' % (dhcp.dhcp.__name__, _dh_str)
 
-        eq_(str(self.dh), dh_str)
-        eq_(repr(self.dh), dh_str)
+        self.assertEqual(str(self.dh), dh_str)
+        self.assertEqual(repr(self.dh), dh_str)
 
     def test_json(self):
         jsondict = self.dh.to_jsondict()
         dh = dhcp.dhcp.from_jsondict(jsondict['dhcp'])
-        eq_(str(self.dh), str(dh))
+        self.assertEqual(str(self.dh), str(dh))

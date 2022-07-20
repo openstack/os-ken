@@ -14,18 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
 import unittest
 from unittest import mock
 
-from nose.tools import eq_, raises
-
-try:
-    # Python 3
-    from imp import reload
-except ImportError:
-    # Python 2
-    pass
+from imp import reload
 
 from os_ken.cmd.manager import main
 
@@ -43,15 +35,13 @@ class Test_Manager(unittest.TestCase):
     def tearDown(self):
         pass
 
-    @raises(SystemExit)
     @mock.patch('sys.argv', new=['osken-manager', '--version'])
     def test_version(self):
-        main()
+        self.assertRaises(SystemExit, main)
 
-    @raises(SystemExit)
     @mock.patch('sys.argv', new=['osken-manager', '--help'])
     def test_help(self):
-        main()
+        self.assertRaises(SystemExit, main)
 
     @staticmethod
     def _reset_globals():

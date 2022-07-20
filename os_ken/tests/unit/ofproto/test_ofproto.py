@@ -16,16 +16,10 @@
 
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-try:
-    # Python 3
-    from imp import reload
-except ImportError:
-    # Python 2
-    pass
+from imp import reload
 
 import unittest
 import logging
-from nose.tools import eq_
 
 
 LOG = logging.getLogger('test_ofproto')
@@ -53,19 +47,22 @@ class TestOfprotCommon(unittest.TestCase):
         import os_ken.ofproto.ofproto_v1_3
         import os_ken.ofproto.ofproto_v1_4
         import os_ken.ofproto.ofproto_v1_5
-        eq_(set(ofp_modules.keys()), set([os_ken.ofproto.ofproto_v1_0.OFP_VERSION,
-                                          os_ken.ofproto.ofproto_v1_2.OFP_VERSION,
-                                          os_ken.ofproto.ofproto_v1_3.OFP_VERSION,
-                                          os_ken.ofproto.ofproto_v1_4.OFP_VERSION,
-                                          os_ken.ofproto.ofproto_v1_5.OFP_VERSION,
-                                          ]))
+        self.assertEqual(set(ofp_modules.keys()),
+                         set([os_ken.ofproto.ofproto_v1_0.OFP_VERSION,
+                              os_ken.ofproto.ofproto_v1_2.OFP_VERSION,
+                              os_ken.ofproto.ofproto_v1_3.OFP_VERSION,
+                              os_ken.ofproto.ofproto_v1_4.OFP_VERSION,
+                              os_ken.ofproto.ofproto_v1_5.OFP_VERSION,
+                              ]))
         consts_mods = set([ofp_mod[0] for ofp_mod in ofp_modules.values()])
-        eq_(consts_mods, set([os_ken.ofproto.ofproto_v1_0,
+        self.assertEqual(consts_mods,
+                         set([os_ken.ofproto.ofproto_v1_0,
                               os_ken.ofproto.ofproto_v1_2,
                               os_ken.ofproto.ofproto_v1_3,
                               os_ken.ofproto.ofproto_v1_4,
                               os_ken.ofproto.ofproto_v1_5,
-                              ]))
+                              ])
+                         )
 
         parser_mods = set([ofp_mod[1] for ofp_mod in ofp_modules.values()])
         import os_ken.ofproto.ofproto_v1_0_parser
@@ -73,9 +70,11 @@ class TestOfprotCommon(unittest.TestCase):
         import os_ken.ofproto.ofproto_v1_3_parser
         import os_ken.ofproto.ofproto_v1_4_parser
         import os_ken.ofproto.ofproto_v1_5_parser
-        eq_(parser_mods, set([os_ken.ofproto.ofproto_v1_0_parser,
+        self.assertEqual(parser_mods,
+                         set([os_ken.ofproto.ofproto_v1_0_parser,
                               os_ken.ofproto.ofproto_v1_2_parser,
                               os_ken.ofproto.ofproto_v1_3_parser,
                               os_ken.ofproto.ofproto_v1_4_parser,
                               os_ken.ofproto.ofproto_v1_5_parser,
-                              ]))
+                              ])
+                         )

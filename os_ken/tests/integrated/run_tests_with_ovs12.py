@@ -15,7 +15,6 @@
 # limitations under the License.
 
 import unittest
-from nose.tools import ok_, eq_, timed, nottest
 
 from subprocess import Popen, PIPE, STDOUT
 import time
@@ -59,30 +58,24 @@ class TestWithOVS12(unittest.TestCase):
     def tearDownClass(cls):
         cls.mn.stop()
 
-    @timed(TIMEOUT)
     def test_add_flow_v10(self):
         app = 'os_ken/tests/integrated/test_add_flow_v10.py'
         self._run_os_ken_manager_and_check_output(app)
 
-    @timed(TIMEOUT)
     def test_request_reply_v12(self):
         app = 'os_ken/tests/integrated/test_request_reply_v12.py'
         self._run_os_ken_manager_and_check_output(app)
 
-    @timed(TIMEOUT)
     def test_add_flow_v12_actions(self):
         app = 'os_ken/tests/integrated/test_add_flow_v12_actions.py'
         self._run_os_ken_manager_and_check_output(app)
 
-    @timed(TIMEOUT)
     def test_add_flow_v12_matches(self):
         app = 'os_ken/tests/integrated/test_add_flow_v12_matches.py'
         self._run_os_ken_manager_and_check_output(app)
 
-    @nottest
     def test_of_config(self):
-        # OVS 1.10 does not support of_config
-        pass
+        self.skipTest('OVS 1.10 does not support of_config')
 
     def _run_os_ken_manager_and_check_output(self, app):
         cmd = [PYTHON_BIN, OSKEN_MGR, app]
@@ -99,11 +92,7 @@ class TestWithOVS12(unittest.TestCase):
 
             print("osken-manager: %s" % line)
             if line.find('TEST_FINISHED') != -1:
-                ok_(line.find('Completed=[True]') != -1)
+                self.assertTrue(line.find('Completed=[True]') != -1)
                 p.terminate()
                 p.communicate()  # wait for subprocess is terminated
                 break
-
-
-if __name__ == '__main__':
-    unittest.main()
