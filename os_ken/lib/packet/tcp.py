@@ -16,8 +16,6 @@
 import struct
 import logging
 
-import six
-
 from os_ken.lib import stringify
 from . import packet_base
 from . import packet_utils
@@ -187,7 +185,7 @@ class tcp(packet_base.PacketBase):
             self.csum = packet_utils.checksum_ip(prev, total_length,
                                                  h + payload)
             struct.pack_into('!H', h, 16, self.csum)
-        return six.binary_type(h)
+        return bytes(h)
 
 
 class TCPOption(stringify.StringifyMixin):

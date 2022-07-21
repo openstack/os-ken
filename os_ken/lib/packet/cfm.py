@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import abc
-import six
 import struct
 from os_ken.lib import addrconv
 from os_ken.lib import stringify
@@ -123,8 +122,7 @@ class cfm(packet_base.PacketBase):
         return len(self.op)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class operation(stringify.StringifyMixin):
+class operation(stringify.StringifyMixin, metaclass=abc.ABCMeta):
 
     _TLV_TYPES = {}
     _END_TLV_LEN = 1
@@ -310,9 +308,9 @@ class cc_message(operation):
         # ascii to text
         if md_name_format == cls._MD_FMT_DOMAIN_NAME_BASED_STRING or \
            md_name_format == cls._MD_FMT_CHARACTER_STRING:
-            md_name = b"".join(map(six.int2byte, md_name))
+            md_name = b"".join(map(struct.Struct(">B").pack, md_name))
         if short_ma_name_format == cls._SHORT_MA_FMT_CHARACTER_STRING:
-            short_ma_name = b"".join(map(six.int2byte, short_ma_name))
+            short_ma_name = b"".join(map(struct.Struct(">B").pack, short_ma_name))
         return cls(md_lv, version, rdi, interval, seq_num, mep_id,
                    md_name_format, md_name_length,
                    md_name,
@@ -667,8 +665,7 @@ class link_trace_reply(link_trace):
 cfm.set_classes(cfm._CFM_OPCODE)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class tlv(stringify.StringifyMixin):
+class tlv(stringify.StringifyMixin, metaclass=abc.ABCMeta):
 
     _TYPE_LEN = 1
     _LENGTH_LEN = 2

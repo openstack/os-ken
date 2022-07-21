@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import abc
-import six
 import struct
 
 from os_ken.lib import addrconv
@@ -138,7 +137,7 @@ class sctp(packet_base.PacketBase):
         if self.csum == 0:
             self.csum = self._checksum(buf)
             struct.pack_into('!I', buf, 8, self.csum)
-        return six.binary_type(buf)
+        return bytes(buf)
 
     def __len__(self):
         length = self._MIN_LEN
@@ -228,8 +227,7 @@ class sctp(packet_base.PacketBase):
 # Chunk Types
 #
 # =======================================================================
-@six.add_metaclass(abc.ABCMeta)
-class chunk(stringify.StringifyMixin):
+class chunk(stringify.StringifyMixin, metaclass=abc.ABCMeta):
     _PACK_STR = '!BBH'
     _MIN_LEN = struct.calcsize(_PACK_STR)
 
@@ -252,8 +250,7 @@ class chunk(stringify.StringifyMixin):
         return self.length
 
 
-@six.add_metaclass(abc.ABCMeta)
-class chunk_init_base(chunk):
+class chunk_init_base(chunk, metaclass=abc.ABCMeta):
     _PACK_STR = '!BBHIIHHI'
     _MIN_LEN = struct.calcsize(_PACK_STR)
     _class_prefixes = ['param_']
@@ -300,11 +297,10 @@ class chunk_init_base(chunk):
         if 0 == self.length:
             self.length = len(buf)
             struct.pack_into('!H', buf, 2, self.length)
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class chunk_heartbeat_base(chunk):
+class chunk_heartbeat_base(chunk, metaclass=abc.ABCMeta):
     _class_prefixes = ['param_']
 
     def __init__(self, flags=0, length=0, info=None):
@@ -333,11 +329,10 @@ class chunk_heartbeat_base(chunk):
         if 0 == self.length:
             self.length = len(buf)
             struct.pack_into('!H', buf, 2, self.length)
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class chunk_ack_base(chunk):
+class chunk_ack_base(chunk, metaclass=abc.ABCMeta):
     def __init__(self, flags=0, length=0):
         super(chunk_ack_base, self).__init__(self.chunk_type(), length)
         self.flags = flags
@@ -356,8 +351,7 @@ class chunk_ack_base(chunk):
         return buf
 
 
-@six.add_metaclass(abc.ABCMeta)
-class chunk_ecn_base(chunk):
+class chunk_ecn_base(chunk, metaclass=abc.ABCMeta):
     _PACK_STR = '!BBHI'
     _MIN_LEN = struct.calcsize(_PACK_STR)
 
@@ -459,7 +453,7 @@ class chunk_data(chunk):
         if 0 == self.length:
             self.length = len(buf)
             struct.pack_into('!H', buf, 2, self.length)
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @sctp.register_chunk_type
@@ -659,7 +653,7 @@ class chunk_sack(chunk):
         if 0 == self.length:
             self.length = len(buf)
             struct.pack_into('!H', buf, 2, self.length)
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @sctp.register_chunk_type
@@ -827,7 +821,7 @@ class chunk_abort(chunk):
         if 0 == self.length:
             self.length = len(buf)
             struct.pack_into('!H', buf, 2, self.length)
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @sctp.register_chunk_type
@@ -986,7 +980,7 @@ class chunk_error(chunk):
         if 0 == self.length:
             self.length = len(buf)
             struct.pack_into('!H', buf, 2, self.length)
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @sctp.register_chunk_type
@@ -1048,7 +1042,7 @@ class chunk_cookie_echo(chunk):
         mod = len(buf) % 4
         if mod:
             buf.extend(bytearray(4 - mod))
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @sctp.register_chunk_type
@@ -1201,8 +1195,7 @@ class chunk_shutdown_complete(chunk):
 # Cause Code
 #
 # =======================================================================
-@six.add_metaclass(abc.ABCMeta)
-class cause(stringify.StringifyMixin):
+class cause(stringify.StringifyMixin, metaclass=abc.ABCMeta):
     _PACK_STR = '!HH'
     _MIN_LEN = struct.calcsize(_PACK_STR)
 
@@ -1234,8 +1227,7 @@ class cause(stringify.StringifyMixin):
         return length
 
 
-@six.add_metaclass(abc.ABCMeta)
-class cause_with_value(cause):
+class cause_with_value(cause, metaclass=abc.ABCMeta):
     def __init__(self, value=None, length=0):
         super(cause_with_value, self).__init__(length)
         self.value = value
@@ -1260,7 +1252,7 @@ class cause_with_value(cause):
         mod = len(buf) % 4
         if mod:
             buf.extend(bytearray(4 - mod))
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @chunk_abort.register_cause_code
@@ -1381,7 +1373,7 @@ class cause_missing_param(cause):
         mod = len(buf) % 4
         if mod:
             buf.extend(bytearray(4 - mod))
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @chunk_abort.register_cause_code
@@ -1514,7 +1506,7 @@ class cause_unresolvable_addr(cause_with_value):
         mod = len(buf) % 4
         if mod:
             buf.extend(bytearray(4 - mod))
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @chunk_abort.register_cause_code
@@ -1755,7 +1747,7 @@ class cause_restart_with_new_addr(cause_with_value):
         mod = len(buf) % 4
         if mod:
             buf.extend(bytearray(4 - mod))
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @chunk_abort.register_cause_code
@@ -1825,8 +1817,7 @@ class cause_protocol_violation(cause_with_value):
 # Chunk Parameter Types
 #
 # =======================================================================
-@six.add_metaclass(abc.ABCMeta)
-class param(stringify.StringifyMixin):
+class param(stringify.StringifyMixin, metaclass=abc.ABCMeta):
     _PACK_STR = '!HH'
     _MIN_LEN = struct.calcsize(_PACK_STR)
 
@@ -1859,7 +1850,7 @@ class param(stringify.StringifyMixin):
         mod = len(buf) % 4
         if mod:
             buf.extend(bytearray(4 - mod))
-        return six.binary_type(buf)
+        return bytes(buf)
 
     def __len__(self):
         length = self.length
@@ -2134,7 +2125,7 @@ class param_supported_addr(param):
         mod = len(buf) % 4
         if mod:
             buf.extend(bytearray(4 - mod))
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @chunk_init.register_param_type
@@ -2191,7 +2182,7 @@ class param_ipv4(param):
         if 0 == self.length:
             self.length = len(buf)
             struct.pack_into('!H', buf, 2, self.length)
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @chunk_init.register_param_type
@@ -2248,4 +2239,4 @@ class param_ipv6(param):
         if 0 == self.length:
             self.length = len(buf)
             struct.pack_into('!H', buf, 2, self.length)
-        return six.binary_type(buf)
+        return bytes(buf)

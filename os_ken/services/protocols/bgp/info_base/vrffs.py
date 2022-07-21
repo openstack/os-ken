@@ -20,7 +20,6 @@
 
 import abc
 import logging
-import six
 
 from os_ken.lib.packet.bgp import BGP_ATTR_TYPE_ORIGIN
 from os_ken.lib.packet.bgp import BGP_ATTR_TYPE_AS_PATH
@@ -39,8 +38,7 @@ from os_ken.services.protocols.bgp.utils.bgp import create_rt_extended_community
 LOG = logging.getLogger('bgpspeaker.info_base.vrffs')
 
 
-@six.add_metaclass(abc.ABCMeta)
-class VRFFlowSpecTable(VrfTable):
+class VRFFlowSpecTable(VrfTable, metaclass=abc.ABCMeta):
     """Virtual Routing and Forwarding information base.
     Keeps destination imported to given VRF Flow Specification
     in represents.
@@ -80,13 +78,11 @@ class VRFFlowSpecTable(VrfTable):
         self._signal_bus.dest_changed(eff_dest)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class VRFFlowSpecDest(VrfDest):
+class VRFFlowSpecDest(VrfDest, metaclass=abc.ABCMeta):
     """Base class for VRF Flow Specification."""
 
 
-@six.add_metaclass(abc.ABCMeta)
-class VRFFlowSpecPath(VrfPath):
+class VRFFlowSpecPath(VrfPath, metaclass=abc.ABCMeta):
     """Represents a way of reaching an IP destination with
     a VPN Flow Specification.
     """

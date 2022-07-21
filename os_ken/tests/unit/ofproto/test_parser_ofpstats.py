@@ -15,7 +15,6 @@
 
 from functools import reduce
 
-import six
 import unittest
 import testscenarios
 
@@ -175,7 +174,7 @@ class Test_Parser_OFPStats(testscenarios.WithScenarios, unittest.TestCase):
         stats = ofpp.OFPStats(**d)
         b = bytearray()
         stats.serialize(b, 0)
-        stats2 = stats.parser(six.binary_type(b), 0)
+        stats2 = stats.parser(bytes(b), 0)
         for k, v in d.items():
             self.assertTrue(k in stats)
             self.assertTrue(k in stats2)

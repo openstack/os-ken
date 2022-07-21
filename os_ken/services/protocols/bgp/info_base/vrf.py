@@ -19,7 +19,6 @@
 
 import abc
 import logging
-import six
 
 from os_ken.lib.packet.bgp import BGP_ATTR_TYPE_ORIGIN
 from os_ken.lib.packet.bgp import BGP_ATTR_TYPE_AS_PATH
@@ -59,8 +58,7 @@ from os_ken.services.protocols.bgp.utils.stats import RESOURCE_NAME
 LOG = logging.getLogger('bgpspeaker.info_base.vrf')
 
 
-@six.add_metaclass(abc.ABCMeta)
-class VrfTable(Table):
+class VrfTable(Table, metaclass=abc.ABCMeta):
     """Virtual Routing and Forwarding information base.
      Keeps destination imported to given vrf in represents.
      """
@@ -362,8 +360,7 @@ class VrfTable(Table):
         return super(VrfTable, self).clean_uninteresting_paths(interested_rts)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class VrfDest(Destination):
+class VrfDest(Destination, metaclass=abc.ABCMeta):
     """Base class for VRF destination."""
 
     def __init__(self, table, nlri):
@@ -520,8 +517,7 @@ class VrfDest(Destination):
                              'with attribute label_list got %s' % path)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class VrfPath(Path):
+class VrfPath(Path, metaclass=abc.ABCMeta):
     """Represents a way of reaching an IP destination with a VPN.
     """
     __slots__ = ('_label_list', '_puid')

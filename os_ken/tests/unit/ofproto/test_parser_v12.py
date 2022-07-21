@@ -15,7 +15,6 @@
 
 import unittest
 import logging
-import six
 import socket
 from struct import *
 from os_ken.ofproto.ofproto_v1_2_parser import *
@@ -135,7 +134,7 @@ class TestOFPHello(unittest.TestCase):
         self.assertEqual(msg_type, res.msg_type)
         self.assertEqual(msg_len, res.msg_len)
         self.assertEqual(xid, res.xid)
-        self.assertEqual(six.binary_type(buf), six.binary_type(res.buf))
+        self.assertEqual(bytes(buf), bytes(res.buf))
 
     def test_parser_xid_min(self):
         xid = 0
@@ -809,7 +808,7 @@ class TestOFPErrorMsg(unittest.TestCase):
             + ofproto.OFP_ERROR_MSG_PACK_STR.replace('!', '') \
             + str(len(c.data)) + 's'
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_ERROR)
@@ -1330,7 +1329,7 @@ class TestOFPEchoRequest(unittest.TestCase):
         if data is not None:
             fmt += str(len(c.data)) + 's'
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_ECHO_REQUEST)
@@ -1416,7 +1415,7 @@ class TestOFPEchoReply(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + str(len(c.data)) + 's'
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_ECHO_REPLY)
@@ -1780,7 +1779,7 @@ class TestOFPFeaturesRequest(unittest.TestCase):
 
         fmt = ofproto.OFP_HEADER_PACK_STR
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_FEATURES_REQUEST)
@@ -1892,7 +1891,7 @@ class TestOFPGetConfigRequest(unittest.TestCase):
 
         fmt = ofproto.OFP_HEADER_PACK_STR
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_GET_CONFIG_REQUEST)
         self.assertEqual(res[2], len(c.buf))
@@ -1998,7 +1997,7 @@ class TestOFPSetConfig(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_SWITCH_CONFIG_PACK_STR.replace('!', '')
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_SET_CONFIG)
@@ -2081,7 +2080,7 @@ class TestOFPPacketIn(unittest.TestCase):
         buf_match = bytearray()
         match = OFPMatch()
         match.serialize(buf_match, 0)
-        buf += six.binary_type(buf_match)
+        buf += bytes(buf_match)
 
         # data
         buf += b'\x00' * 2
@@ -2191,7 +2190,7 @@ class TestOFPFlowRemoved(unittest.TestCase):
         buf_match = bytearray()
         match.serialize(buf_match, 0)
 
-        buf += six.binary_type(buf_match)
+        buf += bytes(buf_match)
 
         res = OFPFlowRemoved.parser(object, version, msg_type,
                                     msg_len, xid, buf)
@@ -2483,7 +2482,7 @@ class TestOFPPacketOut(unittest.TestCase):
         if data is not None:
             fmt += str(len(data)) + 's'
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_PACKET_OUT)
@@ -2612,7 +2611,7 @@ class TestOFPFlowMod(unittest.TestCase):
             + MTEthType.pack_str[1:] + '6x' \
             + ofproto.OFP_INSTRUCTION_GOTO_TABLE_PACK_STR[1:] * inst_cnt
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_FLOW_MOD)
@@ -2810,7 +2809,7 @@ class TestOFPInstructionGotoTable(unittest.TestCase):
         buf = bytearray()
         c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], table_id)
@@ -2883,7 +2882,7 @@ class TestOFPInstructionWriteMetadata(unittest.TestCase):
         buf = bytearray()
         c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], metadata)
@@ -2928,7 +2927,7 @@ class TestOFPInstructionActions(unittest.TestCase):
     buf_actions = bytearray()
     actions[0].serialize(buf_actions, 0)
 
-    buf += six.binary_type(buf_actions)
+    buf += bytes(buf_actions)
 
     def test_init(self):
         c = OFPInstructionActions(self.type_, self.actions)
@@ -2953,7 +2952,7 @@ class TestOFPInstructionActions(unittest.TestCase):
             actions.append(action)
             buf_actions = bytearray()
             actions[a].serialize(buf_actions, 0)
-            buf += six.binary_type(buf_actions)
+            buf += bytes(buf_actions)
 
         res = OFPInstructionActions.parser(buf, 0)
 
@@ -3001,7 +3000,7 @@ class TestOFPInstructionActions(unittest.TestCase):
 
         for a in range(action_cnt):
             fmt += ofproto.OFP_ACTION_OUTPUT_PACK_STR.replace('!', '')
-        res = struct.unpack(fmt, six.binary_type(buf))
+        res = struct.unpack(fmt, bytes(buf))
 
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], len_)
@@ -3054,7 +3053,7 @@ class TestOFPActionHeader(unittest.TestCase):
         c.serialize(buf, 0)
 
         fmt = ofproto.OFP_ACTION_HEADER_PACK_STR
-        res = struct.unpack(fmt, six.binary_type(buf))
+        res = struct.unpack(fmt, bytes(buf))
 
         self.assertEqual(res[0], type_)
         self.assertEqual(res[1], len_)
@@ -3132,7 +3131,7 @@ class TestOFPActionOutput(unittest.TestCase):
         c.serialize(buf, 0)
 
         fmt = ofproto.OFP_ACTION_OUTPUT_PACK_STR
-        res = struct.unpack(fmt, six.binary_type(buf))
+        res = struct.unpack(fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], port)
@@ -3198,7 +3197,7 @@ class TestOFPActionGroup(unittest.TestCase):
         buf = bytearray()
         c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], group_id)
@@ -3252,7 +3251,7 @@ class TestOFPActionSetQueue(unittest.TestCase):
         buf = bytearray()
         c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], queue_id)
@@ -3306,7 +3305,7 @@ class TestOFPActionSetMplsTtl(unittest.TestCase):
         buf = bytearray()
         c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], mpls_ttl)
@@ -3341,7 +3340,7 @@ class TestOFPActionDecMplsTtl(unittest.TestCase):
         buf = bytearray()
         self.c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
 
@@ -3385,7 +3384,7 @@ class TestOFPActionSetNwTtl(unittest.TestCase):
         buf = bytearray()
         c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], nw_ttl)
@@ -3420,7 +3419,7 @@ class TestOFPActionDecNwTtl(unittest.TestCase):
         buf = bytearray()
         self.c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
 
@@ -3444,7 +3443,7 @@ class TestOFPActionCopyTtlOut(unittest.TestCase):
         buf = bytearray()
         self.c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
 
@@ -3471,7 +3470,7 @@ class TestOFPActionCopyTtlIn(unittest.TestCase):
         buf = bytearray()
         self.c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
 
@@ -3513,7 +3512,7 @@ class TestOFPActionPushVlan(unittest.TestCase):
         buf = bytearray()
         c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], ethertype)
@@ -3565,7 +3564,7 @@ class TestOFPActionPushMpls(unittest.TestCase):
         buf = bytearray()
         c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], ethertype)
@@ -3601,7 +3600,7 @@ class TestOFPActionPopVlan(unittest.TestCase):
         buf = bytearray()
         self.c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
 
@@ -3643,7 +3642,7 @@ class TestOFPActionPopMpls(unittest.TestCase):
         buf = bytearray()
         c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], ethertype)
@@ -3690,7 +3689,7 @@ class TestOFPActionSetField(unittest.TestCase):
         buf = bytearray()
         self.c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
 
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
@@ -3739,7 +3738,7 @@ class TestOFPActionExperimenter(unittest.TestCase):
         buf = bytearray()
         c.serialize(buf, 0)
 
-        res = struct.unpack(self.fmt, six.binary_type(buf))
+        res = struct.unpack(self.fmt, bytes(buf))
         self.assertEqual(res[0], self.type_)
         self.assertEqual(res[1], self.len_)
         self.assertEqual(res[2], experimenter)
@@ -3799,7 +3798,7 @@ class TestOFPBucket(unittest.TestCase):
             actions.append(action)
             buf_actions = bytearray()
             actions[a].serialize(buf_actions, 0)
-            buf += six.binary_type(buf_actions)
+            buf += bytes(buf_actions)
 
         res = OFPBucket.parser(buf, 0)
 
@@ -3863,7 +3862,7 @@ class TestOFPBucket(unittest.TestCase):
         fmt = ofproto.OFP_BUCKET_PACK_STR
         for a in range(action_cnt):
             fmt += ofproto.OFP_ACTION_OUTPUT_PACK_STR[1:]
-        res = struct.unpack(fmt, six.binary_type(buf))
+        res = struct.unpack(fmt, bytes(buf))
 
         self.assertEqual(res[0], len_)
         self.assertEqual(res[1], weight)
@@ -3965,7 +3964,7 @@ class TestOFPGroupMod(unittest.TestCase):
             fmt += ofproto.OFP_BUCKET_PACK_STR[1:] \
                 + ofproto.OFP_ACTION_OUTPUT_PACK_STR[1:]
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         msg_len = ofproto.OFP_GROUP_MOD_SIZE \
             + (len_ * bucket_cnt)
@@ -4066,7 +4065,7 @@ class TestOFPPortMod(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_PORT_MOD_PACK_STR.replace('!', '')
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_PORT_MOD)
@@ -4253,7 +4252,7 @@ class TestOFPTableMod(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_TABLE_MOD_PACK_STR.replace('!', '')
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_TABLE_MOD)
@@ -4309,7 +4308,7 @@ class TestOFPStatsRequest(unittest.TestCase):
         self.c._serialize_body()
 
         fmt = ofproto.OFP_STATS_REQUEST_PACK_STR
-        res = struct.unpack_from(fmt, six.binary_type(self.c.buf),
+        res = struct.unpack_from(fmt, bytes(self.c.buf),
                                  ofproto.OFP_HEADER_SIZE)
 
         self.assertEqual(res[0], self.type_)
@@ -4476,7 +4475,7 @@ class TestOFPDescStatsRequest(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_STATS_REQUEST_PACK_STR.replace('!', '')
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_STATS_REQUEST)
@@ -4572,7 +4571,7 @@ class TestOFPFlowStatsRequest(unittest.TestCase):
             + 'HHHBB' \
             + MTEthType.pack_str[1:] + '6x'
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_STATS_REQUEST)
@@ -4683,7 +4682,7 @@ class TestOFPFlowStats(unittest.TestCase):
         match.set_dl_type(dl_type)
         match_buf = bytearray()
         match.serialize(match_buf, 0)
-        buf += six.binary_type(match_buf)
+        buf += bytes(match_buf)
 
         # instructions
         # 56 + 8 + 8 * inst_cnt <= 65535
@@ -4692,7 +4691,7 @@ class TestOFPFlowStats(unittest.TestCase):
             inst = OFPInstructionGotoTable(1)
             inst_buf = bytearray()
             inst.serialize(inst_buf, 0)
-            buf += six.binary_type(inst_buf)
+            buf += bytes(inst_buf)
 
         # parse
         res = OFPFlowStats.parser(buf, 0)
@@ -4795,7 +4794,7 @@ class TestOFPAggregateStatsRequest(unittest.TestCase):
             + 'HHHBB' \
             + MTEthType.pack_str[1:] + '6x'
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_STATS_REQUEST)
         self.assertEqual(res[2], len(c.buf))
@@ -4902,7 +4901,7 @@ class TestOFPTableStatsRequest(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_STATS_REQUEST_PACK_STR.replace('!', '')
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_STATS_REQUEST)
@@ -5295,7 +5294,7 @@ class TestOFPPortStatsRequest(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_STATS_REQUEST_PACK_STR.replace('!', '') \
             + ofproto.OFP_PORT_STATS_REQUEST_PACK_STR.replace('!', '')
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_STATS_REQUEST)
@@ -5532,7 +5531,7 @@ class TestOFPQueueStatsRequest(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_STATS_REQUEST_PACK_STR.replace('!', '') \
             + ofproto.OFP_QUEUE_STATS_REQUEST_PACK_STR.replace('!', '')
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_STATS_REQUEST)
@@ -5735,7 +5734,7 @@ class TestOFPGroupStatsRequest(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_STATS_REQUEST_PACK_STR.replace('!', '') \
             + ofproto.OFP_GROUP_STATS_REQUEST_PACK_STR.replace('!', '')
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_STATS_REQUEST)
@@ -5873,7 +5872,7 @@ class TestOFPGroupDescStatsRequest(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_STATS_REQUEST_PACK_STR.replace('!', '')
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_STATS_REQUEST)
@@ -5935,7 +5934,7 @@ class TestOFPGroupDescStats(unittest.TestCase):
             buckets.append(bucket)
             buf_buckets = bytearray()
             buckets[b].serialize(buf_buckets, 0)
-            buf += six.binary_type(buf_buckets)
+            buf += bytes(buf_buckets)
 
         res = OFPGroupDescStats.parser(buf, 0)
 
@@ -5994,7 +5993,7 @@ class TestOFPGroupFeaturesStatsRequest(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_STATS_REQUEST_PACK_STR.replace('!', '')
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_STATS_REQUEST)
@@ -6131,7 +6130,7 @@ class TestOFPQueueGetConfigRequest(unittest.TestCase):
         fmt = ofproto.OFP_HEADER_PACK_STR \
             + ofproto.OFP_QUEUE_GET_CONFIG_REQUEST_PACK_STR[1:]
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
         self.assertEqual(res[0], ofproto.OFP_VERSION)
         self.assertEqual(res[1], ofproto.OFPT_QUEUE_GET_CONFIG_REQUEST)
         self.assertEqual(res[2], len(c.buf))
@@ -6170,7 +6169,7 @@ class TestOFPQueuePropHeader(unittest.TestCase):
         c.serialize(buf, 0)
 
         fmt = ofproto.OFP_QUEUE_PROP_HEADER_PACK_STR
-        res = struct.unpack(fmt, six.binary_type(buf))
+        res = struct.unpack(fmt, bytes(buf))
 
         self.assertEqual(res[0], property_)
         self.assertEqual(res[1], len_)
@@ -6396,7 +6395,7 @@ class TestOFPBarrierRequest(unittest.TestCase):
         self.assertEqual(0, c.xid)
 
         fmt = ofproto.OFP_HEADER_PACK_STR
-        res = unpack(fmt, six.binary_type(c.buf))
+        res = unpack(fmt, bytes(c.buf))
         self.assertEqual(ofproto.OFP_VERSION, res[0])
         self.assertEqual(ofproto.OFPT_BARRIER_REQUEST, res[1])
         self.assertEqual(len(c.buf), res[2])
@@ -6458,7 +6457,7 @@ class TestOFPRoleRequest(unittest.TestCase):
             + ofproto.OFP_HEADER_PACK_STR.replace('!', '') \
             + ofproto.OFP_ROLE_REQUEST_PACK_STR.replace('!', '')
 
-        res = struct.unpack(fmt, six.binary_type(c.buf))
+        res = struct.unpack(fmt, bytes(c.buf))
 
         self.assertEqual(ofproto.OFP_VERSION, res[0])
         self.assertEqual(ofproto.OFPT_ROLE_REQUEST, res[1])
@@ -6630,7 +6629,7 @@ class TestOFPMatch(unittest.TestCase):
         if mask and len(buf) > calcsize(fmt):
             fmt += pack_str
 
-        res = list(unpack_from(fmt, six.binary_type(buf), 0)[3:])
+        res = list(unpack_from(fmt, bytes(buf), 0)[3:])
         if type(value) is list:
             res_value = res[:calcsize(pack_str) // 2]
             self.assertEqual(res_value, value)
@@ -6648,7 +6647,7 @@ class TestOFPMatch(unittest.TestCase):
                 self.assertEqual(res_mask, mask)
 
         # parser
-        res = match.parser(six.binary_type(buf), 0)
+        res = match.parser(bytes(buf), 0)
         self.assertEqual(res.type, ofproto.OFPMT_OXM)
         self.assertEqual(res.fields[0].header, header)
         self.assertEqual(res.fields[0].value, value)
@@ -6674,7 +6673,7 @@ class TestOFPMatch(unittest.TestCase):
         pack_utils.msg_pack_into('!IH', buf, 10, header, 1)
 
         match = OFPMatch()
-        res = match.parser(six.binary_type(buf), 0)
+        res = match.parser(bytes(buf), 0)
 
     # set_in_port
     def _test_set_in_port(self, in_port):
@@ -6860,12 +6859,12 @@ class TestOFPMatch(unittest.TestCase):
         length = match.serialize(buf, 0)
         self.assertEqual(length, len(buf))
 
-        res = list(unpack_from(fmt, six.binary_type(buf), 0)[3:])
+        res = list(unpack_from(fmt, bytes(buf), 0)[3:])
         res_value = res.pop(0)
         self.assertEqual(res_value, value)
 
         # parser
-        res = match.parser(six.binary_type(buf), 0)
+        res = match.parser(bytes(buf), 0)
         self.assertEqual(res.type, ofproto.OFPMT_OXM)
         self.assertEqual(res.fields[0].header, header)
         self.assertEqual(res.fields[0].value, value)

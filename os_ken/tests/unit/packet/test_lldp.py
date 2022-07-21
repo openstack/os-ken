@@ -13,11 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
-
 import unittest
 import logging
-import six
 import struct
 import inspect
 
@@ -340,7 +337,7 @@ class TestLLDPOptionalTLV(unittest.TestCase):
         pkt.serialize()
 
         # self.data has many organizationally specific TLVs
-        data = six.binary_type(pkt.data[:-2])
+        data = bytes(pkt.data[:-2])
         self.assertEqual(data, self.data[:len(data)])
 
     def test_to_string(self):

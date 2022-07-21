@@ -14,11 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
-
 import unittest
 import logging
-import six
 import struct
 import inspect
 
@@ -107,7 +104,7 @@ class Test_vrrpv2(unittest.TestCase):
         buf = vrrp_.serialize(bytearray(), prev)
         pack_str = vrrp.vrrpv2._PACK_STR + '4sII'
         pack_len = struct.calcsize(pack_str)
-        res = struct.unpack(pack_str, six.binary_type(buf))
+        res = struct.unpack(pack_str, bytes(buf))
         self.assertEqual(res[0], vrrp.vrrp_to_version_type(vrrp.VRRP_VERSION_V2, type_))
         self.assertEqual(res[1], vrid)
         self.assertEqual(res[2], priority)
@@ -132,7 +129,7 @@ class Test_vrrpv2(unittest.TestCase):
         primary_ip = '192.168.0.2'
         p0 = self.vrrpv2.create_packet(primary_ip)
         p0.serialize()
-        p1 = packet.Packet(six.binary_type(p0.data))
+        p1 = packet.Packet(bytes(p0.data))
         p1.serialize()
         self.assertEqual(p0.data, p1.data)
 
@@ -269,7 +266,7 @@ class Test_vrrpv3_ipv4(unittest.TestCase):
         print(len(buf), type(buf), buf)
         pack_str = vrrp.vrrpv3._PACK_STR + '4s'
         pack_len = struct.calcsize(pack_str)
-        res = struct.unpack(pack_str, six.binary_type(buf))
+        res = struct.unpack(pack_str, bytes(buf))
         self.assertEqual(res[0], vrrp.vrrp_to_version_type(vrrp.VRRP_VERSION_V3, type_))
         self.assertEqual(res[1], vrid)
         self.assertEqual(res[2], priority)
@@ -296,7 +293,7 @@ class Test_vrrpv3_ipv4(unittest.TestCase):
         primary_ip = '192.168.0.2'
         p0 = self.vrrpv3.create_packet(primary_ip)
         p0.serialize()
-        p1 = packet.Packet(six.binary_type(p0.data))
+        p1 = packet.Packet(bytes(p0.data))
         p1.serialize()
         self.assertEqual(p0.data, p1.data)
 
@@ -433,7 +430,7 @@ class Test_vrrpv3_ipv6(unittest.TestCase):
         print(len(buf), type(buf), buf)
         pack_str = vrrp.vrrpv3._PACK_STR + '16s'
         pack_len = struct.calcsize(pack_str)
-        res = struct.unpack(pack_str, six.binary_type(buf))
+        res = struct.unpack(pack_str, bytes(buf))
         self.assertEqual(res[0], vrrp.vrrp_to_version_type(vrrp.VRRP_VERSION_V3, type_))
         self.assertEqual(res[1], vrid)
         self.assertEqual(res[2], priority)
@@ -461,7 +458,7 @@ class Test_vrrpv3_ipv6(unittest.TestCase):
         p0 = self.vrrpv3.create_packet(primary_ip)
         p0.serialize()
         print(len(p0.data), p0.data)
-        p1 = packet.Packet(six.binary_type(p0.data))
+        p1 = packet.Packet(bytes(p0.data))
         p1.serialize()
         print(len(p0.data), p0.data)
         print(len(p1.data), p1.data)

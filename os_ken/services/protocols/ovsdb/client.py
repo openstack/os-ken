@@ -15,7 +15,6 @@
 
 import collections
 import errno
-import six
 import uuid
 
 from ovs import jsonrpc
@@ -174,14 +173,14 @@ def _filter_schema(schema, schema_tables, exclude_table_columns):
                         if key and isinstance(key, dict):
                             ref_tbl = key.get('refTable')
                             if ref_tbl and isinstance(ref_tbl,
-                                                      six.string_types):
+                                                      str):
                                 if ref_tbl not in schema_tables:
                                     continue
                         value = type_.get('value')
                         if value and isinstance(value, dict):
                             ref_tbl = value.get('refTable')
                             if ref_tbl and isinstance(ref_tbl,
-                                                      six.string_types):
+                                                      str):
                                 if ref_tbl not in schema_tables:
                                     continue
 

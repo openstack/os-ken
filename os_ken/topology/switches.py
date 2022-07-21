@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import logging
-import six
 import struct
 import time
 from os_ken import cfg
@@ -465,10 +464,10 @@ class LLDPPacket(object):
     def lldp_parse(data):
         pkt = packet.Packet(data)
         i = iter(pkt)
-        eth_pkt = six.next(i)
+        eth_pkt = next(i)
         assert type(eth_pkt) == ethernet.ethernet
 
-        lldp_pkt = six.next(i)
+        lldp_pkt = next(i)
         if type(lldp_pkt) != lldp.lldp:
             raise LLDPPacket.LLDPUnknownFormat()
 

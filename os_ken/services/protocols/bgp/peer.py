@@ -15,13 +15,13 @@
 """
  BGP peer related classes and utils.
 """
+
 from collections import namedtuple
+import itertools
 import logging
 import socket
 import time
 import traceback
-
-from six.moves import zip_longest
 
 from os_ken.services.protocols.bgp.base import Activity
 from os_ken.services.protocols.bgp.base import Sink
@@ -888,7 +888,8 @@ class Peer(Source, Sink, NeighborConfListener, Activity):
 
         new_as_path_list = []
         tmp_list = []
-        for as_path, as4_path in zip_longest(org_as_path_list, as4_path_list):
+        for as_path, as4_path in itertools.zip_longest(org_as_path_list,
+                                                       as4_path_list):
             if as4_path is None:
                 if isinstance(as_path, int):
                     tmp_list.insert(0, as_path)

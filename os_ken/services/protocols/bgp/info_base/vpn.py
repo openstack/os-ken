@@ -19,7 +19,6 @@
 
 import abc
 import logging
-import six
 
 from os_ken.lib.packet.bgp import RF_L2_EVPN
 from os_ken.services.protocols.bgp.info_base.base import Destination
@@ -57,8 +56,7 @@ class VpnTable(Table):
         )
 
 
-@six.add_metaclass(abc.ABCMeta)
-class VpnPath(Path):
+class VpnPath(Path, metaclass=abc.ABCMeta):
     ROUTE_FAMILY = None
     VRF_PATH_CLASS = None
     NLRI_CLASS = None
@@ -90,8 +88,7 @@ class VpnPath(Path):
         return vrf_path
 
 
-@six.add_metaclass(abc.ABCMeta)
-class VpnDest(Destination, NonVrfPathProcessingMixin):
+class VpnDest(Destination, NonVrfPathProcessingMixin, metaclass=abc.ABCMeta):
     """Base class for VPN destinations."""
 
     def _best_path_lost(self):

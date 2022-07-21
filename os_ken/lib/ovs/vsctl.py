@@ -25,8 +25,6 @@ import re
 import sys
 import weakref
 
-import six
-
 import ovs.db.data
 import ovs.db.parser
 import ovs.db.schema
@@ -883,7 +881,7 @@ class VSCtlContext(object):
             for ovsrec_row in self.idl.tables[
                     vsctl_row_id.table].rows.values():
                 name = getattr(ovsrec_row, vsctl_row_id.name_column)
-                assert isinstance(name, (list, str, six.text_type))
+                assert isinstance(name, (list, str, str))
                 if not isinstance(name, list) and name == record_id:
                     if referrer:
                         vsctl_fatal('multiple rows in %s match "%s"' %

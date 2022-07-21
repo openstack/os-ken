@@ -37,8 +37,6 @@ import logging
 import time
 import random
 
-import six
-
 from os_ken.base import app_manager
 from os_ken.controller import event
 from os_ken.controller import ofp_event
@@ -231,7 +229,7 @@ class BFDSession(object):
         BFD packet receiver.
         """
         LOG.debug("[BFD][%s][RECV] BFD Control received: %s",
-                  hex(self._local_discr), six.binary_type(bfd_pkt))
+                  hex(self._local_discr), bytes(bfd_pkt))
         self._remote_discr = bfd_pkt.my_discr
         self._remote_state = bfd_pkt.state
         self._remote_demand_mode = bfd_pkt.flags & bfd.BFD_FLAG_DEMAND

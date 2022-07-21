@@ -13,17 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
 
 import unittest
 import logging
-import six
 import struct
 from struct import *
-from os_ken.ofproto import ether, inet
+from os_ken.ofproto import inet
 from os_ken.lib.packet import packet_utils
-from os_ken.lib.packet.ethernet import ethernet
-from os_ken.lib.packet.packet import Packet
 from os_ken.lib.packet.ipv4 import ipv4
 from os_ken.lib.packet.tcp import tcp
 from os_ken.lib import addrconv
@@ -107,7 +103,7 @@ class Test_ipv4(unittest.TestCase):
 
     def test_serialize(self):
         buf = self.ip.serialize(bytearray(), None)
-        res = struct.unpack_from(ipv4._PACK_STR, six.binary_type(buf))
+        res = struct.unpack_from(ipv4._PACK_STR, bytes(buf))
         option = buf[ipv4._MIN_LEN:ipv4._MIN_LEN + len(self.option)]
 
         self.assertEqual(res[0], self.ver_hlen)

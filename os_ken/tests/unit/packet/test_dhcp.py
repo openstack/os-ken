@@ -19,8 +19,6 @@ import logging
 import struct
 import unittest
 
-import six
-
 from os_ken.lib import addrconv
 from os_ken.lib.packet import dhcp
 
@@ -136,7 +134,7 @@ class Test_dhcp_offer(unittest.TestCase):
         self.assertTrue(isinstance(pkt.options, dhcp.options))
         for opt in pkt.options.option_list[:-1]:
             self.assertTrue(isinstance(opt, dhcp.option))
-        self.assertTrue(isinstance(pkt.options.option_list[-1], six.binary_type))
+        self.assertTrue(isinstance(pkt.options.option_list[-1], bytes))
 
         buf = pkt.serialize()
         self.assertEqual(str(buf), str(corrupt_buf))
@@ -146,7 +144,7 @@ class Test_dhcp_offer(unittest.TestCase):
         buf = self.dh.serialize()
 
         res = struct.unpack_from(dhcp.dhcp._DHCP_PACK_STR,
-                                 six.binary_type(buf))
+                                 bytes(buf))
 
         self.assertEqual(self.op, res[0])
         self.assertEqual(self.htype, res[1])

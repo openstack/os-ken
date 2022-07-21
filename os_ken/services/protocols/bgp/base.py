@@ -25,7 +25,6 @@ import traceback
 import weakref
 
 import netaddr
-import six
 
 from os_ken.lib import hub
 from os_ken.lib import sockopt
@@ -139,8 +138,7 @@ class ActivityException(BGPSException):
     pass
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Activity(object):
+class Activity(object, metaclass=abc.ABCMeta):
     """Base class for a thread of execution that provides some custom settings.
 
     Activity is also a container of other activities or threads that it has

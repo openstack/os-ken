@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import array
-import six
 import socket
 import struct
 from os_ken.lib import addrconv
@@ -26,7 +25,7 @@ def carry_around_add(a, b):
 
 
 def checksum(data):
-    data = six.binary_type(data)    # input can be bytearray.
+    data = bytes(data)    # input can be bytearray.
     if len(data) % 2:
         data += b'\x00'
 

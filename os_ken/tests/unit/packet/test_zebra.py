@@ -19,8 +19,6 @@ import sys
 import unittest
 from unittest import mock
 
-import six
-
 from os_ken.lib import pcaplib
 from os_ken.lib.packet import packet
 from os_ken.lib.packet import zebra
@@ -54,7 +52,7 @@ class Test_zebra(unittest.TestCase):
                 self.assertTrue(isinstance(zebra_pkt, zebra.ZebraMessage),
                     'Failed to parse Zebra message: %s' % pkt)
             self.assertTrue(not isinstance(pkt.protocols[-1],
-                               (six.binary_type, bytearray)),
+                               (bytes, bytearray)),
                 'Some messages could not be parsed in %s: %s' % (f, pkt))
 
             # Checks if Zebra message can be serialized as expected.

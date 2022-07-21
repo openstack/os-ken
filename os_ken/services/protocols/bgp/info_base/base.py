@@ -25,7 +25,6 @@ from copy import copy
 import logging
 import functools
 import netaddr
-import six
 
 from os_ken.lib.packet.bgp import RF_IPv4_UC
 from os_ken.lib.packet.bgp import RouteTargetMembershipNLRI
@@ -44,8 +43,7 @@ from os_ken.services.protocols.bgp.processor import BPR_UNKNOWN
 LOG = logging.getLogger('bgpspeaker.info_base.base')
 
 
-@six.add_metaclass(ABCMeta)
-class Table(object):
+class Table(object, metaclass=abc.ABCMeta):
     """A container for holding information about destination/prefixes.
 
     Routing information base for a particular afi/safi.
@@ -276,8 +274,7 @@ class NonVrfPathProcessingMixin(object):
                 self._sent_routes = {}
 
 
-@six.add_metaclass(ABCMeta)
-class Destination(object):
+class Destination(object, metaclass=abc.ABCMeta):
     """State about a particular destination.
 
     For example, an IP prefix. This is the data-structure that is hung of the
@@ -688,8 +685,7 @@ class Destination(object):
         return str(self) >= str(other)
 
 
-@six.add_metaclass(ABCMeta)
-class Path(object):
+class Path(object, metaclass=abc.ABCMeta):
     """Represents a way of reaching an IP destination.
 
     Also contains other meta-data given to us by a specific source (such as a
@@ -861,8 +857,7 @@ class Path(object):
             self._path_attr_map, self._nexthop, self._is_withdraw))
 
 
-@six.add_metaclass(ABCMeta)
-class Filter(object):
+class Filter(object, metaclass=abc.ABCMeta):
     """Represents a general filter for in-bound and out-bound filter
 
     ================ ==================================================

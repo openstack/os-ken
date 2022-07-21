@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import abc
-import six
 import struct
 from . import packet_base
 from . import arp
@@ -28,8 +27,7 @@ from . import cfm
 from . import ether_types as ether
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _vlan(packet_base.PacketBase):
+class _vlan(packet_base.PacketBase, metaclass=abc.ABCMeta):
     _PACK_STR = "!HH"
     _MIN_LEN = struct.calcsize(_PACK_STR)
 

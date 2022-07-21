@@ -13,11 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
-
 import unittest
 import logging
-import six
 import socket
 from struct import *
 from os_ken.ofproto.ofproto_v1_3_parser import *
@@ -56,7 +53,7 @@ class TestOFPMatch(unittest.TestCase):
         if mask and len(buf) > calcsize(fmt):
             fmt += pack_str
 
-        res = list(unpack_from(fmt, six.binary_type(buf), 0)[3:])
+        res = list(unpack_from(fmt, bytes(buf), 0)[3:])
         if type(value) is list:
             res_value = res[:calcsize(pack_str) // 2]
             self.assertEqual(res_value, value)
@@ -74,7 +71,7 @@ class TestOFPMatch(unittest.TestCase):
                 self.assertEqual(res_mask, mask)
 
         # parser
-        res = match.parser(six.binary_type(buf), 0)
+        res = match.parser(bytes(buf), 0)
         self.assertEqual(res.type, ofproto.OFPMT_OXM)
         self.assertEqual(res.fields[0].header, header)
         self.assertEqual(res.fields[0].value, value)
@@ -116,12 +113,12 @@ class TestOFPMatch(unittest.TestCase):
         length = match.serialize(buf, 0)
         self.assertEqual(length, len(buf))
 
-        res = list(unpack_from(fmt, six.binary_type(buf), 0)[3:])
+        res = list(unpack_from(fmt, bytes(buf), 0)[3:])
         res_value = res.pop(0)
         self.assertEqual(res_value, value)
 
         # parser
-        res = match.parser(six.binary_type(buf), 0)
+        res = match.parser(bytes(buf), 0)
         self.assertEqual(res.type, ofproto.OFPMT_OXM)
         self.assertEqual(res.fields[0].header, header)
         self.assertEqual(res.fields[0].value, value)

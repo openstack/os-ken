@@ -14,8 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import six
-
 import base64
 import collections
 import logging
@@ -30,16 +28,12 @@ from os_ken.ofproto import ofproto_common
 
 LOG = logging.getLogger('os_ken.ofproto.ofproto_parser')
 
-# This is merely for API compatibility on python2
-if six.PY3:
-    buffer = bytes
-
 
 def header(buf):
     assert len(buf) >= ofproto_common.OFP_HEADER_SIZE
     # LOG.debug('len %d bufsize %d', len(buf), ofproto.OFP_HEADER_SIZE)
     return struct.unpack_from(ofproto_common.OFP_HEADER_PACK_STR,
-                              six.binary_type(buf))
+                              bytes(buf))
 
 
 _MSG_PARSERS = {}
@@ -225,11 +219,11 @@ class MsgBase(StringifyMixin):
         self.xid = xid
 
     def set_buf(self, buf):
-        self.buf = buffer(buf)
+        self.buf = bytes(buf)
 
     def __str__(self):
         def hexify(x):
-            return hex(x) if isinstance(x, six.integer_types) else x
+            return hex(x) if isinstance(x, int) else x
         buf = 'version=%s,msg_type=%s,msg_len=%s,xid=%s,' %\
               (hexify(self.version), hexify(self.msg_type),
                hexify(self.msg_len), hexify(self.xid))

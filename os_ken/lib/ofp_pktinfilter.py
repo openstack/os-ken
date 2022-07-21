@@ -12,11 +12,9 @@
 # implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
 
+import abc
 import logging
-from abc import ABCMeta, abstractmethod
-import six
 
 from os_ken.lib.packet import packet
 
@@ -38,12 +36,11 @@ def packet_in_filter(cls, args=None, logging=False):
     return _packet_in_filter
 
 
-@six.add_metaclass(ABCMeta)
-class PacketInFilterBase(object):
+class PacketInFilterBase(object, metaclass=abc.ABCMeta):
     def __init__(self, args):
         self.args = args
 
-    @abstractmethod
+    @abc.abstractmethod
     def filter(self, pkt):
         pass
 

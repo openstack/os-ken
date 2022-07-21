@@ -16,14 +16,13 @@
 """
  Running or runtime configuration base classes.
 """
+import abc
 from abc import ABCMeta
 from abc import abstractmethod
 import functools
 import numbers
 import logging
 import uuid
-
-import six
 
 from os_ken.services.protocols.bgp.base import add_bgp_error_metadata
 from os_ken.services.protocols.bgp.base import BGPSException
@@ -154,8 +153,7 @@ class ConfigValueError(RuntimeConfigError):
 # Configuration base classes.
 # =============================================================================
 
-@six.add_metaclass(ABCMeta)
-class BaseConf(object):
+class BaseConf(object, metaclass=abc.ABCMeta):
     """Base class for a set of configuration values.
 
     Configurations can be required or optional. Also acts as a container of
@@ -436,8 +434,7 @@ class ConfWithStats(BaseConf):
                                   **kwargs)
 
 
-@six.add_metaclass(ABCMeta)
-class BaseConfListener(object):
+class BaseConfListener(object, metaclass=abc.ABCMeta):
     """Base class of all configuration listeners."""
 
     def __init__(self, base_conf):
@@ -756,7 +753,7 @@ def validate_soo_list(soo_list):
 
 @validate(name=MAX_PREFIXES)
 def validate_max_prefixes(max_prefixes):
-    if not isinstance(max_prefixes, six.integer_types):
+    if not isinstance(max_prefixes, int):
         raise ConfigTypeError(desc='Max. prefixes value should be of type '
                               'int or long but found %s' % type(max_prefixes))
     if max_prefixes < 0:

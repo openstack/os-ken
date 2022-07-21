@@ -21,7 +21,6 @@ VRRPManager creates/deletes VRRPRounter instances dynamically.
 """
 
 import abc
-import six
 
 from os_ken.base import app_manager
 from os_ken.controller import event
@@ -104,8 +103,7 @@ class VRRPParams(object):
         return (3.0 * self.master_adver_interval) + self.skew_time
 
 
-@six.add_metaclass(abc.ABCMeta)
-class VRRPState(object):
+class VRRPState(object, metaclass=abc.ABCMeta):
     def __init__(self, vrrp_router):
         super(VRRPState, self).__init__()
         self.vrrp_router = vrrp_router

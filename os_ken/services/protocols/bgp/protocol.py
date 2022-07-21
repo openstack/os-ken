@@ -17,13 +17,10 @@
  Module defines protocol based classes and utils.
 """
 
-from abc import ABCMeta
-from abc import abstractmethod
-import six
+import abc
 
 
-@six.add_metaclass(ABCMeta)
-class Protocol(object):
+class Protocol(object, metaclass=abc.ABCMeta):
     """Interface for various protocols.
 
     Protocol usually encloses a transport/connection/socket to
@@ -34,7 +31,7 @@ class Protocol(object):
     appropriate.
     """
 
-    @abstractmethod
+    @abc.abstractmethod
     def data_received(self, data):
         """Handler for date received over connection/transport.
 
@@ -44,7 +41,7 @@ class Protocol(object):
         """
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def connection_made(self):
         """Called when connection has been established according to protocol.
 
@@ -53,7 +50,7 @@ class Protocol(object):
         """
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def connection_lost(self, reason):
         """Handler called when connection to peer/remote according to protocol
         has been lost.
@@ -63,8 +60,7 @@ class Protocol(object):
         pass
 
 
-@six.add_metaclass(ABCMeta)
-class Factory(object):
+class Factory(object, metaclass=abc.ABCMeta):
     """This is a factory which produces protocols.
 
     Can also act as context for protocols.
@@ -73,7 +69,7 @@ class Factory(object):
     # Put a subclass of Protocol here:
     protocol = None
 
-    @abstractmethod
+    @abc.abstractmethod
     def build_protocol(self, socket):
         """Create an instance of a subclass of Protocol.
 
@@ -81,7 +77,7 @@ class Factory(object):
         """
         raise NotImplementedError()
 
-    @abstractmethod
+    @abc.abstractmethod
     def start_protocol(self, socket):
         """Launch protocol instance to handle input on an incoming connection.
         """

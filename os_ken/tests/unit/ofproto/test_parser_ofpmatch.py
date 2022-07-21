@@ -16,7 +16,6 @@
 
 import functools
 import itertools
-import six
 import unittest
 import testscenarios
 
@@ -258,7 +257,7 @@ class Test_Parser_OFPMatch(testscenarios.WithScenarios, unittest.TestCase):
         match = ofpp.OFPMatch(**d)
         b = bytearray()
         match.serialize(b, 0)
-        match2 = match.parser(six.binary_type(b), 0)
+        match2 = match.parser(bytes(b), 0)
         for k, v in d.items():
             self.assertTrue(k in match)
             self.assertTrue(k in match2)

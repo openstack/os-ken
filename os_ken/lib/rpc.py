@@ -24,7 +24,6 @@ from collections import deque
 import select
 
 import msgpack
-import six
 
 
 class MessageType(object):
@@ -50,7 +49,7 @@ class MessageEncoder(object):
         return this_id
 
     def create_request(self, method, params):
-        assert isinstance(method, (str, six.binary_type))
+        assert isinstance(method, (str, bytes))
         assert isinstance(params, list)
         msgid = self._create_msgid()
         return (self._packer.pack(
@@ -63,7 +62,7 @@ class MessageEncoder(object):
         return self._packer.pack([MessageType.RESPONSE, msgid, error, result])
 
     def create_notification(self, method, params):
-        assert isinstance(method, (str, six.binary_type))
+        assert isinstance(method, (str, bytes))
         assert isinstance(params, list)
         return self._packer.pack([MessageType.NOTIFY, method, params])
 

@@ -21,7 +21,6 @@ import math
 import netaddr
 import os
 import signal
-import six
 import sys
 import time
 import traceback
@@ -963,7 +962,7 @@ class OfTester(app_manager.OSKenApp):
     def _diff_packets(cls, model_pkt, rcv_pkt):
         msg = []
         for rcv_p in rcv_pkt.protocols:
-            if not isinstance(rcv_p, six.binary_type):
+            if not isinstance(rcv_p, bytes):
                 model_protocols = model_pkt.get_protocols(type(rcv_p))
                 if len(model_protocols) == 1:
                     model_p = model_protocols[0]
@@ -990,7 +989,7 @@ class OfTester(app_manager.OSKenApp):
             else:
                 model_p = ''
                 for p in model_pkt.protocols:
-                    if isinstance(p, six.binary_type):
+                    if isinstance(p, bytes):
                         model_p = p
                         break
                 if model_p != rcv_p:
@@ -1370,7 +1369,7 @@ class TestFile(stringify.StringifyMixin):
             try:
                 json_list = json.loads(buf)
                 for test_json in json_list:
-                    if isinstance(test_json, six.text_type):
+                    if isinstance(test_json, str):
                         self.description = test_json
                     else:
                         self._normalize_test_json(test_json)
@@ -1393,7 +1392,7 @@ class Test(stringify.StringifyMixin):
         def __test_pkt_from_json(test):
             data = eval('/'.join(test))
             data.serialize()
-            return six.binary_type(data.data)
+            return bytes(data.data)
 
         # create Datapath instance using user-specified versions
         target_dp = DummyDatapath(OfTester.target_ver)

@@ -19,8 +19,6 @@ import logging
 import os
 import sys
 
-import six
-
 
 LOG = logging.getLogger('os_ken.utils')
 
@@ -107,7 +105,7 @@ def round_up(x, y):
 
 def hex_array(data):
     """
-    Convert six.binary_type or bytearray into array of hexes to be printed.
+    Convert bytes or bytearray into array of hexes to be printed.
     """
     # convert data into bytearray explicitly
     return ' '.join('0x%02x' % byte for byte in bytearray(data))
@@ -115,7 +113,7 @@ def hex_array(data):
 
 def binary_str(data):
     """
-    Convert six.binary_type or bytearray into str to be printed.
+    Convert bytes or bytearray into str to be printed.
     """
     # convert data into bytearray explicitly
     return ''.join('\\x%02x' % byte for byte in bytearray(data))

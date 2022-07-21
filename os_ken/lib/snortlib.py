@@ -13,10 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import os
 import logging
-import six
 
 from os_ken.lib import hub, alert
 from os_ken.base import app_manager
@@ -95,7 +93,7 @@ class SnortLib(app_manager.OSKenApp):
             hub.spawn(self._recv_loop_nw_sock, conn, addr)
 
     def _recv_loop_nw_sock(self, conn, addr):
-        buf = six.binary_type()
+        buf = bytes()
         while True:
             ret = conn.recv(BUFSIZE)
             if len(ret) == 0:

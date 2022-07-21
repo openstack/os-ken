@@ -4,5 +4,4 @@ netaddr>=0.7.18
 oslo.config>=5.1.0
 ovs>=2.8.0  # OVSDB
 Routes>=2.3.1  # wsgi
-six>=1.10.0
 WebOb>=1.8.2  # wsgi

@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import abc
-import six
 import struct
 from . import packet_base
 from . import icmpv6
@@ -151,8 +150,7 @@ ipv6.register_packet_type(sctp.sctp, inet.IPPROTO_SCTP)
 ipv6.register_packet_type(gre.gre, inet.IPPROTO_GRE)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class header(stringify.StringifyMixin):
+class header(stringify.StringifyMixin, metaclass=abc.ABCMeta):
     """extension header abstract class."""
 
     def __init__(self, nxt):

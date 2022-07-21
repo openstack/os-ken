@@ -13,10 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
-
-import six
-
 import binascii
 import unittest
 import struct
@@ -27,9 +23,6 @@ from os_ken.ofproto import ofproto_v1_0, ofproto_v1_0_parser
 
 import logging
 LOG = logging.getLogger(__name__)
-
-if six.PY3:
-    buffer = bytes
 
 
 class TestOfproto_Parser(unittest.TestCase):
@@ -171,7 +164,7 @@ class TestMsgBase(unittest.TestCase):
         self.assertEqual(msg_type, res.msg_type)
         self.assertEqual(msg_len, res.msg_len)
         self.assertEqual(xid, res.xid)
-        self.assertEqual(buffer(buf), res.buf)
+        self.assertEqual(bytes(buf), res.buf)
 
         # test __str__()
         list_ = ('version', 'msg_type', 'msg_len', 'xid')

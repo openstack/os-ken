@@ -13,17 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
-
 import unittest
 import logging
-import six
 import struct
-import netaddr
 from struct import *
 from os_ken.ofproto import ether, inet
 from os_ken.lib.packet.ethernet import ethernet
-from os_ken.lib.packet.packet import Packet
 from os_ken.lib.packet.arp import arp
 from os_ken.lib import addrconv
 
@@ -89,7 +84,7 @@ class Test_ethernet(unittest.TestCase):
     def test_default_args(self):
         e = ethernet()
         buf = e.serialize(bytearray(), None)
-        res = struct.unpack(e._PACK_STR, six.binary_type(buf))
+        res = struct.unpack(e._PACK_STR, bytes(buf))
 
         self.assertEqual(res[0], addrconv.mac.text_to_bin('ff:ff:ff:ff:ff:ff'))
         self.assertEqual(res[1], addrconv.mac.text_to_bin('00:00:00:00:00:00'))

@@ -16,8 +16,6 @@
 import abc
 import struct
 
-import six
-
 from . import packet_base
 from . import packet_utils
 from os_ken.lib import stringify
@@ -126,8 +124,7 @@ class icmp(packet_base.PacketBase):
         return self._MIN_LEN + len(self.data)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _ICMPv4Payload(stringify.StringifyMixin):
+class _ICMPv4Payload(stringify.StringifyMixin, metaclass=abc.ABCMeta):
     """
     Base class for the payload of ICMPv4 packet.
     """

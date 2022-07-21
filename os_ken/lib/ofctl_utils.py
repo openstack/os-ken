@@ -17,7 +17,6 @@ import base64
 import logging
 
 import netaddr
-import six
 
 from os_ken.lib import dpid
 from os_ken.lib import hub
@@ -178,7 +177,7 @@ def to_match_vid(value, ofpvid_present):
     #       applied. OTOH, If it is described as hexadecimal string,
     #       treated as values of oxm_value (including OFPVID_PRESENT
     #       bit), and OFPVID_PRESENT bit is NOT automatically applied
-    if isinstance(value, six.integer_types):
+    if isinstance(value, int):
         # described as decimal int value
         return value | ofpvid_present
 

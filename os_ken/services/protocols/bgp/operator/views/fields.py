@@ -1,8 +1,6 @@
 import importlib
 import inspect
 
-import six
-
 
 class Field(object):
     def __init__(self, field_name):
@@ -21,7 +19,7 @@ class RelatedViewField(Field):
     def _operator_view_class(self):
         if inspect.isclass(self.__operator_view_class):
             return self.__operator_view_class
-        elif isinstance(self.__operator_view_class, six.string_types):
+        elif isinstance(self.__operator_view_class, str):
             try:
                 module_name, class_name =\
                     self.__operator_view_class.rsplit('.', 1)

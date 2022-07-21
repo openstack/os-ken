@@ -23,9 +23,6 @@ import logging
 import struct
 import time
 
-import netaddr
-import six
-
 from os_ken.lib import addrconv
 from os_ken.lib import ip
 from os_ken.lib import stringify
@@ -37,8 +34,8 @@ from os_ken.lib.packet import ospf
 LOG = logging.getLogger(__name__)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class MrtRecord(stringify.StringifyMixin, type_desc.TypeDisp):
+class MrtRecord(stringify.StringifyMixin, type_desc.TypeDisp,
+                metaclass=abc.ABCMeta):
     """
     MRT record.
     """
@@ -87,7 +84,7 @@ class MrtRecord(stringify.StringifyMixin, type_desc.TypeDisp):
 
     @classmethod
     def parse_pre(cls, buf):
-        buf = six.binary_type(buf)  # for convenience
+        buf = bytes(buf)  # for convenience
 
         header_fields, _ = cls.parse_common_header(buf)
         # timestamp = header_fields[0]
@@ -105,7 +102,7 @@ class MrtRecord(stringify.StringifyMixin, type_desc.TypeDisp):
 
     @classmethod
     def parse(cls, buf):
-        buf = six.binary_type(buf)  # for convenience
+        buf = bytes(buf)  # for convenience
 
         header_fields, rest = cls.parse_common_header(buf)
         # timestamp = header_fields[0]
@@ -205,8 +202,8 @@ class ExtendedTimestampMrtRecord(MrtRecord):
                            self.ms_timestamp)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class MrtMessage(stringify.StringifyMixin, type_desc.TypeDisp):
+class MrtMessage(stringify.StringifyMixin, type_desc.TypeDisp,
+                 metaclass=abc.ABCMeta):
     """
     MRT Message in record.
     """
@@ -310,8 +307,7 @@ class Ospf2MrtRecord(MrtCommonRecord):
 Ospf2MrtMessage._UNKNOWN_TYPE = Ospf2MrtMessage
 
 
-@six.add_metaclass(abc.ABCMeta)
-class TableDumpMrtMessage(MrtMessage):
+class TableDumpMrtMessage(MrtMessage, metaclass=abc.ABCMeta):
     """
     MRT Message for the TABLE_DUMP Type.
     """
@@ -425,8 +421,7 @@ class TableDumpAfiIPv6MrtMessage(TableDumpMrtMessage):
     HEADER_SIZE = struct.calcsize(_HEADER_FMT)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class TableDump2MrtMessage(MrtMessage):
+class TableDump2MrtMessage(MrtMessage, metaclass=abc.ABCMeta):
     """
     MRT Message for the TABLE_DUMP_V2 Type.
     """
@@ -617,8 +612,8 @@ class MrtPeer(stringify.StringifyMixin):
         return buf + ip_addr + as_num
 
 
-@six.add_metaclass(abc.ABCMeta)
-class TableDump2AfiSafiSpecificRibMrtMessage(TableDump2MrtMessage):
+class TableDump2AfiSafiSpecificRibMrtMessage(TableDump2MrtMessage,
+                                             metaclass=abc.ABCMeta):
     """
     MRT Message for the TABLE_DUMP_V2 Type and the AFI/SAFI-specific
     RIB subtypes.
@@ -956,8 +951,7 @@ class MrtRibEntry(stringify.StringifyMixin):
                                self.attr_len) + bgp_attrs_bin
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Bgp4MpMrtMessage(MrtMessage):
+class Bgp4MpMrtMessage(MrtMessage, metaclass=abc.ABCMeta):
     """
     MRT Message for the BGP4MP Type.
     """

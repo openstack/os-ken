@@ -21,7 +21,6 @@ Decoder/Encoder implementations of OpenFlow 1.0.
 import struct
 import base64
 
-import six
 import netaddr
 
 from os_ken.ofproto.ofproto_parser import StringifyMixin, MsgBase
@@ -219,7 +218,7 @@ class OFPMatch(StringifyMixin):
             self.dl_src = mac.DONTCARE
         else:
             wc &= ~ofproto.OFPFW_DL_SRC
-            if (isinstance(dl_src, (six.text_type, str)) and
+            if (isinstance(dl_src, (str, str)) and
                     netaddr.valid_mac(dl_src)):
                 dl_src = addrconv.mac.text_to_bin(dl_src)
             if dl_src == 0:
@@ -231,7 +230,7 @@ class OFPMatch(StringifyMixin):
             self.dl_dst = mac.DONTCARE
         else:
             wc &= ~ofproto.OFPFW_DL_DST
-            if (isinstance(dl_dst, (six.text_type, str)) and
+            if (isinstance(dl_dst, (str, str)) and
                     netaddr.valid_mac(dl_dst)):
                 dl_dst = addrconv.mac.text_to_bin(dl_dst)
             if dl_dst == 0:
@@ -528,7 +527,7 @@ class OFPActionStripVlan(OFPAction):
 class OFPActionDlAddr(OFPAction):
     def __init__(self, dl_addr):
         super(OFPActionDlAddr, self).__init__()
-        if (isinstance(dl_addr, (six.text_type, str)) and
+        if (isinstance(dl_addr, (str, str)) and
                 netaddr.valid_mac(dl_addr)):
             dl_addr = addrconv.mac.text_to_bin(dl_addr)
         self.dl_addr = dl_addr
@@ -1258,7 +1257,7 @@ class OFPErrorMsg(MsgBase):
         super(OFPErrorMsg, self).__init__(datapath)
         self.type = type_
         self.code = code
-        if isinstance(data, six.string_types):
+        if isinstance(data, str):
             data = data.encode('ascii')
         self.data = data
 
@@ -2134,7 +2133,7 @@ class OFPStatsReply(MsgBase):
     @classmethod
     def parser(cls, datapath, version, msg_type, msg_len, xid, buf):
         type_, flags = struct.unpack_from(ofproto.OFP_STATS_MSG_PACK_STR,
-                                          six.binary_type(buf),
+                                          bytes(buf),
                                           ofproto.OFP_HEADER_SIZE)
         stats_type_cls = cls._STATS_MSG_TYPES.get(type_)
         msg = stats_type_cls.parser_stats(
@@ -2448,7 +2447,7 @@ class OFPVendorStatsReply(OFPStatsReply):
     def parser_stats(cls, datapath, version, msg_type, msg_len, xid,
                      buf):
         (type_,) = struct.unpack_from(
-            ofproto.OFP_VENDOR_STATS_MSG_PACK_STR, six.binary_type(buf),
+            ofproto.OFP_VENDOR_STATS_MSG_PACK_STR, bytes(buf),
             ofproto.OFP_STATS_MSG_SIZE)
 
         cls_ = cls._STATS_VENDORS.get(type_)
@@ -2509,7 +2508,7 @@ class NXStatsReply(OFPStatsReply):
     def parser(cls, datapath, version, msg_type, msg_len, xid, buf,
                offset):
         (type_,) = struct.unpack_from(
-            ofproto.NX_STATS_MSG_PACK_STR, six.binary_type(buf), offset)
+            ofproto.NX_STATS_MSG_PACK_STR, bytes(buf), offset)
         offset += ofproto.NX_STATS_MSG0_SIZE
 
         cls_ = cls._NX_STATS_TYPES.get(type_)

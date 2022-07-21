@@ -75,14 +75,12 @@ format of types:
        |                              ...                              |
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 """
-import binascii
+
 import hashlib
-import random
-import six
+import operator
 import struct
 
 from . import packet_base
-from os_ken.lib import addrconv
 from os_ken.lib import stringify
 
 BFD_STATE_ADMIN_DOWN = 0
@@ -238,7 +236,7 @@ class bfd(packet_base.PacketBase):
         flags = flags & 0x3f
 
         if flags & BFD_FLAG_AUTH_PRESENT:
-            auth_type = six.indexbytes(buf, cls._PACK_STR_LEN)
+            auth_type = operator.getitem(buf, cls._PACK_STR_LEN)
             auth_cls = cls._auth_parsers[auth_type].\
                 parser(buf[cls._PACK_STR_LEN:])[0]
         else:
@@ -394,7 +392,7 @@ class SimplePassword(BFDAuth):
         (auth_type, auth_len) = cls.parser_hdr(buf)
         assert auth_type == cls.auth_type
 
-        auth_key_id = six.indexbytes(buf, cls._PACK_HDR_STR_LEN)
+        auth_key_id = operator.getitem(buf, cls._PACK_HDR_STR_LEN)
 
         password = buf[cls._PACK_HDR_STR_LEN + cls._PACK_STR_LEN:auth_len]
 

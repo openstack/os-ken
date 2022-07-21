@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import six
 import unittest
 import testscenarios
 
@@ -140,5 +139,5 @@ class Test_Parser_Compat(testscenarios.WithScenarios, unittest.TestCase):
 
         # a parsed object can be inspected by old and new api
 
-        check(ofpp.OFPMatch.parser(six.binary_type(new_buf), 0))
+        check(ofpp.OFPMatch.parser(bytes(new_buf), 0))
         check(ofpp.OFPMatch.from_jsondict(list(new_jsondict.values())[0]))

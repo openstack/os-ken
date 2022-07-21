@@ -3,7 +3,7 @@ import json
 import logging
 import pprint
 import re
-import six
+
 
 (STATUS_OK, STATUS_ERROR) = range(2)
 
@@ -110,7 +110,7 @@ class Command(object):
 
         if resp.status == STATUS_OK:
 
-            if type(resp.value) in (str, bool, int, float, six.text_type):
+            if type(resp.value) in (str, bool, int, float, str):
                 return str(resp.value)
 
             ret = ''

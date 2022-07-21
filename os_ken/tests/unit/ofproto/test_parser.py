@@ -14,8 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import operator
 import os.path
-import six
 import sys
 import unittest
 import testscenarios
@@ -224,8 +224,8 @@ class Test_Parser(testscenarios.WithScenarios, unittest.TestCase):
             if buf1 != buf2:
                 msg = 'EOF in either data'
                 for i in range(0, min(len(buf1), len(buf2))):
-                    c1 = six.indexbytes(six.binary_type(buf1), i)
-                    c2 = six.indexbytes(six.binary_type(buf2), i)
+                    c1 = operator.getitem(bytes(buf1), i)
+                    c2 = operator.getitem(bytes(buf2), i)
                     if c1 != c2:
                         msg = 'differs at chr %d, %d != %d' % (i, c1, c2)
                         break

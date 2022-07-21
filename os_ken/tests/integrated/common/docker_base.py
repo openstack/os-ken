@@ -24,7 +24,7 @@ import subprocess
 import time
 
 import netaddr
-import six
+
 
 LOG = logging.getLogger(__name__)
 
@@ -114,8 +114,8 @@ class Command(object):
                                stdout=p_stdout,
                                stderr=p_stderr)
         __stdout, __stderr = pop.communicate()
-        _stdout = six.text_type(__stdout, 'utf-8')
-        _stderr = six.text_type(__stderr, 'utf-8')
+        _stdout = str(__stdout, 'utf-8')
+        _stderr = str(__stderr, 'utf-8')
         out = CommandOut(_stdout, _stderr, cmd, pop.returncode)
         return out
 

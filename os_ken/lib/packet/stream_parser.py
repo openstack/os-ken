@@ -14,13 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-from abc import ABCMeta, abstractmethod
-import six
+import abc
 
 
-@six.add_metaclass(ABCMeta)
-class StreamParser(object):
+class StreamParser(object, metaclass=abc.ABCMeta):
     """Streaming parser base class.
 
     An instance of a subclass of this class is used to extract messages
@@ -60,7 +57,7 @@ class StreamParser(object):
             msgs.append(msg)
         return msgs
 
-    @abstractmethod
+    @abc.abstractmethod
     def try_parse(self, q):
         """Try to extract a message from the given bytes.
 

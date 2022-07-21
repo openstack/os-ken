@@ -26,7 +26,6 @@ import logging
 
 import netaddr
 from packaging import version as packaging_version
-import six
 
 from os_ken import flags as cfg_flags  # For loading 'zapi' option definition
 from os_ken.cfg import CONF
@@ -597,8 +596,8 @@ class InterfaceLinkParams(stringify.StringifyMixin):
         return buf
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _NextHop(type_desc.TypeDisp, stringify.StringifyMixin):
+class _NextHop(type_desc.TypeDisp, stringify.StringifyMixin,
+               metaclass=abc.ABCMeta):
     """
     Base class for Zebra Nexthop structure.
     """
@@ -651,8 +650,7 @@ class _NextHop(type_desc.TypeDisp, stringify.StringifyMixin):
         return struct.pack(self._HEADER_FMT, self.type) + self._serialize()
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _FrrNextHop(_NextHop):
+class _FrrNextHop(_NextHop, metaclass=abc.ABCMeta):
     """
     Base class for Zebra Nexthop structure for translating nexthop types
     on FRRouting.
@@ -1103,7 +1101,7 @@ class ZebraMessage(packet_base.PacketBase):
 
     @classmethod
     def _parser_impl(cls, buf, from_zebra=False):
-        buf = six.binary_type(buf)
+        buf = bytes(buf)
         (length, version, vrf_id, command,
          body_buf) = cls.parse_header(buf)
 
@@ -1233,8 +1231,7 @@ class ZebraUnknownMessage(_ZebraMessageBody):
         return self.buf
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _ZebraInterface(_ZebraMessageBody):
+class _ZebraInterface(_ZebraMessageBody, metaclass=abc.ABCMeta):
     """
     Base class for ZEBRA_INTERFACE_ADD, ZEBRA_INTERFACE_DELETE,
     ZEBRA_INTERFACE_UP and ZEBRA_INTERFACE_DOWN message body.
@@ -1362,7 +1359,7 @@ class _ZebraInterface(_ZebraMessageBody):
             raise struct.error(
                 'Unsupported Zebra protocol version: %d'
                 % version)
-        ifname = str(six.text_type(ifname.strip(b'\x00'), 'ascii'))
+        ifname = str(str(ifname.strip(b'\x00'), 'ascii'))
 
         hw_addr_len = min(hw_addr_len, INTERFACE_HWADDR_MAX)
         hw_addr_bin = rest[:hw_addr_len]
@@ -1468,8 +1465,7 @@ class ZebraInterfaceDelete(_ZebraInterface):
     """
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _ZebraInterfaceAddress(_ZebraMessageBody):
+class _ZebraInterfaceAddress(_ZebraMessageBody, metaclass=abc.ABCMeta):
     """
     Base class for ZEBRA_INTERFACE_ADDRESS_ADD and
     ZEBRA_INTERFACE_ADDRESS_DELETE message body.
@@ -1568,8 +1564,7 @@ class ZebraInterfaceDown(_ZebraInterface):
     """
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _ZebraIPRoute(_ZebraMessageBody):
+class _ZebraIPRoute(_ZebraMessageBody, metaclass=abc.ABCMeta):
     """
     Base class for ZEBRA_IPV4_ROUTE_* and ZEBRA_IPV6_ROUTE_*
     message body.
@@ -1742,7 +1737,7 @@ class _ZebraIPRoute(_ZebraMessageBody):
         if from_zebra:
             ifindexes = ifindexes or []
             for ifindex in ifindexes:
-                assert isinstance(ifindex, six.integer_types)
+                assert isinstance(ifindex, int)
             self.ifindexes = ifindexes
         else:
             self.ifindexes = None
@@ -1973,8 +1968,7 @@ class ZebraIPv4RouteIPv6NexthopAdd(_ZebraIPv4Route):
     """
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _ZebraRedistribute(_ZebraMessageBody):
+class _ZebraRedistribute(_ZebraMessageBody, metaclass=abc.ABCMeta):
     """
     Base class for ZEBRA_REDISTRIBUTE_ADD and ZEBRA_REDISTRIBUTE_DELETE
     message body.
@@ -2047,8 +2041,7 @@ class ZebraRedistributeDelete(_ZebraRedistribute):
     """
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _ZebraRedistributeDefault(_ZebraMessageBody):
+class _ZebraRedistributeDefault(_ZebraMessageBody, metaclass=abc.ABCMeta):
     """
     Base class for ZEBRA_REDISTRIBUTE_DEFAULT_ADD and
     ZEBRA_REDISTRIBUTE_DEFAULT_DELETE message body.
@@ -2071,8 +2064,7 @@ class ZebraRedistributeDefaultDelete(_ZebraRedistribute):
     """
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _ZebraIPNexthopLookup(_ZebraMessageBody):
+class _ZebraIPNexthopLookup(_ZebraMessageBody, metaclass=abc.ABCMeta):
     """
     Base class for ZEBRA_IPV4_NEXTHOP_LOOKUP and
     ZEBRA_IPV6_NEXTHOP_LOOKUP message body.
@@ -2152,8 +2144,7 @@ class ZebraIPv6NexthopLookup(_ZebraIPNexthopLookup):
     ADDR_LEN = 16
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _ZebraIPImportLookup(_ZebraMessageBody):
+class _ZebraIPImportLookup(_ZebraMessageBody, metaclass=abc.ABCMeta):
     """
     Base class for ZEBRA_IPV4_IMPORT_LOOKUP and
     ZEBRA_IPV6_IMPORT_LOOKUP message body.
@@ -2385,8 +2376,7 @@ class ZebraHello(_ZebraMessageBody):
                 % version)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _ZebraIPNexthopLookupMRib(_ZebraMessageBody):
+class _ZebraIPNexthopLookupMRib(_ZebraMessageBody, metaclass=abc.ABCMeta):
     """
     Base class for ZEBRA_IPV4_NEXTHOP_LOOKUP_MRIB (and
     ZEBRA_IPV6_NEXTHOP_LOOKUP_MRIB) message body.
@@ -2891,7 +2881,7 @@ class _ZebraBfdDestination(_ZebraMessageBody):
         else:
             (ifname_len,) = struct.unpack_from(cls._FOOTER_FMT, rest)
             ifname_bin = rest[cls.FOOTER_SIZE:cls.FOOTER_SIZE + ifname_len]
-            ifname = str(six.text_type(ifname_bin.strip(b'\x00'), 'ascii'))
+            ifname = str(str(ifname_bin.strip(b'\x00'), 'ascii'))
 
         return cls(pid, dst_family, dst_prefix,
                    min_rx_timer, min_tx_timer, detect_mult,
@@ -3027,7 +3017,7 @@ class ZebraBfdDestinationDeregister(_ZebraMessageBody):
         else:
             (ifname_len,) = struct.unpack_from(cls._FOOTER_FMT, rest)
             ifname_bin = rest[cls.FOOTER_SIZE:cls.FOOTER_SIZE + ifname_len]
-            ifname = str(six.text_type(ifname_bin.strip(b'\x00'), 'ascii'))
+            ifname = str(str(ifname_bin.strip(b'\x00'), 'ascii'))
 
         return cls(pid, dst_family, dst_prefix,
                    multi_hop, src_family, src_prefix,
@@ -3144,7 +3134,7 @@ class _ZebraVrf(_ZebraMessageBody):
     @classmethod
     def parse(cls, buf, version=_DEFAULT_FRR_VERSION):
         vrf_name_bin = buf[:VRF_NAMSIZ]
-        vrf_name = str(six.text_type(vrf_name_bin.strip(b'\x00'), 'ascii'))
+        vrf_name = str(str(vrf_name_bin.strip(b'\x00'), 'ascii'))
 
         return cls(vrf_name)
 

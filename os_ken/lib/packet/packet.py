@@ -17,8 +17,6 @@ import inspect
 import struct
 import base64
 
-import six
-
 from . import packet_base
 from . import ethernet
 
@@ -70,7 +68,7 @@ class Packet(StringifyMixin):
         rest_data = self.data
         while cls:
             # Ignores an empty buffer
-            if not six.binary_type(rest_data).strip(b'\x00'):
+            if not bytes(rest_data).strip(b'\x00'):
                 break
             try:
                 proto, cls, rest_data = cls.parser(rest_data)
@@ -79,7 +77,7 @@ class Packet(StringifyMixin):
             if proto:
                 self.protocols.append(proto)
         # If rest_data is all padding, we ignore rest_data
-        if rest_data and six.binary_type(rest_data).strip(b'\x00'):
+        if rest_data and bytes(rest_data).strip(b'\x00'):
             self.protocols.append(rest_data)
 
     def serialize(self):
@@ -98,7 +96,7 @@ class Packet(StringifyMixin):
                     prev = r[i + 1]
                 data = p.serialize(self.data, prev)
             else:
-                data = six.binary_type(p)
+                data = bytes(p)
             self.data = bytearray(data + self.data)
 
     @classmethod

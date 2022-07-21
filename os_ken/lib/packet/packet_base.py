@@ -14,12 +14,10 @@
 # limitations under the License.
 
 import abc
-import six
 from os_ken.lib import stringify
 
 
-@six.add_metaclass(abc.ABCMeta)
-class PacketBase(stringify.StringifyMixin):
+class PacketBase(stringify.StringifyMixin, metaclass=abc.ABCMeta):
     """A base class for a protocol (ethernet, ipv4, ...) header."""
     _TYPES = {}
 

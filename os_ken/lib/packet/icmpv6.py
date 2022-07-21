@@ -15,10 +15,6 @@
 
 import abc
 import struct
-import six
-import sys
-import array
-import binascii
 
 from . import packet_base
 from . import packet_utils
@@ -153,8 +149,7 @@ class icmpv6(packet_base.PacketBase):
         return self._MIN_LEN + len(self.data)
 
 
-@six.add_metaclass(abc.ABCMeta)
-class _ICMPv6Payload(stringify.StringifyMixin):
+class _ICMPv6Payload(stringify.StringifyMixin, metaclass=abc.ABCMeta):
     """
     Base class for the payload of ICMPv6 packet.
     """
@@ -232,7 +227,7 @@ class nd_neighbor(_ICMPv6Payload):
                 hdr.extend(self.option.serialize())
             else:
                 hdr.extend(self.option)
-        return six.binary_type(hdr)
+        return bytes(hdr)
 
     def __len__(self):
         length = self._MIN_LEN
@@ -303,7 +298,7 @@ class nd_router_solicit(_ICMPv6Payload):
                 hdr.extend(self.option.serialize())
             else:
                 hdr.extend(self.option)
-        return six.binary_type(hdr)
+        return bytes(hdr)
 
     def __len__(self):
         length = self._MIN_LEN
@@ -390,7 +385,7 @@ class nd_router_advert(_ICMPv6Payload):
                 hdr.extend(option.serialize())
             else:
                 hdr.extend(option)
-        return six.binary_type(hdr)
+        return bytes(hdr)
 
     def __len__(self):
         length = self._MIN_LEN
@@ -399,8 +394,7 @@ class nd_router_advert(_ICMPv6Payload):
         return length
 
 
-@six.add_metaclass(abc.ABCMeta)
-class nd_option(stringify.StringifyMixin):
+class nd_option(stringify.StringifyMixin, metaclass=abc.ABCMeta):
     @classmethod
     @abc.abstractmethod
     def option_type(cls):
@@ -462,7 +456,7 @@ class nd_option_la(nd_option):
         if 0 == self.length:
             self.length = len(buf) // 8
             struct.pack_into('!B', buf, 1, self.length)
-        return six.binary_type(buf)
+        return bytes(buf)
 
     def __len__(self):
         length = self._MIN_LEN
@@ -620,7 +614,7 @@ class nd_option_pi(nd_option):
         if 0 == self.length:
             self.length = len(hdr) // 8
             struct.pack_into('!B', hdr, 1, self.length)
-        return six.binary_type(hdr)
+        return bytes(hdr)
 
 
 @nd_router_advert.register_nd_option_type
@@ -664,7 +658,7 @@ class nd_option_mtu(nd_option):
     def serialize(self):
         buf = bytearray(struct.pack(
             self._PACK_STR, self.option_type(), self._OPTION_LEN, 0, self.mtu))
-        return six.binary_type(buf)
+        return bytes(buf)
 
 
 @icmpv6.register_icmpv6_type(ICMPV6_ECHO_REPLY, ICMPV6_ECHO_REQUEST)
@@ -858,7 +852,7 @@ class mldv2_query(mld):
         if 0 == self.num:
             self.num = len(self.srcs)
             struct.pack_into('!H', buf, 22, self.num)
-        return six.binary_type(buf)
+        return bytes(buf)
 
     def __len__(self):
         return self._MIN_LEN + len(self.srcs) * 16
@@ -918,7 +912,7 @@ class mldv2_report(mld):
         if 0 == self.record_num:
             self.record_num = len(self.records)
             struct.pack_into('!H', buf, 2, self.record_num)
-        return six.binary_type(buf)
+        return bytes(buf)
 
     def __len__(self):
         records_len = 0
@@ -1006,12 +1000,12 @@ class mldv2_report_group(stringify.StringifyMixin):
             mod = len(self.aux) % 4
             if mod:
                 self.aux += bytearray(4 - mod)
-                self.aux = six.binary_type(self.aux)
+                self.aux = bytes(self.aux)
             buf.extend(self.aux)
             if 0 == self.aux_len:
                 self.aux_len = len(self.aux) // 4
                 struct.pack_into('!B', buf, 1, self.aux_len)
-        return six.binary_type(buf)
+        return bytes(buf)
 
     def __len__(self):
         return self._MIN_LEN + len(self.srcs) * 16 + self.aux_len * 4
