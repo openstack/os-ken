@@ -134,7 +134,7 @@ class Test_bmp(unittest.TestCase):
 
     def test_initiation(self):
         initiation_info = [{'type': bmp.BMP_INIT_TYPE_STRING,
-                            'value': u'This is OSKen BGP BMP message'}]
+                            'value': 'This is OSKen BGP BMP message'}]
         msg = bmp.BMPInitiation(info=initiation_info)
         binmsg = msg.serialize()
         msg2, rest = bmp.BMPMessage.parser(binmsg)

@@ -52,8 +52,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'os_ken Release Notes'
-copyright = u'2018, OpenStack Developers'
+project = 'os_ken Release Notes'
+copyright = '2018, OpenStack Developers'
 
 # openstackdocstheme options
 openstackdocs_repo_name = 'openstack/os-ken'
@@ -213,8 +213,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     ('index', 'os_kenReleaseNotes.tex',
-     u'os_ken  Release Notes Documentation',
-     u'OpenStack Foundation', 'manual'),
+     'os_ken  Release Notes Documentation',
+     'OpenStack Foundation', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -244,8 +244,8 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'os_kenrereleasenotes',
-     u'os_ken  Release Notes Documentation',
-     [u'OpenStack Foundation'], 1)
+     'os_ken  Release Notes Documentation',
+     ['OpenStack Foundation'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -259,8 +259,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'os_ken ReleaseNotes',
-     u'os_ken Release Notes Documentation',
-     u'OpenStack Foundation', 'os_kenReleaseNotes',
+     'os_ken Release Notes Documentation',
+     'OpenStack Foundation', 'os_kenReleaseNotes',
      'One line description of project.',
      'Miscellaneous'),
 ]

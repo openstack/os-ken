@@ -37,8 +37,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'os-ken'
-copyright = u'2018, OpenStack Developers'
+project = 'os-ken'
+copyright = '2018, OpenStack Developers'
 
 # openstackdocstheme options
 openstackdocs_repo_name = 'openstack/os-ken'
@@ -77,8 +77,8 @@ htmlhelp_basename = '%sdoc' % project
 latex_documents = [
     ('index',
      'doc-%s.tex' % project,
-     u'%s Documentation' % project,
-     u'OpenStack Developers', 'manual'),
+     '%s Documentation' % project,
+     'OpenStack Developers', 'manual'),
 ]
 
 latex_use_xindy = False
