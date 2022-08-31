@@ -128,9 +128,3 @@ os_ken.contrib.oslo.config
 
 Oslo configuration library. Used for osken-manager's command-line options
 and configuration files.
-
-os_ken.contrib.ncclient
------------------------
-
-Python library for NETCONF client. Used by os_ken.lib.of_config.
-
