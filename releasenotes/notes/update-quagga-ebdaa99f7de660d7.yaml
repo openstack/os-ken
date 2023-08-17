@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    The default docker base image used in testing has been updated to
+    ``ubuntu:20.04``. You may need to update your testing code
+    accordingly.
+fixes:
+  - |
+    The quagga container used for testing neutron-dynamic-routing was
+    failing to start due to permission issues. A startup script has
+    been added to dynamically set the correct permissions.
+    See bug
+    `2031526 <https://bugs.launchpad.net/neutron/+bug/2031526>`_.
