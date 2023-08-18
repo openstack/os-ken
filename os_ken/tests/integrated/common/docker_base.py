@@ -145,7 +145,7 @@ class DockerImage(object):
         self.cmd = Command()
 
     def get_images(self):
-        out = self.cmd.sudo('sudo docker images')
+        out = self.cmd.sudo('docker images')
         images = []
         for line in out.splitlines()[1:]:
             images.append(line.split()[0])
