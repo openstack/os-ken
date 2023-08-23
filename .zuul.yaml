@@ -6,9 +6,9 @@
       - check-requirements
     check:
       jobs:
-        - tempest-integrated-networking
+        - neutron-ovs-tempest-dvr
         - neutron-tempest-plugin-dynamic-routing:
             voting: false
     gate:
       jobs:
-        - tempest-integrated-networking
+        - neutron-ovs-tempest-dvr
