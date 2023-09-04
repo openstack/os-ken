@@ -219,8 +219,8 @@ class DockerImage(object):
             # might fail if the current directory contains the symlink to
             # Docker host file systems.
             '&& rm -rf *.egg-info/ build/ dist/ .tox/ *.log'
-            '&& pip install -r tools/pip-requires -r tools/optional-requires',
-            '&& python setup.py install',
+            '&& pip install -r requirements.txt -r test-requirements.txt',
+            '&& pip install .',
         ])
         c << install
 
