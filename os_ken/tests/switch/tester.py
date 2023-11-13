@@ -56,7 +56,7 @@ CLSNAME_ALIASES = {
     ('os_ken.lib.packet.ospf', 'StringifyMixin'): ''
 }
 
-for modname, moddef in sys.modules.items():
+for modname, moddef in sys.modules.copy().items():
     if not modname.startswith(PKT_LIB_PATH) or not moddef:
         continue
     for (clsname, clsdef, ) in inspect.getmembers(moddef):
