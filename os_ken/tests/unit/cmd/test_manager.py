@@ -17,7 +17,7 @@
 import unittest
 from unittest import mock
 
-from imp import reload
+from importlib import reload
 
 from os_ken.cmd.manager import main
 

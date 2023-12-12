@@ -16,7 +16,7 @@
 
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-from imp import reload
+from importlib import reload
 
 import unittest
 import logging
