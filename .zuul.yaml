@@ -12,3 +12,7 @@
     gate:
       jobs:
         - neutron-ovs-tempest-dvr
+    periodic-weekly:
+      jobs:
+        - openstack-tox-py311
+        - openstack-tox-py312
