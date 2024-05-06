@@ -25,9 +25,9 @@ import sys
 j = sys.stdin.read()
 l = json.loads(j)
 
-print 'digraph {'
-print 'node [shape=box]'
+print('digraph {')
+print('node [shape=box]')
 for d in l:
-    print '"%s" -> "%s";' % (d['src']['dpid'], d['dst']['dpid'])
-print 'overlap=false'
-print '}'
+    print('"%s" -> "%s";' % (d['src']['dpid'], d['dst']['dpid']))
+print('overlap=false')
+print('}')

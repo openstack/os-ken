@@ -24,4 +24,4 @@ import sys
 
 j = sys.stdin.read()
 d = json.loads(j)
-print json.dumps(d, ensure_ascii=True, indent=3, sort_keys=True)
+print(json.dumps(d, ensure_ascii=True, indent=3, sort_keys=True))

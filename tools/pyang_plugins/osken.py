@@ -83,15 +83,15 @@ def is_leaf(s):
 
 
 def generate_header(ctx):
-    print _COPYRIGHT_NOTICE
-    print '# do not edit.'
-    print '# this file was mechanically generated with:'
-    print '#    pyang %s' % pyang.__version__
-    print '#    os_ken.tools.pyang_plugins.osken'
+    print(_COPYRIGHT_NOTICE)
+    print('# do not edit.')
+    print('# this file was mechanically generated with:')
+    print('#    pyang %s' % pyang.__version__)
+    print('#    os_ken.tools.pyang_plugins.osken')
     for mod, ver in sorted(ctx.modules):
-        print '#    %s@%s' % (mod, ver)
-    print ''
-    print 'from os_ken.lib.of_config.base import _Base, _e, _ct'
+        print('#    %s@%s' % (mod, ver))
+    print('')
+    print('from os_ken.lib.of_config.base import _Base, _e, _ct')
 
 
 def generate_class_def(s):
@@ -122,8 +122,8 @@ def _generate_class_def(s):
 
 
 def generate_class(s):
-    print ''
-    print ''
+    print('')
+    print('')
     sys.stdout.write(generate_class_def(s))
 
 
