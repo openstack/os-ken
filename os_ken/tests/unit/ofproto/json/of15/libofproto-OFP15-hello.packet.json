@@ -3,8 +3,8 @@
       "elements": [
          {
             "OFPHelloElemVersionBitmap": {
-               "length": 8, 
-               "type": 1, 
+               "length": 8,
+               "type": 1,
                "versions": [
                   6
                ]

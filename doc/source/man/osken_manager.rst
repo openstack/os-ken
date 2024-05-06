@@ -77,10 +77,10 @@ app
 --ctl-cert CTL_CERT
     controller certificate
 
---ctl-privkey CTL_PRIVKEY  
+--ctl-privkey CTL_PRIVKEY
     controller private key
 
---default-log-level DEFAULT_LOG_LEVEL  
+--default-log-level DEFAULT_LOG_LEVEL
     default log level
 
 --explicit-drop
@@ -99,37 +99,37 @@ app
 --log-file LOG_FILE
     log file name
 
---log-file-mode LOG_FILE_MODE  
+--log-file-mode LOG_FILE_MODE
     default log file permission
 
---neutron-admin-auth-url NEUTRON_ADMIN_AUTH_URL  
+--neutron-admin-auth-url NEUTRON_ADMIN_AUTH_URL
     auth url for connecting to neutron in admin context
 
---neutron-admin-password NEUTRON_ADMIN_PASSWORD  
+--neutron-admin-password NEUTRON_ADMIN_PASSWORD
     password for connecting to neutron in admin context
 
---neutron-admin-tenant-name NEUTRON_ADMIN_TENANT_NAME  
+--neutron-admin-tenant-name NEUTRON_ADMIN_TENANT_NAME
     tenant name for connecting to neutron in admin context
 
---neutron-admin-username NEUTRON_ADMIN_USERNAME  
+--neutron-admin-username NEUTRON_ADMIN_USERNAME
     username for connecting to neutron in admin context
 
---neutron-auth-strategy NEUTRON_AUTH_STRATEGY  
+--neutron-auth-strategy NEUTRON_AUTH_STRATEGY
     auth strategy for connecting to neutron in admincontext
 
---neutron-controller-addr NEUTRON_CONTROLLER_ADDR  
+--neutron-controller-addr NEUTRON_CONTROLLER_ADDR
     openflow method:address:port to set controller ofovs bridge
 
---neutron-url NEUTRON_URL  
+--neutron-url NEUTRON_URL
     URL for connecting to neutron
 
---neutron-url-timeout NEUTRON_URL_TIMEOUT  
+--neutron-url-timeout NEUTRON_URL_TIMEOUT
     timeout value for connecting to neutron in seconds
 
 --noexplicit-drop
     The inverse of --explicit-drop
 
---noinstall-lldp-flow  
+--noinstall-lldp-flow
     The inverse of --install-lldp-flow
 
 --noobserve-links
@@ -147,13 +147,13 @@ app
 --observe-links
     observe link discovery events.
 
---ofp-listen-host OFP_LISTEN_HOST  
+--ofp-listen-host OFP_LISTEN_HOST
     openflow listen host
 
---ofp-ssl-listen-port OFP_SSL_LISTEN_PORT  
+--ofp-ssl-listen-port OFP_SSL_LISTEN_PORT
     openflow ssl listen port
 
---ofp-tcp-listen-port OFP_TCP_LISTEN_PORT  
+--ofp-tcp-listen-port OFP_TCP_LISTEN_PORT
     openflow tcp listen port
 
 --use-stderr
@@ -168,17 +168,17 @@ app
 --version
     show program's version number and exit
 
---wsapi-host WSAPI_HOST  
+--wsapi-host WSAPI_HOST
     webapp listen host
 
---wsapi-port WSAPI_PORT  
+--wsapi-port WSAPI_PORT
     webapp listen port
-  
---test-switch-dir TEST-SWITCH_DIR  
+
+--test-switch-dir TEST-SWITCH_DIR
     test files directory
 
---test-switch-target TEST-SWITCH_TARGET  
+--test-switch-target TEST-SWITCH_TARGET
     target sw dp-id
 
---test-switch-tester TEST-SWITCH_TESTER  
+--test-switch-tester TEST-SWITCH_TESTER
     tester sw dp-id

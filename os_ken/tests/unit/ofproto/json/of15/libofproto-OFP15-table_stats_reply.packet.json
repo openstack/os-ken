@@ -3,22 +3,22 @@
       "body": [
          {
             "OFPTableStats": {
-               "active_count": 4, 
-               "lookup_count": 4, 
-               "matched_count": 4, 
+               "active_count": 4,
+               "lookup_count": 4,
+               "matched_count": 4,
                "table_id": 0
             }
-         }, 
+         },
          {
             "OFPTableStats": {
-               "active_count": 4, 
-               "lookup_count": 4, 
-               "matched_count": 4, 
+               "active_count": 4,
+               "lookup_count": 4,
+               "matched_count": 4,
                "table_id": 1
             }
          }
-      ], 
-      "flags": 0, 
+      ],
+      "flags": 0,
       "type": 3
    }
 }

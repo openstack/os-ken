@@ -1,15 +1,15 @@
 {
    "OFPTableMod": {
-      "config": 4, 
+      "config": 4,
       "properties": [
          {
             "OFPTableModPropEviction": {
-               "flags": 2, 
-               "length": 8, 
+               "flags": 2,
+               "length": 8,
                "type": 2
             }
          }
-      ], 
+      ],
       "table_id": 255
    }
 }

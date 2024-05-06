@@ -30,10 +30,10 @@ NOMAN=
 all: generate
 
 gen: gen.c
-	${CC} $^ ${CPPFLAGS} ${LDFLAGS} -o $@
+    ${CC} $^ ${CPPFLAGS} ${LDFLAGS} -o $@
 
 generate: ${PROG}
-	./${PROG}
+    ./${PROG}
 
 clean:
-	rm ${PROG}
+    rm ${PROG}

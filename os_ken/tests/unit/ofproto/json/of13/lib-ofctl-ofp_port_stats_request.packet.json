@@ -1,7 +1,7 @@
 {
    "OFPPortStatsRequest": {
-      "flags": 0, 
-      "port_no": 7, 
+      "flags": 0,
+      "port_no": 7,
       "type": 4
    }
 }

@@ -29,7 +29,7 @@ NOMAN=
 all: generate
 
 generate: ${PROG}
-	${_MKMSG} "generate packet_data"
-	cd ${.CURDIR} && ${.OBJDIR}/${PROG}
+    ${_MKMSG} "generate packet_data"
+    cd ${.CURDIR} && ${.OBJDIR}/${PROG}
 
 .include <bsd.prog.mk>

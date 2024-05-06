@@ -1,21 +1,21 @@
 {
     "OFPFlowMod": {
-        "buffer_id": 4294967295, 
-        "command": 0, 
-        "cookie": 0, 
-        "cookie_mask": 0, 
-        "flags": 0, 
-        "hard_timeout": 0, 
-        "idle_timeout": 0, 
+        "buffer_id": 4294967295,
+        "command": 0,
+        "cookie": 0,
+        "cookie_mask": 0,
+        "flags": 0,
+        "hard_timeout": 0,
+        "idle_timeout": 0,
         "instructions": [
             {
                 "OFPInstructionActions": {
                     "actions": [
                         {
                             "NXActionOutputTrunc": {
-                                "experimenter": 8992, 
-                                "len": 16, 
-                                "max_len": 1024, 
+                                "experimenter": 8992,
+                                "len": 16,
+                                "max_len": 1024,
                                 "port": 8080,
                                 "subtype": 39,
                                 "type": 65535

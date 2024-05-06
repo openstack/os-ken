@@ -1,192 +1,192 @@
 {
    "OFPFlowMod": {
-      "buffer_id": 0, 
-      "command": 0, 
-      "cookie": 1311768467463790320, 
-      "cookie_mask": 18446744073709551615, 
-      "flags": 0, 
-      "hard_timeout": 0, 
-      "idle_timeout": 0, 
+      "buffer_id": 0,
+      "command": 0,
+      "cookie": 1311768467463790320,
+      "cookie_mask": 18446744073709551615,
+      "flags": 0,
+      "hard_timeout": 0,
+      "idle_timeout": 0,
       "instructions": [
          {
             "OFPInstructionActions": {
                "actions": [
                   {
                      "OFPActionPopVlan": {
-                        "len": 8, 
+                        "len": 8,
                         "type": 18
                      }
-                  }, 
+                  },
                   {
                      "OFPActionSetField": {
                         "field": {
                            "OXMTlv": {
-                              "field": "ipv4_dst", 
-                              "mask": null, 
+                              "field": "ipv4_dst",
+                              "mask": null,
                               "value": "192.168.2.9"
                            }
                         },
                         "len": 16,
                         "type": 25
                      }
-                  }, 
+                  },
                   {
                      "NXActionLearn": {
-                        "cookie": 0, 
-                        "experimenter": 8992, 
-                        "fin_hard_timeout": 0, 
-                        "fin_idle_timeout": 0, 
-                        "flags": 0, 
-                        "hard_timeout": 300, 
-                        "idle_timeout": 0, 
-                        "len": 96, 
-                        "priority": 1, 
+                        "cookie": 0,
+                        "experimenter": 8992,
+                        "fin_hard_timeout": 0,
+                        "fin_idle_timeout": 0,
+                        "flags": 0,
+                        "hard_timeout": 300,
+                        "idle_timeout": 0,
+                        "len": 96,
+                        "priority": 1,
                         "specs": [
                            {
                               "NXFlowSpecMatch": {
                                  "dst": [
-                                    "vlan_vid", 
+                                    "vlan_vid",
                                     0
-                                 ], 
-                                 "n_bits": 12, 
+                                 ],
+                                 "n_bits": 12,
                                  "src": [
-                                    "vlan_vid", 
+                                    "vlan_vid",
                                     0
                                  ]
                               }
-                           }, 
+                           },
                            {
                               "NXFlowSpecMatch": {
                                  "dst": [
-                                    "eth_dst_nxm", 
+                                    "eth_dst_nxm",
                                     0
-                                 ], 
-                                 "n_bits": 48, 
+                                 ],
+                                 "n_bits": 48,
                                  "src": [
-                                    "eth_src_nxm", 
+                                    "eth_src_nxm",
                                     0
                                  ]
                               }
-                           }, 
+                           },
                            {
                               "NXFlowSpecLoad": {
                                  "dst": [
-                                    "vlan_vid", 
+                                    "vlan_vid",
                                     0
-                                 ], 
-                                 "n_bits": 12, 
+                                 ],
+                                 "n_bits": 12,
                                  "src": 0
                               }
-                           }, 
+                           },
                            {
                               "NXFlowSpecLoad": {
                                  "dst": [
-                                    "tunnel_id_nxm", 
+                                    "tunnel_id_nxm",
                                     0
-                                 ], 
-                                 "n_bits": 64, 
+                                 ],
+                                 "n_bits": 64,
                                  "src": [
-                                    "tunnel_id_nxm", 
+                                    "tunnel_id_nxm",
                                     0
                                  ]
                               }
-                           }, 
+                           },
                            {
                               "NXFlowSpecOutput": {
-                                 "dst": "", 
-                                 "n_bits": 32, 
+                                 "dst": "",
+                                 "n_bits": 32,
                                  "src": [
-                                    "in_port", 
+                                    "in_port",
                                     0
                                  ]
                               }
                            }
-                        ], 
-                        "subtype": 16, 
-                        "table_id": 99, 
+                        ],
+                        "subtype": 16,
+                        "table_id": 99,
                         "type": 65535
                      }
                   }
-               ], 
-               "len": 128, 
+               ],
+               "len": 128,
                "type": 4
             }
-         }, 
+         },
          {
             "OFPInstructionGotoTable": {
-               "len": 8, 
-               "table_id": 100, 
+               "len": 8,
+               "table_id": 100,
                "type": 1
             }
          }
-      ], 
+      ],
       "match": {
          "OFPMatch": {
-            "length": 70, 
+            "length": 70,
             "oxm_fields": [
                {
                   "OXMTlv": {
-                     "field": "in_port", 
-                     "mask": null, 
+                     "field": "in_port",
+                     "mask": null,
                      "value": 43981
                   }
-               }, 
+               },
                {
                   "OXMTlv": {
-                     "field": "eth_dst", 
-                     "mask": null, 
+                     "field": "eth_dst",
+                     "mask": null,
                      "value": "aa:bb:cc:99:88:77"
                   }
-               }, 
+               },
                {
                   "OXMTlv": {
-                     "field": "eth_type", 
-                     "mask": null, 
+                     "field": "eth_type",
+                     "mask": null,
                      "value": 2048
                   }
-               }, 
+               },
                {
                   "OXMTlv": {
-                     "field": "vlan_vid", 
-                     "mask": null, 
+                     "field": "vlan_vid",
+                     "mask": null,
                      "value": 5095
                   }
-               }, 
+               },
                {
                   "OXMTlv": {
-                     "field": "ipv4_dst", 
-                     "mask": null, 
+                     "field": "ipv4_dst",
+                     "mask": null,
                      "value": "192.168.2.1"
                   }
-               }, 
+               },
                {
                   "OXMTlv": {
-                     "field": "tunnel_id", 
-                     "mask": null, 
+                     "field": "tunnel_id",
+                     "mask": null,
                      "value": 50000
                   }
-               }, 
+               },
                {
                   "OXMTlv": {
-                     "field": "tun_ipv4_src", 
-                     "mask": null, 
+                     "field": "tun_ipv4_src",
+                     "mask": null,
                      "value": "192.168.2.3"
                   }
-               }, 
+               },
                {
                   "OXMTlv": {
-                     "field": "tun_ipv4_dst", 
-                     "mask": null, 
+                     "field": "tun_ipv4_dst",
+                     "mask": null,
                      "value": "192.168.2.4"
                   }
                }
-            ], 
+            ],
             "type": 1
          }
-      }, 
-      "out_group": 0, 
-      "out_port": 0, 
-      "priority": 0, 
+      },
+      "out_group": 0,
+      "out_port": 0,
+      "priority": 0,
       "table_id": 2
    }
 }

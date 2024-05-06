@@ -191,9 +191,9 @@ x() ->
                               dp_desc = <<"dp">>},
         #ofp_packet_out{
             buffer_id = no_buffer,in_port = controller,
-            actions = 
+            actions =
                 [#ofp_action_output{port = all,max_len = no_buffer}],
-            data = 
+            data =
                 <<242,11,164,208,63,112,242,11,164,125,248,234,8,0,69,0,
                   0,84,248,26,0,0,255,1,175,139,10,0,0,1,10,0,0,2,8,0,2,
                   8,247,96,0,0,49,214,2,0,0,0,0,0,171,141,45,49,0,0,0,0,
@@ -302,9 +302,9 @@ x() ->
         #ofp_features_reply{
             datapath_mac = <<8,96,110,127,116,231>>,
             datapath_id = 0,n_buffers = 0,n_tables = 255,
-            capabilities = 
+            capabilities =
                 [flow_stats,table_stats,port_stats,group_stats,queue_stats],
-            ports = 
+            ports =
                 [#ofp_port{
                      port_no = 7,hw_addr = <<"\362\v\244\320?p">>,
                      name = <<"Port7">>,
@@ -425,10 +425,10 @@ x() ->
 
         #ofp_group_mod{
             command = add,type = all,group_id = 1,
-            buckets = 
+            buckets =
                 [#ofp_bucket{
                      weight = 1,watch_port = 1,watch_group = 1,
-                     actions = 
+                     actions =
                          [#ofp_action_output{port = 2,max_len = no_buffer}]}]},
         #ofp_port_mod{port_no = 1, hw_addr = <<0,17,0,0,17,17>>,
             config = [],mask = [], advertise = [fiber]},
@@ -8610,7 +8610,7 @@ x() ->
         #ofp_port_stats_request{flags = [],port_no = any},
         #ofp_port_stats_reply{
             flags = [],
-            stats = 
+            stats =
                 [#ofp_port_stats{
                      port_no = 7,rx_packets = 0,tx_packets = 4,rx_bytes = 0,
                      tx_bytes = 336,rx_dropped = 0,tx_dropped = 0,
@@ -8637,13 +8637,13 @@ x() ->
         #ofp_group_desc_stats_request{},
         #ofp_group_desc_stats_reply{
             flags = [],
-            stats = 
+            stats =
                 [#ofp_group_desc_stats{
                      type = all,group_id = 1,
-                     buckets = 
+                     buckets =
                          [#ofp_bucket{
                               weight = 1,watch_port = 1,watch_group = 1,
-                              actions = 
+                              actions =
                                   [#ofp_action_output{
                                        port = 2, max_len = no_buffer}]}]}]},
         #ofp_queue_get_config_request{port = any},
@@ -8665,7 +8665,7 @@ x() ->
                                  queue_id = all},
         #ofp_queue_stats_reply{
             flags = [],
-            stats = 
+            stats =
                 [#ofp_queue_stats{
                      port_no = 7,queue_id = 1,tx_bytes = 0,tx_packets = 0,
                      tx_errors = 0},
@@ -8693,9 +8693,9 @@ x() ->
             priority = 65535,reason = idle_timeout,table_id = 0,
             duration_sec = 3,duration_nsec = 48825000,idle_timeout = 3,
             hard_timeout = 0,packet_count = 1,byte_count = 86,
-            match = 
+            match =
                 #ofp_match{
-                    fields = 
+                    fields =
                         [#ofp_field{
                              class = openflow_basic,name = eth_dst,
                              has_mask = false,

@@ -1,12 +1,12 @@
 {
    "OFPFlowMod": {
-      "buffer_id": 4294967295, 
-      "command": 0, 
-      "cookie": 0, 
-      "cookie_mask": 0, 
-      "flags": 0, 
-      "hard_timeout": 0, 
-      "idle_timeout": 0, 
+      "buffer_id": 4294967295,
+      "command": 0,
+      "cookie": 0,
+      "cookie_mask": 0,
+      "flags": 0,
+      "hard_timeout": 0,
+      "idle_timeout": 0,
       "instructions": [
          {
             "OFPInstructionActions": {
@@ -18,8 +18,8 @@
                               "OFPActionSetField": {
                                  "field": {
                                     "OXMTlv": {
-                                       "field": "ct_mark", 
-                                       "mask": null, 
+                                       "field": "ct_mark",
+                                       "mask": null,
                                        "value": 6636321
                                     }
                                  },
@@ -27,49 +27,49 @@
                                  "type": 25
                               }
                            }
-                        ], 
-                        "alg": 0, 
-                        "experimenter": 8992, 
-                        "flags": 1, 
-                        "len": 40, 
-                        "recirc_table": 255, 
-                        "subtype": 35, 
-                        "type": 65535, 
+                        ],
+                        "alg": 0,
+                        "experimenter": 8992,
+                        "flags": 1,
+                        "len": 40,
+                        "recirc_table": 255,
+                        "subtype": 35,
+                        "type": 65535,
                         "zone_ofs_nbits": 0,
                         "zone_src": ""
                      }
                   }
-               ], 
-               "len": 48, 
+               ],
+               "len": 48,
                "type": 4
             }
          }
-      ], 
+      ],
       "match": {
          "OFPMatch": {
-            "length": 22, 
+            "length": 22,
             "oxm_fields": [
                {
                   "OXMTlv": {
-                     "field": "eth_type", 
-                     "mask": null, 
+                     "field": "eth_type",
+                     "mask": null,
                      "value": 2048
                   }
-               }, 
+               },
                {
                   "OXMTlv": {
-                     "field": "ct_state", 
-                     "mask": 34, 
+                     "field": "ct_state",
+                     "mask": 34,
                      "value": 34
                   }
                }
-            ], 
+            ],
             "type": 1
          }
-      }, 
-      "out_group": 4294967295, 
-      "out_port": 4294967295, 
-      "priority": 32768, 
+      },
+      "out_group": 4294967295,
+      "out_port": 4294967295,
+      "priority": 32768,
       "table_id": 3
    }
 }

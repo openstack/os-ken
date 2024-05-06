@@ -206,7 +206,7 @@ arg_check() {
     if [ $# -ne 0 ]; then
         ARGLIST=$*
     else
-	ARGLIST=`find . -type f -name "*$TEST_SUFFIX"`
+        ARGLIST=`find . -type f -name "*$TEST_SUFFIX"`
     fi
 
     for arg in $ARGLIST; do

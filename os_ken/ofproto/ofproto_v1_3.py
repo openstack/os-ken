@@ -106,7 +106,7 @@ OFPP_FLOOD = 0xfffffffb         # All physical ports except input port and
 OFPP_ALL = 0xfffffffc           # All physical ports except input port.
 OFPP_CONTROLLER = 0xfffffffd    # Send to controller.
 OFPP_LOCAL = 0xfffffffe         # Local openflow "port".
-OFPP_ANY = 0xffffffff 	        # Not associated with a physical port.
+OFPP_ANY = 0xffffffff           # Not associated with a physical port.
 
 # All ones is used to indicate all queues in a port (for stats retrieval).
 OFPQ_ALL = 0xffffffff

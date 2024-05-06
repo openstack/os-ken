@@ -1,7 +1,7 @@
 {
    "OFPMeterConfigStatsRequest": {
-      "flags": 0, 
-      "meter_id": 1, 
+      "flags": 0,
+      "meter_id": 1,
       "type": 10
    }
 }

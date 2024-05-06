@@ -3,12 +3,12 @@
       "actions": [
          {
             "OFPActionOutput": {
-               "max_len": 65535, 
+               "max_len": 65535,
                "port": 65532
             }
          }
-      ], 
-      "buffer_id": 4294967295, 
+      ],
+      "buffer_id": 4294967295,
       "data": {
          "Packet": {
             "protocols": [
@@ -52,7 +52,7 @@
                }
             ]
          }
-      }, 
+      },
       "in_port": 65533
    }
 }
