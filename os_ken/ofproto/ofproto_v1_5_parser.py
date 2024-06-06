@@ -1045,6 +1045,8 @@ class OFPPropBase(StringifyMixin):
     @classmethod
     def parse(cls, buf):
         (type_, length) = struct.unpack_from(cls._PACK_STR, buf, 0)
+        if not length:
+            raise ValueError
         rest = buf[utils.round_up(length, 8):]
         try:
             subcls = cls._TYPES[type_]
@@ -7051,6 +7053,8 @@ class NXTPacketIn2Prop(OFPPropBase):
     @classmethod
     def parse(cls, buf):
         (type_, length) = struct.unpack_from(cls._PACK_STR, buf, 0)
+        if not length:
+            raise ValueError
         rest = buf[utils.round_up(length, 8):]
         try:
             subcls = cls._TYPES[type_]
