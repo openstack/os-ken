@@ -137,24 +137,20 @@ if HUB_TYPE == 'eventlet':
 
             if ssl_args:
                 ssl_args.setdefault('server_side', True)
-                if 'ssl_ctx' in ssl_args:
-                    ctx = ssl_args.pop('ssl_ctx')
-                    ctx.load_cert_chain(ssl_args.pop('certfile'),
-                                        ssl_args.pop('keyfile'))
-                    if 'cert_reqs' in ssl_args:
-                        ctx.verify_mode = ssl_args.pop('cert_reqs')
-                    if 'ca_certs' in ssl_args:
-                        ctx.load_verify_locations(ssl_args.pop('ca_certs'))
+                if 'ssl_ctx' not in ssl_args:
+                    raise RuntimeError("no SSLContext ssl_ctx in ssl_args")
+                ctx = ssl_args.pop('ssl_ctx')
+                ctx.load_cert_chain(ssl_args.pop('certfile'),
+                                    ssl_args.pop('keyfile'))
+                if 'cert_reqs' in ssl_args:
+                    ctx.verify_mode = ssl_args.pop('cert_reqs')
+                if 'ca_certs' in ssl_args:
+                    ctx.load_verify_locations(ssl_args.pop('ca_certs'))
 
-                    def wrap_and_handle_ctx(sock, addr):
-                        handle(ctx.wrap_socket(sock, **ssl_args), addr)
+                def wrap_and_handle_ctx(sock, addr):
+                    handle(ctx.wrap_socket(sock, **ssl_args), addr)
 
-                    self.handle = wrap_and_handle_ctx
-                else:
-                    def wrap_and_handle_ssl(sock, addr):
-                        handle(ssl.wrap_socket(sock, **ssl_args), addr)
-
-                    self.handle = wrap_and_handle_ssl
+                self.handle = wrap_and_handle_ctx
             else:
                 self.handle = handle
 
@@ -182,7 +178,14 @@ if HUB_TYPE == 'eventlet':
                 return None
 
             if self.ssl_args:
-                client = ssl.wrap_socket(client, **self.ssl_args)
+                ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+                ctx.load_cert_chain(self.ssl_args.pop('certfile'),
+                                    self.ssl_args.pop('keyfile'))
+                if 'cert_reqs' in self.ssl_args:
+                    ctx.verify_mode = self.ssl_args.pop('cert_reqs')
+                if 'ca_certs' in self.ssl_args:
+                    ctx.load_verify_location(self.ssl_args.pop('ca_certs'))
+                client = ctx.wrap_socket(client, **self.ssl_args)
 
             return client
 
