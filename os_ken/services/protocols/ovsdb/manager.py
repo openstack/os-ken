@@ -173,13 +173,14 @@ class OVSDB(app_manager.OSKenApp):
         cert = self.CONF.ovsdb.mngr_cert or self.CONF.ctl_cert
 
         if key is not None and cert is not None:
-            ssl_kwargs = dict(keyfile=key, certfile=cert, server_side=True)
+            ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+            ctx.load_cert_chain(cert, key)
 
             if self.CONF.ca_certs is not None:
-                ssl_kwargs['cert_reqs'] = ssl.CERT_REQUIRED
-                ssl_kwargs['ca_certs'] = self.CONF.ca_certs
+                ctx.verify_mode = ssl.CERT_REQUIRED
+                ctx.load_verify_locations(self.CONF.ca_certs)
 
-            server = ssl.wrap_socket(server, **ssl_kwargs)
+            server = ctx.wrap_socket(server, server_side=True)
 
         self._server = server
 
