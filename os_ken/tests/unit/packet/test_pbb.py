@@ -133,13 +133,13 @@ class Test_itag(unittest.TestCase):
 
         e = p.get_protocols(ethernet.ethernet)
         self.assertTrue(e)
-        self.assertTrue(isinstance(e, list))
+        self.assertIsInstance(e, list)
         self.assertEqual(e[0].ethertype, ether.ETH_TYPE_8021AD)
         self.assertEqual(e[1].ethertype, ether.ETH_TYPE_8021AD)
 
         sv = p.get_protocols(vlan.svlan)
         self.assertTrue(sv)
-        self.assertTrue(isinstance(sv, list))
+        self.assertIsInstance(sv, list)
         self.assertEqual(sv[0].ethertype, ether.ETH_TYPE_8021Q)
         self.assertEqual(sv[1].ethertype, ether.ETH_TYPE_8021Q)
 

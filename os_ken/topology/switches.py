@@ -465,10 +465,10 @@ class LLDPPacket(object):
         pkt = packet.Packet(data)
         i = iter(pkt)
         eth_pkt = next(i)
-        assert type(eth_pkt) == ethernet.ethernet
+        assert isinstance(eth_pkt, ethernet.ethernet)
 
         lldp_pkt = next(i)
-        if type(lldp_pkt) != lldp.lldp:
+        if not isinstance(lldp_pkt, lldp.lldp):
             raise LLDPPacket.LLDPUnknownFormat()
 
         tlv_chassis_id = lldp_pkt.tlvs[0]

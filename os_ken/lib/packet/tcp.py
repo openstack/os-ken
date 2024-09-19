@@ -115,8 +115,8 @@ class tcp(packet_base.PacketBase):
         from os_ken.ofproto.ofproto_common import OFP_TCP_PORT, OFP_SSL_PORT_OLD
         if bgp.TCP_SERVER_PORT in [src_port, dst_port]:
             return bgp.BGPMessage
-        elif(src_port in [OFP_TCP_PORT, OFP_SSL_PORT_OLD] or
-             dst_port in [OFP_TCP_PORT, OFP_SSL_PORT_OLD]):
+        elif (src_port in [OFP_TCP_PORT, OFP_SSL_PORT_OLD] or
+              dst_port in [OFP_TCP_PORT, OFP_SSL_PORT_OLD]):
             return openflow.openflow
         elif src_port == zebra.ZEBRA_PORT:
             return zebra._ZebraMessageFromZebra

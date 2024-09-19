@@ -370,7 +370,7 @@ def obj_python_attrs(msg_):
     # ofp parser implementations.
     if hasattr(msg_, '_fields'):
         for k in msg_._fields:
-            yield(k, getattr(msg_, k))
+            yield (k, getattr(msg_, k))
         return
     base = getattr(msg_, '_base_attributes', [])
     opt = getattr(msg_, '_opt_attributes', [])

@@ -66,24 +66,24 @@ class CircularListType(object):
             self.list_type.node_init(self.head)
 
         def __getattr__(self, name):
-            if(name == self.list_type.next_name):
+            if name == self.list_type.next_name:
                 return self._next_slot_
 
-            if(name == self.list_type.prev_name):
+            if name == self.list_type.prev_name:
                 return self._prev_slot_
 
             raise AttributeError(name)
 
         def __setattr__(self, name, value):
-            if(name in CircularListType.List.__slots__):
+            if name in CircularListType.List.__slots__:
                 object.__setattr__(self, name, value)
                 return
 
-            if(name == self.list_type.next_name):
+            if name == self.list_type.next_name:
                 self._next_slot_ = value
                 return
 
-            if(name == self.list_type.prev_name):
+            if name == self.list_type.prev_name:
                 self._prev_slot_ = value
                 return
 
@@ -124,7 +124,7 @@ class CircularListType(object):
         def pop_first(self):
             """Remove the first item in the list and return it."""
             node = self.list_type.node_next(self.head)
-            if(node is self.head):
+            if node is self.head:
                 return None
 
             self.remove(node)
@@ -141,7 +141,7 @@ class CircularListType(object):
             # current node safely.
             node = self.list_type.node_next(self.head)
             next = self.list_type.node_next(node)
-            while(node is not self.head):
+            while node is not self.head:
                 yield node
 
                 node = next
@@ -176,7 +176,7 @@ class CircularListType(object):
         return self.create()
 
     def node_init(self, node):
-        assert(not self.node_is_on_list(node))
+        assert (not self.node_is_on_list(node))
 
         # Set the node to point to itself as the previous and next
         # entries.
@@ -219,7 +219,7 @@ class CircularListType(object):
         """
         next = self.node_next(node)
         if next == node or next is None:
-            assert(self.node_prev(node) is next)
+            assert (self.node_prev(node) is next)
             return False
 
         return True
@@ -227,11 +227,11 @@ class CircularListType(object):
     def node_insert_after(self, node, new_node):
         """Insert the new node after node."""
 
-        assert(not self.node_is_on_list(new_node))
-        assert(node is not new_node)
+        assert (not self.node_is_on_list(new_node))
+        assert (node is not new_node)
 
         next = self.node_next(node)
-        assert(next is not None)
+        assert (next is not None)
         self.node_set_next(node, new_node)
         self.node_set_prev(new_node, node)
 
@@ -241,11 +241,11 @@ class CircularListType(object):
     def node_insert_before(self, node, new_node):
         """Insert the new node before node."""
 
-        assert(not self.node_is_on_list(new_node))
-        assert(node is not new_node)
+        assert (not self.node_is_on_list(new_node))
+        assert (node is not new_node)
 
         prev = self.node_prev(node)
-        assert(prev is not None)
+        assert (prev is not None)
         self.node_set_prev(node, new_node)
         self.node_set_next(new_node, node)
 

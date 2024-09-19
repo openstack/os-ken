@@ -176,13 +176,13 @@ class Test_Parser_OFPStats(testscenarios.WithScenarios, unittest.TestCase):
         stats.serialize(b, 0)
         stats2 = stats.parser(bytes(b), 0)
         for k, v in d.items():
-            self.assertTrue(k in stats)
-            self.assertTrue(k in stats2)
+            self.assertIn(k, stats)
+            self.assertIn(k, stats2)
             self.assertEqual(stats[k], v)
             self.assertEqual(stats2[k], v)
         for k, v in stats.iteritems():
-            self.assertTrue(k in d)
+            self.assertIn(k, d)
             self.assertEqual(d[k], v)
         for k, v in stats2.iteritems():
-            self.assertTrue(k in d)
+            self.assertIn(k, d)
             self.assertEqual(d[k], v)

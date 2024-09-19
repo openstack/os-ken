@@ -865,7 +865,7 @@ class Port(object):
         if new_state is not PORT_STATE_DISABLE:
             self.ofctl.set_port_status(self.ofport, new_state)
 
-        if(new_state is PORT_STATE_FORWARD
+        if (new_state is PORT_STATE_FORWARD
            or (self.state is PORT_STATE_FORWARD
                and (new_state is PORT_STATE_DISABLE
                     or new_state is PORT_STATE_BLOCK))):

@@ -259,13 +259,13 @@ class Test_Parser_OFPMatch(testscenarios.WithScenarios, unittest.TestCase):
         match.serialize(b, 0)
         match2 = match.parser(bytes(b), 0)
         for k, v in d.items():
-            self.assertTrue(k in match)
-            self.assertTrue(k in match2)
+            self.assertIn(k, match)
+            self.assertIn(k, match2)
             self.assertEqual(match[k], v)
             self.assertEqual(match2[k], v)
         for k, v in match.iteritems():
-            self.assertTrue(k in d)
+            self.assertIn(k, d)
             self.assertEqual(d[k], v)
         for k, v in match2.iteritems():
-            self.assertTrue(k in d)
+            self.assertIn(k, d)
             self.assertEqual(d[k], v)

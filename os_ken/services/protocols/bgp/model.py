@@ -51,7 +51,7 @@ class OutgoingRoute(object):
                  'next_sink_out_route', 'prev_sink_out_route')
 
     def __init__(self, path, for_route_refresh=False):
-        assert(path)
+        assert path
 
         self.sink = None
 
@@ -145,7 +145,7 @@ class SentRoute(object):
     """
 
     def __init__(self, path, peer, filtered=None, timestamp=None):
-        assert(path and hasattr(peer, 'version_num'))
+        assert (path and hasattr(peer, 'version_num'))
 
         self.path = path
 
@@ -175,7 +175,7 @@ class ReceivedRoute(object):
     """
 
     def __init__(self, path, peer, filtered=None, timestamp=None):
-        assert(path and hasattr(peer, 'version_num'))
+        assert (path and hasattr(peer, 'version_num'))
 
         self.path = path
 

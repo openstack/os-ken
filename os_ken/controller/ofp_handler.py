@@ -29,8 +29,9 @@ from os_ken import utils
 from os_ken.controller import ofp_event
 from os_ken.controller.controller import OpenFlowController
 from os_ken.controller.handler import set_ev_handler
-from os_ken.controller.handler import HANDSHAKE_DISPATCHER, CONFIG_DISPATCHER,\
-    MAIN_DISPATCHER
+from os_ken.controller.handler import CONFIG_DISPATCHER
+from os_ken.controller.handler import HANDSHAKE_DISPATCHER
+from os_ken.controller.handler import MAIN_DISPATCHER
 from os_ken.ofproto import ofproto_parser
 
 

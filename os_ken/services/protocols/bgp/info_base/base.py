@@ -428,7 +428,7 @@ class Destination(object, metaclass=abc.ABCMeta):
         Returns *True* if any of the known paths were found to be old and
         removed/deleted.
         """
-        assert(source and hasattr(source, 'version_num'))
+        assert (source and hasattr(source, 'version_num'))
         removed_paths = []
         # Iterate over the paths in reverse order as we want to delete paths
         # whose source is this peer.
@@ -438,7 +438,7 @@ class Destination(object, metaclass=abc.ABCMeta):
             if (path.source == source and
                     path.source_version_num < source_ver_num):
                 # If this peer is source of any paths, remove those path.
-                del(self._known_path_list[path_idx])
+                del self._known_path_list[path_idx]
                 removed_paths.append(path)
         return removed_paths
 
@@ -485,7 +485,7 @@ class Destination(object, metaclass=abc.ABCMeta):
             # If we do not have any old but one new path
             # it becomes best path.
             self._known_path_list.append(self._new_path_list[0])
-            del(self._new_path_list[0])
+            del self._new_path_list[0]
             return self._known_path_list[0], BPR_ONLY_PATH
 
         # If we have a new version of old/known path we use it and delete old
@@ -496,7 +496,7 @@ class Destination(object, metaclass=abc.ABCMeta):
         self._known_path_list.extend(self._new_path_list)
 
         # Clear new paths as we copied them.
-        del(self._new_path_list[:])
+        del self._new_path_list[:]
 
         # If we do not have any paths to this destination, then we do not have
         # new best path.
@@ -528,7 +528,7 @@ class Destination(object, metaclass=abc.ABCMeta):
         if not self._known_path_list:
             LOG.debug('Found %s withdrawals for path(s) that did not get'
                       ' installed.', len(self._withdraw_list))
-            del(self._withdraw_list[:])
+            del self._withdraw_list[:]
             return
 
         # If we have some known paths and some withdrawals, we find matches and
@@ -1193,7 +1193,7 @@ class AttributeMap(object):
 
     def __init__(self, filters, attr_type, attr_value):
 
-        assert all(isinstance(f, Filter) for f in filters),\
+        assert all(isinstance(f, Filter) for f in filters), \
             'all the items in filters must be an instance of Filter sub-class'
         self.filters = filters
         self.attr_type = attr_type

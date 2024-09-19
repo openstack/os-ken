@@ -368,8 +368,8 @@ def add_evpn_local(route_type, route_dist, next_hop, **kwargs):
     """Adds EVPN route from VRF identified by *route_dist*.
     """
 
-    if(route_type in [EVPN_ETH_AUTO_DISCOVERY, EVPN_ETH_SEGMENT]
-       and kwargs['esi'] == 0):
+    if (route_type in [EVPN_ETH_AUTO_DISCOVERY, EVPN_ETH_SEGMENT]
+            and kwargs['esi'] == 0):
         raise ConfigValueError(conf_name=EVPN_ESI,
                                conf_value=kwargs['esi'])
 

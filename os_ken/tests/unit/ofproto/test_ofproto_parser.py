@@ -79,11 +79,11 @@ class TestOfproto_Parser(unittest.TestCase):
                                  self.bufFeaturesReply)
         LOG.debug(msg)
 
-        self.assertTrue(isinstance(msg, ofproto_v1_0_parser.OFPSwitchFeatures))
+        self.assertIsInstance(msg, ofproto_v1_0_parser.OFPSwitchFeatures)
         LOG.debug(msg.ports[65534])
-        self.assertTrue(isinstance(msg.ports[1], ofproto_v1_0_parser.OFPPhyPort))
-        self.assertTrue(isinstance(msg.ports[2], ofproto_v1_0_parser.OFPPhyPort))
-        self.assertTrue(isinstance(msg.ports[65534], ofproto_v1_0_parser.OFPPhyPort))
+        self.assertIsInstance(msg.ports[1], ofproto_v1_0_parser.OFPPhyPort)
+        self.assertIsInstance(msg.ports[2], ofproto_v1_0_parser.OFPPhyPort)
+        self.assertIsInstance(msg.ports[65534], ofproto_v1_0_parser.OFPPhyPort)
 
     def testPacketIn(self):
         (version,
@@ -98,7 +98,7 @@ class TestOfproto_Parser(unittest.TestCase):
                                  xid,
                                  self.bufPacketIn)
         LOG.debug(msg)
-        self.assertTrue(isinstance(msg, ofproto_v1_0_parser.OFPPacketIn))
+        self.assertIsInstance(msg, ofproto_v1_0_parser.OFPPacketIn)
 
     def test_check_msg_len(self):
         (version,

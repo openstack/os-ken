@@ -21,8 +21,9 @@ import numbers
 from os_ken.base import app_manager
 
 from os_ken.controller import ofp_event
-from os_ken.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER,\
-    DEAD_DISPATCHER
+from os_ken.controller.handler import CONFIG_DISPATCHER
+from os_ken.controller.handler import DEAD_DISPATCHER
+from os_ken.controller.handler import MAIN_DISPATCHER
 from os_ken.controller.handler import set_ev_cls
 
 from . import event

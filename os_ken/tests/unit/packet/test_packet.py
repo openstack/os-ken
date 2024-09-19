@@ -368,7 +368,7 @@ class TestPacket(unittest.TestCase):
         self.assertEqual(packet_utils.checksum(t), 0)
 
         # payload
-        self.assertTrue('payload' in protocols)
+        self.assertIn('payload', protocols)
         self.assertEqual(self.payload, protocols['payload'])
 
         # to string
@@ -518,7 +518,7 @@ class TestPacket(unittest.TestCase):
         self.assertEqual(packet_utils.checksum(t), 0)
 
         # payload
-        self.assertTrue('payload' in protocols)
+        self.assertIn('payload', protocols)
         self.assertEqual(self.payload, protocols['payload'])
 
         # to string
@@ -939,7 +939,7 @@ class TestPacket(unittest.TestCase):
         self.assertEqual(packet_utils.checksum(t), 0x62)
 
         # payload
-        self.assertTrue('payload' in protocols)
+        self.assertIn('payload', protocols)
         self.assertEqual(self.payload, protocols['payload'])
 
         # to string
@@ -1071,7 +1071,7 @@ class TestPacket(unittest.TestCase):
         self.assertEqual(packet_utils.checksum(t), 0x62)
 
         # payload
-        self.assertTrue('payload' in protocols)
+        self.assertIn('payload', protocols)
         self.assertEqual(self.payload, protocols['payload'])
 
         # to string
@@ -1544,7 +1544,7 @@ class TestPacket(unittest.TestCase):
         i = ipv4.ipv4()
         u = udp.udp(self.src_port, self.dst_port)
         pkt = e / i / u
-        self.assertTrue(isinstance(pkt, packet.Packet))
-        self.assertTrue(isinstance(pkt.protocols[0], ethernet.ethernet))
-        self.assertTrue(isinstance(pkt.protocols[1], ipv4.ipv4))
-        self.assertTrue(isinstance(pkt.protocols[2], udp.udp))
+        self.assertIsInstance(pkt, packet.Packet)
+        self.assertIsInstance(pkt.protocols[0], ethernet.ethernet)
+        self.assertIsInstance(pkt.protocols[1], ipv4.ipv4)
+        self.assertIsInstance(pkt.protocols[2], udp.udp)

@@ -159,7 +159,7 @@ VRRP_V2_MAX_ADVER_INT_MAX = 0xff
 
 
 def is_ipv6(ip_address):
-    assert type(ip_address) == str
+    assert isinstance(ip_address, str)
     try:
         addrconv.ipv4.text_to_bin(ip_address)
     except:
@@ -595,11 +595,11 @@ class vrrpv3(vrrp):
     @staticmethod
     def serialize_static(vrrp_, prev):
         if isinstance(prev, ipv4.ipv4):
-            assert type(vrrp_.ip_addresses[0]) == str
+            assert isinstance(vrrp_.ip_addresses[0], str)
             conv = addrconv.ipv4.text_to_bin
             ip_address_pack_raw = vrrpv3._IPV4_ADDRESS_PACK_STR_RAW
         elif isinstance(prev, ipv6.ipv6):
-            assert type(vrrp_.ip_addresses[0]) == str
+            assert isinstance(vrrp_.ip_addresses[0], str)
             conv = addrconv.ipv6.text_to_bin
             ip_address_pack_raw = vrrpv3._IPV6_ADDRESS_PACK_STR_RAW
         else:
