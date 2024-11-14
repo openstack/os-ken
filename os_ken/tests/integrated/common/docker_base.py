@@ -155,9 +155,14 @@ class DockerImage(object):
         return name in self.get_images()
 
     def build(self, tagname, dockerfile_dir):
-        self.cmd.sudo(
-            "docker build -t {0} {1}".format(tagname, dockerfile_dir),
-            try_times=3)
+        try:
+            self.cmd.sudo(
+                'docker build -t {0} {1}'.format(tagname, dockerfile_dir))
+        except CommandError:
+            self.cmd.sudo('docker builder prune -f')
+            self.cmd.sudo(
+                'docker build -t {0} {1}'.format(tagname, dockerfile_dir),
+                try_times=2)
 
     def remove(self, tagname, check_exist=False):
         if check_exist and not self.exist(tagname):
