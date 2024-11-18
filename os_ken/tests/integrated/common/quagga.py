@@ -26,19 +26,20 @@ from . import docker_base as base
 LOG = logging.getLogger(__name__)
 
 
-class FRRBGPContainer(base.BGPContainer):
+class QuaggaBGPContainer(base.BGPContainer):
 
     WAIT_FOR_BOOT = 1
-    SHARED_VOLUME = '/etc/frr'
+    SHARED_VOLUME = '/etc/quagga'
 
     def __init__(self, name, asn, router_id, ctn_image_name, zebra=False):
-        super(FRRBGPContainer, self).__init__(name, asn, router_id,
-                                              ctn_image_name)
+        super(QuaggaBGPContainer, self).__init__(name, asn, router_id,
+                                                 ctn_image_name)
         self.shared_volumes.append((self.config_dir, self.SHARED_VOLUME))
         self.zebra = zebra
+        self._create_config_debian()
 
     def run(self, wait=False, w_time=WAIT_FOR_BOOT):
-        w_time = super(FRRBGPContainer,
+        w_time = super(QuaggaBGPContainer,
                        self).run(wait=wait, w_time=self.WAIT_FOR_BOOT)
         return w_time
 
@@ -163,6 +164,24 @@ class FRRBGPContainer(base.BGPContainer):
             self._create_config_zebra()
         self._create_config_daemons(zebra)
 
+    def _create_config_debian(self):
+        c = base.CmdBuffer()
+        c << 'vtysh_enable=yes'
+        c << 'zebra_options="  --daemon -A 127.0.0.1"'
+        c << 'bgpd_options="   --daemon -A 127.0.0.1"'
+        c << 'ospfd_options="  --daemon -A 127.0.0.1"'
+        c << 'ospf6d_options=" --daemon -A ::1"'
+        c << 'ripd_options="   --daemon -A 127.0.0.1"'
+        c << 'ripngd_options=" --daemon -A ::1"'
+        c << 'isisd_options="  --daemon -A 127.0.0.1"'
+        c << 'babeld_options=" --daemon -A 127.0.0.1"'
+        c << 'watchquagga_enable=yes'
+        c << 'watchquagga_options=(--daemon)'
+        with open('{0}/debian.conf'.format(self.config_dir), 'w') as f:
+            LOG.info("[%s's new config]", self.name)
+            LOG.info(str(c))
+            f.writelines(str(c))
+
     def _create_config_daemons(self, zebra='no'):
         c = base.CmdBuffer()
         c << 'zebra=%s' % zebra
@@ -173,15 +192,6 @@ class FRRBGPContainer(base.BGPContainer):
         c << 'ripngd=no'
         c << 'isisd=no'
         c << 'babeld=no'
-        c << 'vtysh_enable=yes'
-        c << 'zebra_options="  --daemon -A 127.0.0.1"'
-        c << 'bgpd_options="   --daemon -A 127.0.0.1"'
-        c << 'ospfd_options="  --daemon -A 127.0.0.1"'
-        c << 'ospf6d_options=" --daemon -A ::1"'
-        c << 'ripd_options="   --daemon -A 127.0.0.1"'
-        c << 'ripngd_options=" --daemon -A ::1"'
-        c << 'isisd_options="  --daemon -A 127.0.0.1"'
-        c << 'babeld_options=" --daemon -A 127.0.0.1"'
         with open('{0}/daemons'.format(self.config_dir), 'w') as f:
             LOG.info("[%s's new config]", self.name)
             LOG.info(str(c))
@@ -249,9 +259,9 @@ class FRRBGPContainer(base.BGPContainer):
         c << 'debug bgp fsm'
         c << 'debug bgp updates'
         c << 'debug bgp events'
-        c << 'log file {0}/frr.log'.format(self.SHARED_VOLUME)
+        c << 'log file {0}/bgpd.log'.format(self.SHARED_VOLUME)
 
-        with open('{0}/frr.conf'.format(self.config_dir), 'w') as f:
+        with open('{0}/bgpd.conf'.format(self.config_dir), 'w') as f:
             LOG.info("[%s's new config]", self.name)
             LOG.info(str(c))
             f.writelines(str(c))
@@ -274,10 +284,10 @@ class FRRBGPContainer(base.BGPContainer):
     def vtysh(self, cmd, config=True):
         if not isinstance(cmd, list):
             cmd = [cmd]
-        cmd = ' '.join("-C '{0}'".format(c) for c in cmd)
+        cmd = ' '.join("-c '{0}'".format(c) for c in cmd)
         if config:
             return self.exec_on_ctn(
-                "vtysh -d bgpd -C 'en' -C 'conf t' -C "
+                "vtysh -d bgpd -c 'en' -c 'conf t' -c "
                 "'router bgp {0}' {1}".format(self.asn, cmd),
                 capture=True)
         else:
@@ -294,7 +304,7 @@ class FRRBGPContainer(base.BGPContainer):
             self.exec_on_ctn(cmd, capture=True)
 
 
-class RawFRRBGPContainer(FRRBGPContainer):
+class RawQuaggaBGPContainer(QuaggaBGPContainer):
     def __init__(self, name, config, ctn_image_name,
                  zebra=False):
         asn = None
@@ -306,15 +316,15 @@ class RawFRRBGPContainer(FRRBGPContainer):
             if line.startswith('bgp router-id'):
                 router_id = line[len('bgp router-id'):].strip()
         if not asn:
-            raise Exception('asn not in FRR config')
+            raise Exception('asn not in quagga config')
         if not router_id:
-            raise Exception('router-id not in FRR config')
+            raise Exception('router-id not in quagga config')
         self.config = config
-        super(RawFRRBGPContainer, self).__init__(name, asn, router_id,
-                                                 ctn_image_name, zebra)
+        super(RawQuaggaBGPContainer, self).__init__(name, asn, router_id,
+                                                    ctn_image_name, zebra)
 
     def create_config(self):
-        with open(os.path.join(self.config_dir, 'frr.conf'), 'w') as f:
+        with open(os.path.join(self.config_dir, 'bgpd.conf'), 'w') as f:
             LOG.info("[%s's new config]", self.name)
             LOG.info(self.config)
             f.writelines(self.config)
