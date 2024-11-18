@@ -20,7 +20,7 @@ import unittest
 
 from os_ken.tests.integrated.common import docker_base as ctn_base
 from os_ken.tests.integrated.common import oskenbgp
-from os_ken.tests.integrated.common import frr
+from os_ken.tests.integrated.common import quagga
 
 
 LOG = logging.getLogger(__name__)
@@ -46,8 +46,8 @@ class BgpSpeakerTestBase(unittest.TestCase):
         self.r_img = self.dockerimg.create_os_ken(image=image,
                                                   check_exist=True)
         self.images.append(self.r_img)
-        self.frr_img = 'quay.io/frr:9.0.0'
-        self.images.append(self.frr_img)
+        self.q_img = 'osrg/quagga'
+        self.images.append(self.q_img)
 
         self.r1 = oskenbgp.OSKenBGPContainer(name='r1', asn=64512,
                                              router_id='192.168.0.1',
@@ -58,9 +58,9 @@ class BgpSpeakerTestBase(unittest.TestCase):
         self.r1_ip_cidr = self.brdc1.addif(self.r1)
         self.r1_ip = self.r1_ip_cidr.split('/')[0]
 
-        self.q1 = frr.FRRBGPContainer(name='q1', asn=64522,
-                                      router_id='192.168.0.2',
-                                      ctn_image_name=self.frr_img)
+        self.q1 = quagga.QuaggaBGPContainer(name='q1', asn=64522,
+                                            router_id='192.168.0.2',
+                                            ctn_image_name=self.q_img)
         self.containers.append(self.q1)
         self.q1.add_route('192.168.160.0/24')
         self.q1.run(wait=True)
