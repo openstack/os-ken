@@ -116,6 +116,45 @@ class LoggingWrapper(object):
         LOG.info(message.rstrip('\n'))
 
 
+class Event(object):
+    def __init__(self):
+        self._ev = HubEvent()
+        self._cond = False
+
+    def _wait(self, timeout=None):
+        while not self._cond:
+            self._ev.wait()
+
+    def _broadcast(self):
+        self._ev.send()
+        # Since eventlet Event doesn't allow multiple send() operations
+        # on an event, re-create the underlying event.
+        # Note: _ev.reset() is obsolete.
+        self._ev = HubEvent()
+
+    def is_set(self):
+        return self._cond
+
+    def set(self):
+        self._cond = True
+        self._broadcast()
+
+    def clear(self):
+        self._cond = False
+
+    def wait(self, timeout=None):
+        if timeout is None:
+            self._wait()
+        else:
+            try:
+                with Timeout(timeout):
+                    self._wait()
+            except Timeout:
+                pass
+
+        return self._cond
+
+
 if HUB_TYPE == 'eventlet':
     import eventlet
     # HACK:
@@ -206,48 +245,76 @@ if HUB_TYPE == 'eventlet':
     WebSocketWSGI = websocket.WebSocketWSGI
 
     Timeout = eventlet.timeout.Timeout
-
-    class Event(object):
-        def __init__(self):
-            self._ev = eventlet.event.Event()
-            self._cond = False
-
-        def _wait(self, timeout=None):
-            while not self._cond:
-                self._ev.wait()
-
-        def _broadcast(self):
-            self._ev.send()
-            # Since eventlet Event doesn't allow multiple send() operations
-            # on an event, re-create the underlying event.
-            # Note: _ev.reset() is obsolete.
-            self._ev = eventlet.event.Event()
-
-        def is_set(self):
-            return self._cond
-
-        def set(self):
-            self._cond = True
-            self._broadcast()
-
-        def clear(self):
-            self._cond = False
-
-        def wait(self, timeout=None):
-            if timeout is None:
-                self._wait()
-            else:
-                try:
-                    with Timeout(timeout):
-                        self._wait()
-                except Timeout:
-                    pass
-
-            return self._cond
+    HubEvent = eventlet.event.Event
 
 elif HUB_TYPE == 'native':
     LOG.warning("The native implementation is incomplete "
                 "and should not be used in production environments.")
+    import threading
+    import queue
+
+    HubEvent = threading.Event
+
+    class HubEvent(threading.Event):
+        def send(self):
+            self.set()
+
+    class Timeout(BaseException):
+        """
+        Largely inspired by:
+          https://github.com/eventlet/eventlet/blob/master/eventlet/timeout.py
+        """
+        def __init__(self, seconds=None, exception=None):
+            self._event = threading.Event()
+            self._queue = queue.Queue()
+
+            self.seconds = seconds
+            self.exception = exception
+
+            self.timer = None
+
+            self.start()
+
+        def start(self):
+            if self.seconds is None:
+                # "fake" timeout (never expires)
+                self.timer = None
+            else:
+                self.timer = threading.Timer(self.seconds, self._on_timeout)
+                self.timer.start()
+            self._wait()
+            return self
+
+        def __enter__(self):
+            if self.timer is None:
+                self.start()
+            return self
+
+        def __exit__(self, typ, value, tb):
+            self.cancel()
+            if value is self and self.exception is False:
+                return True
+
+        def _on_timeout(self):
+            if self.exception is None or isinstance(self.exception, bool):
+                # timeout that raises self
+                exc = self
+            else:
+                exc = self.exception
+            self._queue.put(exc)
+            self._event.set()
+
+        def cancel(self):
+            self.timer.cancel()
+            self._event.set()
+
+        def _wait(self):
+            self._event.wait()
+            try:
+                raise self._queue.get_nowait()
+            except queue.Empty:
+                pass
+
 else:
     raise NotImplementedError(
         "Invalid OSKEN_HUB_TYPE. Expected one of ('eventlet', 'native').")

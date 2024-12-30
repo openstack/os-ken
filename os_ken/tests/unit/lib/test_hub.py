@@ -16,6 +16,7 @@ import unittest
 from unittest import mock
 import importlib
 import socket
+import threading
 
 import os_ken.lib.hub
 
@@ -135,3 +136,43 @@ class TestStreamClientNative(TestStreamClientEventlet):
     @mock.patch.dict(os.environ, {"OSKEN_HUB_TYPE": "native"})
     def setUp(self):
         self.hub = importlib.reload(os_ken.lib.hub)
+
+
+class TestEventEventlet(unittest.TestCase):
+
+    @mock.patch.dict(os.environ, {"OSKEN_HUB_TYPE": "eventlet"})
+    def setUp(self):
+        self.hub = importlib.reload(os_ken.lib.hub)
+        self.event = self.hub.Event()
+
+    def test_initial_state(self):
+        self.assertFalse(self.event.is_set())
+
+    def test_set_event(self):
+        self.event.set()
+        self.assertTrue(self.event.is_set())
+
+    def test_clear_event(self):
+        self.event.set()
+        self.event.clear()
+        self.assertFalse(self.event.is_set())
+
+    def test_wait_success(self):
+        def set_event_after_delay():
+            threading.Timer(0.1, self.event.set).start()
+
+        set_event_after_delay()
+        result = self.event.wait(timeout=1)
+        self.assertTrue(result)
+
+    def test_wait_timeout(self):
+        result = self.event.wait(timeout=1)
+        self.assertFalse(result)
+
+
+class TestEventNative(TestEventEventlet):
+
+    @mock.patch.dict(os.environ, {"OSKEN_HUB_TYPE": "native"})
+    def setUp(self):
+        self.hub = importlib.reload(os_ken.lib.hub)
+        self.event = self.hub.Event()
