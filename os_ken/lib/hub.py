@@ -16,6 +16,10 @@
 
 import logging
 import os
+import ssl
+import socket
+import traceback
+
 from os_ken.lib import ip
 
 
@@ -25,6 +29,92 @@ from os_ken.lib import ip
 HUB_TYPE = os.getenv('OSKEN_HUB_TYPE', 'eventlet')
 
 LOG = logging.getLogger('os_ken.lib.hub')
+
+
+class StreamServer(object):
+    def __init__(self, listen_info, handle=None, backlog=None,
+                 spawn='default', **ssl_args):
+        assert backlog is None
+        assert spawn == 'default'
+
+        if ip.valid_ipv6(listen_info[0]):
+            self.server = listen(listen_info, family=socket.AF_INET6)
+        elif os.path.isdir(os.path.dirname(listen_info[0])):
+            # Case for Unix domain socket
+            self.server = listen(listen_info[0], family=socket.AF_UNIX)
+        else:
+            self.server = listen(listen_info)
+
+        if ssl_args:
+            ssl_args.setdefault('server_side', True)
+            if 'ssl_ctx' not in ssl_args:
+                raise RuntimeError("no SSLContext ssl_ctx in ssl_args")
+            ctx = ssl_args.pop('ssl_ctx')
+            ctx.load_cert_chain(ssl_args.pop('certfile'),
+                                ssl_args.pop('keyfile'))
+            if 'cert_reqs' in ssl_args:
+                ctx.verify_mode = ssl_args.pop('cert_reqs')
+            if 'ca_certs' in ssl_args:
+                ctx.load_verify_locations(ssl_args.pop('ca_certs'))
+
+            def wrap_and_handle_ctx(sock, addr):
+                handle(ctx.wrap_socket(sock, **ssl_args), addr)
+
+            self.handle = wrap_and_handle_ctx
+        else:
+            self.handle = handle
+
+    def serve_forever(self):
+        while True:
+            sock, addr = self.server.accept()
+            spawn(self.handle, sock, addr)
+
+
+class StreamClient(object):
+    def __init__(self, addr, timeout=None, **ssl_args):
+        assert ip.valid_ipv4(addr[0]) or ip.valid_ipv6(addr[0])
+        self.addr = addr
+        self.timeout = timeout
+        self.ssl_args = ssl_args
+        self._is_active = True
+
+    def connect(self):
+        try:
+            if self.timeout is not None:
+                client = socket.create_connection(self.addr,
+                                                  timeout=self.timeout)
+            else:
+                client = socket.create_connection(self.addr)
+        except socket.error:
+            return None
+
+        if self.ssl_args:
+            ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            ctx.load_cert_chain(self.ssl_args.pop('certfile'),
+                                self.ssl_args.pop('keyfile'))
+            if 'cert_reqs' in self.ssl_args:
+                ctx.verify_mode = self.ssl_args.pop('cert_reqs')
+            if 'ca_certs' in self.ssl_args:
+                ctx.load_verify_location(self.ssl_args.pop('ca_certs'))
+            client = ctx.wrap_socket(client, **self.ssl_args)
+
+        return client
+
+    def connect_loop(self, handle, interval):
+        while self._is_active:
+            sock = self.connect()
+            if sock:
+                handle(sock, self.addr)
+            sleep(interval)
+
+    def stop(self):
+        self._is_active = False
+
+
+class LoggingWrapper(object):
+    def write(self, message):
+        LOG.info(message.rstrip('\n'))
+
 
 if HUB_TYPE == 'eventlet':
     import eventlet
@@ -39,10 +129,6 @@ if HUB_TYPE == 'eventlet':
     import eventlet.wsgi
     from eventlet import websocket
     import greenlet
-    import ssl
-    import socket
-    import traceback
-    import sys
 
     getcurrent = eventlet.getcurrent
     sleep = eventlet.sleep
@@ -112,90 +198,6 @@ if HUB_TYPE == 'eventlet':
     BoundedSemaphore = eventlet.semaphore.BoundedSemaphore
     TaskExit = greenlet.GreenletExit
 
-    class StreamServer(object):
-        def __init__(self, listen_info, handle=None, backlog=None,
-                     spawn='default', **ssl_args):
-            assert backlog is None
-            assert spawn == 'default'
-
-            if ip.valid_ipv6(listen_info[0]):
-                self.server = eventlet.listen(listen_info,
-                                              family=socket.AF_INET6)
-            elif os.path.isdir(os.path.dirname(listen_info[0])):
-                # Case for Unix domain socket
-                self.server = eventlet.listen(listen_info[0],
-                                              family=socket.AF_UNIX)
-            else:
-                self.server = eventlet.listen(listen_info)
-
-            if ssl_args:
-                ssl_args.setdefault('server_side', True)
-                if 'ssl_ctx' not in ssl_args:
-                    raise RuntimeError("no SSLContext ssl_ctx in ssl_args")
-                ctx = ssl_args.pop('ssl_ctx')
-                ctx.load_cert_chain(ssl_args.pop('certfile'),
-                                    ssl_args.pop('keyfile'))
-                if 'cert_reqs' in ssl_args:
-                    ctx.verify_mode = ssl_args.pop('cert_reqs')
-                if 'ca_certs' in ssl_args:
-                    ctx.load_verify_locations(ssl_args.pop('ca_certs'))
-
-                def wrap_and_handle_ctx(sock, addr):
-                    handle(ctx.wrap_socket(sock, **ssl_args), addr)
-
-                self.handle = wrap_and_handle_ctx
-            else:
-                self.handle = handle
-
-        def serve_forever(self):
-            while True:
-                sock, addr = self.server.accept()
-                spawn(self.handle, sock, addr)
-
-    class StreamClient(object):
-        def __init__(self, addr, timeout=None, **ssl_args):
-            assert ip.valid_ipv4(addr[0]) or ip.valid_ipv6(addr[0])
-            self.addr = addr
-            self.timeout = timeout
-            self.ssl_args = ssl_args
-            self._is_active = True
-
-        def connect(self):
-            try:
-                if self.timeout is not None:
-                    client = socket.create_connection(self.addr,
-                                                      timeout=self.timeout)
-                else:
-                    client = socket.create_connection(self.addr)
-            except socket.error:
-                return None
-
-            if self.ssl_args:
-                ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-                ctx.load_cert_chain(self.ssl_args.pop('certfile'),
-                                    self.ssl_args.pop('keyfile'))
-                if 'cert_reqs' in self.ssl_args:
-                    ctx.verify_mode = self.ssl_args.pop('cert_reqs')
-                if 'ca_certs' in self.ssl_args:
-                    ctx.load_verify_location(self.ssl_args.pop('ca_certs'))
-                client = ctx.wrap_socket(client, **self.ssl_args)
-
-            return client
-
-        def connect_loop(self, handle, interval):
-            while self._is_active:
-                sock = self.connect()
-                if sock:
-                    handle(sock, self.addr)
-                sleep(interval)
-
-        def stop(self):
-            self._is_active = False
-
-    class LoggingWrapper(object):
-        def write(self, message):
-            LOG.info(message.rstrip('\n'))
-
     class WSGIServer(StreamServer):
         def serve_forever(self):
             self.logger = LoggingWrapper()
@@ -242,3 +244,10 @@ if HUB_TYPE == 'eventlet':
                     pass
 
             return self._cond
+
+elif HUB_TYPE == 'native':
+    LOG.warning("The native implementation is incomplete "
+                "and should not be used in production environments.")
+else:
+    raise NotImplementedError(
+        "Invalid OSKEN_HUB_TYPE. Expected one of ('eventlet', 'native').")
