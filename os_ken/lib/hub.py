@@ -252,6 +252,7 @@ elif HUB_TYPE == 'native':
                 "and should not be used in production environments.")
     import threading
     import queue
+    import time
 
     class HubThread(threading.Thread):
         def wait(self, timeout=None):
@@ -292,6 +293,15 @@ elif HUB_TYPE == 'native':
         # stopping a thread in Python.  It is recommended to implement
         # a proper termination mechanism using a flag or an event.
         pass
+
+    getcurrent = threading.current_thread()
+    sleep = time.sleep
+
+    Queue = queue.Queue
+    QueueEmpty = queue.Empty
+    Semaphore = threading.Semaphore
+    BoundedSemaphore = threading.BoundedSemaphore
+    TaskExit = Exception
 
     HubEvent = threading.Event
 

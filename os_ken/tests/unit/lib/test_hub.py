@@ -249,6 +249,15 @@ class TestThreadManagementEventlet(unittest.TestCase):
         self.assertEqual([mock.sentinel.value1,
                           mock.sentinel.value2], result)
 
+    def test_defined(self):
+        self.assertTrue(callable(self.hub.getcurrent))
+        self.assertTrue(callable(self.hub.sleep))
+        self.assertTrue(callable(self.hub.Queue))
+        self.assertTrue(callable(self.hub.QueueEmpty))
+        self.assertTrue(callable(self.hub.Semaphore))
+        self.assertTrue(callable(self.hub.BoundedSemaphore))
+        self.assertTrue(callable(self.hub.TaskExit))
+
 
 class TestThreadManagementNative(unittest.TestCase):
 
