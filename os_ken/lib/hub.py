@@ -253,6 +253,46 @@ elif HUB_TYPE == 'native':
     import threading
     import queue
 
+    class HubThread(threading.Thread):
+        def wait(self, timeout=None):
+            self.join(timeout)
+
+        def __init__(self, target, args=(), kwargs=None):
+            self.raise_error = kwargs.pop('raise_error', False)
+            super().__init__(target=target, args=args, kwargs=kwargs)
+
+        def run(self):
+            try:
+                super().run()
+            except TaskExit:
+                pass
+            except BaseException as e:
+                if self.raise_error:
+                    raise e
+                LOG.error('HubThread uncaught exception: %s',
+                          traceback.format_exc())
+
+    def spawn(func, *args, **kwargs):
+        thread = HubThread(func, args, kwargs)
+        thread.start()
+        return thread
+
+    def spawn_after(seconds, func, *args, **kwargs):
+        def delayed_func():
+            time.sleep(seconds)
+            func(*args, **kwargs)
+        return spawn(delayed_func)
+
+    def joinall(threads):
+        for thread in threads:
+            thread.join()
+
+    def kill(thread):
+        # NOTE(sahid): There is no safe and reliable way to force
+        # stopping a thread in Python.  It is recommended to implement
+        # a proper termination mechanism using a flag or an event.
+        pass
+
     HubEvent = threading.Event
 
     class HubEvent(threading.Event):

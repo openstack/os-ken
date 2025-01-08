@@ -17,6 +17,7 @@ from unittest import mock
 import importlib
 import socket
 import threading
+import time
 
 import os_ken.lib.hub
 
@@ -176,3 +177,81 @@ class TestEventNative(TestEventEventlet):
     def setUp(self):
         self.hub = importlib.reload(os_ken.lib.hub)
         self.event = self.hub.Event()
+
+
+class TestThreadManagementEventlet(unittest.TestCase):
+
+    @mock.patch.dict(os.environ, {"OSKEN_HUB_TYPE": "eventlet"})
+    def setUp(self):
+        self.hub = importlib.reload(os_ken.lib.hub)
+
+    def test_spawn(self):
+        result = []
+
+        def task():
+            result.append(mock.sentinel.value)
+
+        thread = self.hub.spawn(task)
+        thread.wait()
+        self.assertEqual([mock.sentinel.value], result)
+
+    def test_spawn_after(self):
+        result = []
+
+        def task():
+            result.append(mock.sentinel.value)
+
+        start_time = time.time()
+        thread = self.hub.spawn_after(1, task)
+        thread.wait()
+
+        self.assertGreaterEqual(time.time() - start_time, 1)
+        self.assertEqual([mock.sentinel.value], result)
+
+    @mock.patch('os_ken.lib.hub.LOG.error')
+    def test_spawn_raise_error_false(self, mock_log_error):
+        def failing_task():
+            raise Exception()
+
+        thread = self.hub.spawn(failing_task, raise_error=False)
+        thread.wait()
+        self.assertIn("exception", mock_log_error.call_args[0][0])
+
+    def test_spawn_raise_error_true(self):
+        def failing_task():
+            raise Exception()
+
+        thread = self.hub.spawn(failing_task, raise_error=True)
+        self.assertRaises(Exception, thread.wait)
+
+    def test_spawn_task_exit(self):
+        def exit_task():
+            raise os_ken.lib.hub.TaskExit()
+
+        try:
+            thread = self.hub.spawn(exit_task, raise_error=True)
+        except:
+            self.fail("Should not be here")
+
+    def test_joinall(self):
+        result = []
+
+        def task1():
+            result.append(mock.sentinel.value1)
+
+        def task2():
+            result.append(mock.sentinel.value2)
+
+        thread1 = self.hub.spawn(task1)
+        thread2 = self.hub.spawn_after(1, task2)
+        self.hub.joinall([thread1, thread2])
+
+        self.assertEqual([mock.sentinel.value1,
+                          mock.sentinel.value2], result)
+
+
+class TestThreadManagementNative(unittest.TestCase):
+
+    @mock.patch.dict(os.environ, {"OSKEN_HUB_TYPE": "native"})
+    def setUp(self):
+        self.hub = importlib.reload(os_ken.lib.hub)
