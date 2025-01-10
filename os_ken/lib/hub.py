@@ -18,6 +18,7 @@ import logging
 import os
 import ssl
 import socket
+import sys
 import traceback
 
 from os_ken.lib import ip
@@ -365,6 +366,26 @@ elif HUB_TYPE == 'native':
             except queue.Empty:
                 pass
 
+    def listen(addr, family=socket.AF_INET, backlog=50, reuse_addr=True,
+               reuse_port=None):
+        """
+        Largely inspired by:
+          https://github.com/eventlet/eventlet/../eventlet/convenience.py
+        """
+        sock = socket.socket(family, socket.SOCK_STREAM)
+        if reuse_addr and sys.platform[:3] != 'win':
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        elif reuse_port is None:
+            reuse_port = True
+            if reuse_port and hasattr(socket, 'SO_REUSEPORT'):
+                try:
+                    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+                except Exception:
+                    # Not supported by the platform
+                    pass
+        sock.bind(addr)
+        sock.listen(backlog)
+        return sock
 else:
     raise NotImplementedError(
         "Invalid OSKEN_HUB_TYPE. Expected one of ('eventlet', 'native').")

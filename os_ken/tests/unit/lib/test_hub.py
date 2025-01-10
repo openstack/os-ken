@@ -264,3 +264,88 @@ class TestThreadManagementNative(unittest.TestCase):
     @mock.patch.dict(os.environ, {"OSKEN_HUB_TYPE": "native"})
     def setUp(self):
         self.hub = importlib.reload(os_ken.lib.hub)
+
+
+class TestListenEventlet(unittest.TestCase):
+
+    @mock.patch.dict(os.environ, {"OSKEN_HUB_TYPE": "eventlet"})
+    def setUp(self):
+        self.hub = importlib.reload(os_ken.lib.hub)
+
+        self.patcher = mock.patch('eventlet.green.socket.socket')
+        self.mock_socket = self.patcher.start()
+
+        self.sock = mock.MagicMock()
+        self.mock_socket.return_value = self.sock
+
+
+class TestListenEventlet(unittest.TestCase):
+
+    @mock.patch.dict(os.environ, {"OSKEN_HUB_TYPE": "eventlet"})
+    def setUp(self):
+        self.hub = importlib.reload(os_ken.lib.hub)
+
+        self.patcher = mock.patch('eventlet.green.socket.socket')
+        self.mock_socket = self.patcher.start()
+
+        self.sock = mock.MagicMock()
+        self.mock_socket.return_value = self.sock
+
+    def tearDown(self):
+        self.patcher.stop()
+
+    def test_default_socket_creation(self):
+        addr = ('127.0.0.1', 8080)
+        sock = self.hub.listen(addr)
+
+        self.mock_socket.assert_called_once_with(
+            socket.AF_INET, socket.SOCK_STREAM)
+
+        self.sock.setsockopt.assert_has_calls([
+            mock.call(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1),
+            mock.call(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1),
+        ])
+
+        self.sock.bind.assert_called_once_with(addr)
+        self.sock.listen.assert_called_once_with(50)
+
+        self.assertEqual(self.sock, sock)
+
+    def test_socket_with_ipv6(self):
+        addr = ('::1', 8080)
+        sock = self.hub.listen(addr, family=socket.AF_INET6)
+
+        self.mock_socket.assert_called_once_with(
+            socket.AF_INET6, socket.SOCK_STREAM)
+
+        self.sock.setsockopt.assert_has_calls([
+            mock.call(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1),
+            mock.call(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1),
+        ])
+
+        self.sock.bind.assert_called_once_with(addr)
+        self.sock.listen.assert_called_once_with(50)
+
+        self.assertEqual(self.sock, sock)
+
+    def test_reuse_port_enabled(self):
+        addr = ('127.0.0.1', 8081)
+
+        sock = self.hub.listen(addr, reuse_port=True)
+
+        self.sock.setsockopt.assert_any_call(
+            socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+        self.sock.bind.assert_called_once_with(addr)
+
+
+class TestListenNative(unittest.TestCase):
+
+    @mock.patch.dict(os.environ, {"OSKEN_HUB_TYPE": "native"})
+    def setUp(self):
+        self.hub = importlib.reload(os_ken.lib.hub)
+
+        self.patcher = mock.patch('socket.socket')
+        self.mock_socket = self.patcher.start()
+
+        self.sock = mock.MagicMock()
+        self.mock_socket.return_value = self.sock
