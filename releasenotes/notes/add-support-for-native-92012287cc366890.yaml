@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Added support for ``native`` in OSKen Hub, using standard Python
+    libraries in replacement to eventlet. To enable ``native`` mode, set
+    the environment variable: ``OSKEN_HUB_TYPE=native``.
