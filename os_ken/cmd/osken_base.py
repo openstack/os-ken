@@ -20,7 +20,7 @@ import sys
 
 from os_ken import cfg
 from os_ken import utils
-from os_ken import version
+from os_ken import __version__
 
 
 subcommands = {
@@ -59,7 +59,7 @@ class SubCommand(object):
 
 def main():
     try:
-        base_conf(project='os_ken', version='os_ken %s' % version)
+        base_conf(project='os_ken', version='os_ken %s' % __version__)
     except cfg.RequiredOptError as e:
         base_conf.print_help()
         raise SystemExit(1)
