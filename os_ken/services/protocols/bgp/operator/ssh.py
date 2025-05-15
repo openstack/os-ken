@@ -25,7 +25,6 @@ import sys
 
 import paramiko
 
-from os_ken import version
 from os_ken.lib import hub
 from os_ken.services.protocols.bgp.base import Activity
 from os_ken.services.protocols.bgp.operator.command import Command
@@ -75,7 +74,7 @@ def find_ssh_server_key():
 class SshServer(paramiko.ServerInterface):
     TERM = "ansi"
     PROMPT = "bgpd> "
-    WELCOME = "\n\rHello, this is OSKen BGP speaker (version %s).\n\r" % version
+    WELCOME = "\n\rHello, this is OSKen BGP speaker.\n\r"
 
     class HelpCmd(Command):
         help_msg = 'show this help'
