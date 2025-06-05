@@ -39,10 +39,12 @@ from os_ken.lib.packet.bgp import BGPOptParamCapabilityFourOctetAsNumber
 from os_ken.lib.packet.bgp import BGPOptParamCapabilityEnhancedRouteRefresh
 from os_ken.lib.packet.bgp import BGPOptParamCapabilityMultiprotocol
 from os_ken.lib.packet.bgp import BGPOptParamCapabilityRouteRefresh
+from os_ken.lib.packet.bgp import BGPOptParamCapabilityRbgp
 from os_ken.lib.packet.bgp import BGP_CAP_FOUR_OCTET_AS_NUMBER
 from os_ken.lib.packet.bgp import BGP_CAP_ENHANCED_ROUTE_REFRESH
 from os_ken.lib.packet.bgp import BGP_CAP_MULTIPROTOCOL
 from os_ken.lib.packet.bgp import BGP_CAP_ROUTE_REFRESH
+from os_ken.lib.packet.bgp import BGP_CAP_RBGP
 
 from os_ken.services.protocols.bgp.base import OrderedDict
 from os_ken.services.protocols.bgp.constants import STD_BGP_SERVER_PORT_NUM
@@ -63,6 +65,7 @@ from os_ken.services.protocols.bgp.rtconf.base import CAP_MBGP_VPNV6FS
 from os_ken.services.protocols.bgp.rtconf.base import CAP_MBGP_L2VPNFS
 from os_ken.services.protocols.bgp.rtconf.base import CAP_REFRESH
 from os_ken.services.protocols.bgp.rtconf.base import CAP_RTC
+from os_ken.services.protocols.bgp.rtconf.base import CAP_RBGP
 from os_ken.services.protocols.bgp.rtconf.base import compute_optional_conf
 from os_ken.services.protocols.bgp.rtconf.base import ConfigTypeError
 from os_ken.services.protocols.bgp.rtconf.base import ConfigValueError
@@ -128,6 +131,7 @@ DEFAULT_CAP_MBGP_L2VPNFS = False
 DEFAULT_HOLD_TIME = 40
 DEFAULT_ENABLED = True
 DEFAULT_CAP_RTC = False
+DEFAULT_CAP_RBGP = True
 DEFAULT_IN_FILTER = []
 DEFAULT_OUT_FILTER = []
 DEFAULT_IS_ROUTE_SERVER_CLIENT = False
@@ -349,6 +353,7 @@ class NeighborConf(ConfWithId, ConfWithStats):
                                    CAP_MBGP_IPV4FS, CAP_MBGP_VPNV4FS,
                                    CAP_MBGP_IPV6FS, CAP_MBGP_VPNV6FS,
                                    CAP_MBGP_L2VPNFS,
+                                   CAP_RBGP,
                                    RTC_AS, HOLD_TIME, REMOTE_PORT,
                                    ENABLED, MULTI_EXIT_DISC, MAX_PREFIXES,
                                    ADVERTISE_PEER_AS, SITE_OF_ORIGINS,
@@ -460,6 +465,11 @@ class NeighborConf(ConfWithId, ConfWithStats):
         # Default RTC_AS is local (router) AS.
         self._settings[RTC_AS] = compute_optional_conf(
             RTC_AS, g_local_as, **kwargs)
+        
+        # RBGP configurations.
+        self._settings[CAP_RBGP] = compute_optional_conf(
+            CAP_RBGP, DEFAULT_CAP_RBGP, **kwargs
+        )
 
         # Since ConfWithId' default values use str(self) and repr(self), we
         # call super method after we have initialized other settings.
@@ -589,6 +599,10 @@ class NeighborConf(ConfWithId, ConfWithStats):
     @property
     def cap_rtc(self):
         return self._settings[CAP_RTC]
+    
+    @property
+    def cap_rbgp(self):
+        return self._settings[CAP_RBGP]
 
     @property
     def enabled(self):
@@ -749,6 +763,11 @@ class NeighborConf(ConfWithId, ConfWithStats):
         if self.cap_four_octet_as_number:
             capabilities[BGP_CAP_FOUR_OCTET_AS_NUMBER] = [
                 BGPOptParamCapabilityFourOctetAsNumber(self.local_as)]
+
+        if self.cap_rbgp:
+            capabilities[BGP_CAP_RBGP] = [
+                BGPOptParamCapabilityRbgp()
+            ]
 
         return capabilities
 

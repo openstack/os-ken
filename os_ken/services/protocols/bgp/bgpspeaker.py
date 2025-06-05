@@ -101,6 +101,7 @@ from os_ken.services.protocols.bgp.rtconf.base import CAP_MBGP_VPNV6FS
 from os_ken.services.protocols.bgp.rtconf.base import CAP_MBGP_L2VPNFS
 from os_ken.services.protocols.bgp.rtconf.base import CAP_ENHANCED_REFRESH
 from os_ken.services.protocols.bgp.rtconf.base import CAP_FOUR_OCTET_AS_NUMBER
+from os_ken.services.protocols.bgp.rtconf.base import CAP_RBGP
 from os_ken.services.protocols.bgp.rtconf.base import MULTI_EXIT_DISC
 from os_ken.services.protocols.bgp.rtconf.base import SITE_OF_ORIGINS
 from os_ken.services.protocols.bgp.rtconf.neighbors import (
@@ -116,6 +117,7 @@ from os_ken.services.protocols.bgp.rtconf.neighbors import (
     DEFAULT_CAP_MBGP_L2VPNFS,
     DEFAULT_CAP_ENHANCED_REFRESH,
     DEFAULT_CAP_FOUR_OCTET_AS_NUMBER,
+    DEFAULT_CAP_RBGP,
     DEFAULT_CONNECT_MODE,
     REMOTE_PORT,
     DEFAULT_BGP_PORT,
@@ -423,6 +425,7 @@ class BGPSpeaker(object):
                      enable_l2vpnfs=DEFAULT_CAP_MBGP_L2VPNFS,
                      enable_enhanced_refresh=DEFAULT_CAP_ENHANCED_REFRESH,
                      enable_four_octet_as_number=DEFAULT_CAP_FOUR_OCTET_AS_NUMBER,
+                     enable_rbgp=DEFAULT_CAP_RBGP,
                      next_hop=None, password=None, multi_exit_disc=None,
                      site_of_origins=None,
                      is_route_server_client=DEFAULT_IS_ROUTE_SERVER_CLIENT,
@@ -479,6 +482,8 @@ class BGPSpeaker(object):
 
         ``enable_four_octet_as_number`` enables Four-Octet AS Number
         capability for this neighbor.
+
+        ``enable_rbgp`` enables R-BGP capability for this neighbor.
 
         ``next_hop`` specifies the next hop IP address. If not
         specified, host's ip address to access to a peer is used.
@@ -539,6 +544,7 @@ class BGPSpeaker(object):
             CAP_MBGP_VPNV4FS: enable_vpnv4fs,
             CAP_MBGP_VPNV6FS: enable_vpnv6fs,
             CAP_MBGP_L2VPNFS: enable_l2vpnfs,
+            CAP_RBGP: enable_rbgp,
         }
 
         if multi_exit_disc:

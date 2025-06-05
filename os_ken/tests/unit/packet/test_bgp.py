@@ -144,6 +144,17 @@ class Test_bgp(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_rbgp(self):
+        """ Test case for bgp.BGPMessage
+        """
+        opt_param = [bgp.BGPOptParamCapabilityRbgp()]
+        msg = bgp.BGPOpen(my_as=30000, bgp_identifier='192.0.2.1', opt_param=opt_param)
+        binmsg = msg.serialize()
+        msg2, _, rest = bgp.BGPMessage.parser(binmsg)
+        self.assertEqual(str(msg), str(msg2))
+        self.assertTrue(len(msg) > 29)
+        self.assertEqual(rest, b'')
+
     def test_open1(self):
         msg = bgp.BGPOpen(my_as=30000, bgp_identifier='192.0.2.1')
         binmsg = msg.serialize()

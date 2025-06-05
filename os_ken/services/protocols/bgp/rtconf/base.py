@@ -51,6 +51,7 @@ CAP_MBGP_VPNV4FS = 'cap_mbgp_vpnv4fs'
 CAP_MBGP_VPNV6FS = 'cap_mbgp_vpnv6fs'
 CAP_MBGP_L2VPNFS = 'cap_mbgp_l2vpnfs'
 CAP_RTC = 'cap_rtc'
+CAP_RBGP = 'cap_rbgp'
 RTC_AS = 'rtc_as'
 HOLD_TIME = 'hold_time'
 
@@ -713,6 +714,14 @@ def validate_cap_rtc_as(rtc_as):
         raise ConfigValueError(desc='Invalid RTC AS configuration value: %s'
                                % rtc_as)
     return rtc_as
+
+@validate(name=CAP_RBGP)
+def validate_cap_rbgp(cap_rbgp):
+    if not isinstance(cap_rbgp, bool):
+        raise ConfigTypeError(desc='Invalid type for specifying R-BGP '
+                              'capability. Expected boolean got: %s' %
+                              type(cap_rbgp))
+    return cap_rbgp
 
 
 @validate(name=HOLD_TIME)

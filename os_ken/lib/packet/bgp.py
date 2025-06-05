@@ -76,6 +76,7 @@ BGP_CAP_ENHANCED_ROUTE_REFRESH = 70  # https://tools.ietf.org/html/\
 BGP_CAP_ROUTE_REFRESH_CISCO = 128  # in cisco routers, there are two\
 # route refresh code: one using the capability code of 128 (old),
 # another using the capability code of 2 (new).
+BGP_CAP_RBGP = 192
 
 BGP_ATTR_FLAG_OPTIONAL = 1 << 7
 BGP_ATTR_FLAG_TRANSITIVE = 1 << 6
@@ -3614,6 +3615,12 @@ class BGPOptParamCapabilityMultiprotocol(_OptParamCapability):
 class BGPOptParamCapabilityCarryingLabelInfo(_OptParamEmptyCapability):
     pass
 
+@_OptParamCapability.register_type(BGP_CAP_RBGP)
+class BGPOptParamCapabilityRbgp(_OptParamEmptyCapability):
+    """BGP Capability for RBG protocol."""
+    # This capability is used to indicate that the BGP speaker supports
+    # the RBG protocol.
+    pass
 
 class BGPWithdrawnRoute(IPAddrPrefix):
     pass

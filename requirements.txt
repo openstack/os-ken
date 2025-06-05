@@ -12,3 +12,4 @@ ovs>=2.8.0  # OVSDB
 packaging>=20.4  # Apache-2.0
 Routes>=2.3.1 # MIT
 WebOb>=1.8.2  # wsgi
+paramiko>=2.3.0
