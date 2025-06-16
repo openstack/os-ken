@@ -85,8 +85,8 @@ def log(stats_resource=None, stats_source=None, log_level=DEFAULT_LOG_LEVEL,
         kwargs[RESOURCE_NAME] = stats_resource.name
 
     if TIMESTAMP not in kwargs:
-        kwargs[TIMESTAMP] = datetime.datetime.utcfromtimestamp(
-            time.time()).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        kwargs[TIMESTAMP] = datetime.datetime.now(
+            tz=datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
     _STATS_LOGGER.log(log_level,
                       json.dumps(kwargs))
