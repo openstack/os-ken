@@ -368,3 +368,104 @@ class Test_Peer(unittest.TestCase):
         self._test_extract_and_reconstruct_as_path(
             path_attributes, ex_as_path_value,
             ex_aggregator_as_number, ex_aggregator_addr)
+
+    def _test_is_looped_path_attrs(
+            self, path_attributes, local_as, ex_returned_value,
+            allow_local_as_in_count=False):
+        # Prepare test data
+        update_msg = bgp.BGPUpdate(path_attributes=path_attributes)
+        neigh_conf = mock.Mock()
+        neigh_conf.local_as = local_as
+        neigh_conf.stats_time = 0
+        common_conf = mock.Mock()
+        common_conf.allow_local_as_in_count = allow_local_as_in_count
+        common_conf.cluster_id = '10.0.0.1'
+        protocol = mock.Mock()
+        protocol._remotename = ('10.2.2.2', '179')
+        protocol._localname = ('10.0.0.1', '179')
+        protocol.recv_open_msg = mock.Mock()
+        protocol.recv_open_msg.bgp_identifier = '10.0.0.1'
+
+        prepared_peer = peer.Peer(
+            common_conf, neigh_conf, None, mock.Mock(), None)
+        prepared_peer._set_protocol(protocol)
+
+        # Test
+        test_result_value = prepared_peer._is_looped_path_attrs(update_msg)
+
+        self.assertEqual(ex_returned_value, test_result_value)
+
+    def test_is_looped_path_attrs_with_no_loop(self):
+        # Prepare test data
+        in_as_path_value = [[1000, 23456, 3000]]
+        local_as = 11111
+        path_attributes = [
+            bgp.BGPPathAttributeAsPath(
+                value=in_as_path_value),
+        ]
+        # Expected values
+        ex_returned_value = False
+
+        # Test
+        self._test_is_looped_path_attrs(
+            path_attributes, local_as, ex_returned_value)
+
+    def test_is_looped_path_attrs_with_loop_allowed(self):
+        # Prepare test data
+        in_as_path_value = [[1000, 23456, 3000]]
+        local_as = 23456
+        path_attributes = [
+            bgp.BGPPathAttributeAsPath(
+                value=in_as_path_value),
+        ]
+        allow_local_as_in_count = True
+        # Expected values
+        ex_returned_value = False
+
+        # Test
+        self._test_is_looped_path_attrs(
+            path_attributes, local_as, ex_returned_value,
+            allow_local_as_in_count)
+
+    def test_is_looped_path_attrs_with_as_path_loop(self):
+        # Prepare test data
+        in_as_path_value = [[1000, 23456, 3000]]
+        local_as = 23456
+        path_attributes = [
+            bgp.BGPPathAttributeAsPath(
+                value=in_as_path_value),
+        ]
+        # Expected values
+        ex_returned_value = True
+
+        # Test
+        self._test_is_looped_path_attrs(
+            path_attributes, local_as, ex_returned_value)
+
+    def test_is_looped_path_attrs_with_originator_loop(self):
+        # Prepare test data
+        local_as = 11111
+        path_attributes = [
+            bgp.BGPPathAttributeOriginatorId(
+                value='10.0.0.1'),
+        ]
+        # Expected values
+        ex_returned_value = True
+
+        # Test
+        self._test_is_looped_path_attrs(
+            path_attributes, local_as, ex_returned_value)
+
+    def test_is_looped_path_attrs_with_cluster_loop(self):
+        # Prepare test data
+        local_as = 11111
+        path_attributes = [
+            bgp.BGPPathAttributeClusterList(
+                value=['10.0.0.1', '10.0.0.2']),
+        ]
+        # Expected values
+        ex_returned_value = True
+
+        # Test
+        self._test_is_looped_path_attrs(
+            path_attributes, local_as, ex_returned_value)

@@ -1673,17 +1673,17 @@ class Peer(Source, Sink, NeighborConfListener, Activity):
                 'AS_PATH on UPDATE message has loops. '
                 'Ignoring this message: %s',
                 update_msg)
-            return
+            return True
 
         # Check if ORIGINATOR_ID has loops. [RFC4456]
         originator_id = umsg_pattrs.get(BGP_ATTR_TYPE_ORIGINATOR_ID, None)
         if (originator_id
-                and recv_open_msg.bgp_identifier == originator_id):
+                and recv_open_msg.bgp_identifier == originator_id.value):
             LOG.error(
                 'ORIGINATOR_ID on UPDATE message has loops. '
                 'Ignoring this message: %s',
                 update_msg)
-            return
+            return True
 
         # Check if CLUSTER_LIST has loops. [RFC4456]
         cluster_list = umsg_pattrs.get(BGP_ATTR_TYPE_CLUSTER_LIST, None)
@@ -1692,7 +1692,8 @@ class Peer(Source, Sink, NeighborConfListener, Activity):
             LOG.error(
                 'CLUSTER_LIST on UPDATE message has loops. '
                 'Ignoring this message: %s', update_msg)
-            return
+            return True
+        return False
 
     def _extract_and_handle_bgp4_new_paths(self, update_msg):
         """Extracts new paths advertised in the given update message's
