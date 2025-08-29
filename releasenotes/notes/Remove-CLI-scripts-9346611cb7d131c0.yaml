@@ -1,0 +1,5 @@
+---
+other:
+  - |
+    CLI tools `osken` and `osken-manager` are removed completely.
+
