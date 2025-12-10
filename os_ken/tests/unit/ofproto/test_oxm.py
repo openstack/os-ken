@@ -24,6 +24,8 @@ class Test_OXM(unittest.TestCase):
         (f, uv) = user
         (n, v, m) = ofp.oxm_from_user(f, uv)
         buf = bytearray()
+        m = b'' if m is None else m
+        v = b'' if v is None else v
         ofp.oxm_serialize(n, v, m, buf, 0)
         self.assertEqual(on_wire, buf)
 
@@ -46,9 +48,10 @@ class Test_OXM(unittest.TestCase):
         f = ofp.oxm_to_user_header(n)
         self.assertEqual(user, f)
 
-    def _test(self, user, on_wire, header_bytes):
+    def _test(self, user, on_wire, header_bytes, test_decode=True):
         self._test_encode(user, on_wire)
-        self._test_decode(user, on_wire)
+        if test_decode:
+            self._test_decode(user, on_wire)
         if isinstance(user[1], tuple):  # has mask?
             return
         user_header = user[0]
@@ -186,3 +189,12 @@ class Test_OXM(unittest.TestCase):
             b'fugafuga'
         )
         self._test(user, on_wire, 4)
+
+    def test_empty_values(self):
+        # This test is a corner case that rarely happens. The decoded
+        # information is empty.
+        user = ('ipv4_src', ())
+        on_wire = (
+            b'\x80\x00\x16\x00'
+        )
+        self._test(user, on_wire, 4, test_decode=False)
