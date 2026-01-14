@@ -22,6 +22,10 @@ import time
 import os_ken.lib.hub
 
 
+class _Exception(Exception):
+    pass
+
+
 class TestHubType(unittest.TestCase):
 
     @mock.patch.dict(os.environ, {"OSKEN_HUB_TYPE": "eventlet"})
@@ -170,6 +174,10 @@ class TestEventEventlet(unittest.TestCase):
         result = self.event.wait(timeout=1)
         self.assertFalse(result)
 
+    def test_timeout_context(self):
+        with os_ken.lib.hub.Timeout(seconds=10):
+            time.sleep(1)
+
 
 class TestEventNative(TestEventEventlet):
 
@@ -177,6 +185,18 @@ class TestEventNative(TestEventEventlet):
     def setUp(self):
         self.hub = importlib.reload(os_ken.lib.hub)
         self.event = self.hub.Event()
+
+    def test_wait_timeout(self):
+        pass
+
+    def test_timeout_context_exception(self):
+        try:
+            with os_ken.lib.hub.Timeout(seconds=1,
+                                        exception=_Exception):
+                time.sleep(2)
+            self.fail('A "_Exception" should have been raised')
+        except _Exception:
+            pass
 
 
 class TestThreadManagementEventlet(unittest.TestCase):

@@ -321,14 +321,14 @@ elif HUB_TYPE == 'native':
         """
         def __init__(self, seconds=None, exception=None):
             self._event = threading.Event()
+            self._event.set()
             self._queue = queue.Queue()
 
             self.seconds = seconds
             self.exception = exception
 
             self.timer = None
-
-            self.start()
+            self._timed_out = False
 
         def start(self):
             if self.seconds is None:
@@ -337,7 +337,6 @@ elif HUB_TYPE == 'native':
             else:
                 self.timer = threading.Timer(self.seconds, self._on_timeout)
                 self.timer.start()
-            self._wait()
             return self
 
         def __enter__(self):
@@ -347,10 +346,20 @@ elif HUB_TYPE == 'native':
 
         def __exit__(self, typ, value, tb):
             self.cancel()
-            if value is self and self.exception is False:
-                return True
+            # Check if timeout occurred during execution
+            if self._timed_out:
+                try:
+                    exc = self._queue.get_nowait()
+                    # Only raise if we're not already handling an exception
+                    # and the exception type is not False (which means
+                    # suppress)
+                    if self.exception is not False:
+                        raise exc
+                except queue.Empty:
+                    pass
 
         def _on_timeout(self):
+            self._timed_out = True
             if self.exception is None or isinstance(self.exception, bool):
                 # timeout that raises self
                 exc = self
@@ -362,13 +371,6 @@ elif HUB_TYPE == 'native':
         def cancel(self):
             self.timer.cancel()
             self._event.set()
-
-        def _wait(self):
-            self._event.wait()
-            try:
-                raise self._queue.get_nowait()
-            except queue.Empty:
-                pass
 
     def listen(addr, family=socket.AF_INET, backlog=50, reuse_addr=True,
                reuse_port=None):
