@@ -23,7 +23,7 @@ from os_ken.services.protocols.bgp.base import add_bgp_error_metadata
 from os_ken.services.protocols.bgp.base import BGP_PROCESSOR_ERROR_CODE
 from os_ken.services.protocols.bgp.base import BGPSException
 from os_ken.services.protocols.bgp.utils import circlist
-from os_ken.services.protocols.bgp.utils.evtlet import EventletIOFactory
+from os_ken.services.protocols.bgp import utils
 
 from os_ken.lib.packet.bgp import RF_RTC_UC
 from os_ken.lib.packet.bgp import BGP_ATTR_TYPE_AS_PATH
@@ -82,7 +82,7 @@ class BgpProcessor(Activity):
         self._core_service = core_service
         self._dest_queue = BgpProcessor._DestQueue()
         self._rtdest_queue = BgpProcessor._DestQueue()
-        self.dest_que_evt = EventletIOFactory.create_custom_event()
+        self.dest_que_evt = utils.IOFactory.create_custom_event()
         self.work_units_per_cycle =\
             work_units_per_cycle or BgpProcessor.MAX_DEST_PROCESSED_PER_CYCLE
 

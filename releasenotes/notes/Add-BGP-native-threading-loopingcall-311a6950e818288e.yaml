@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Added native threading support for ``BGP`` ``LoopingCall`` and
+    ``IOFactory``. The appropriate implementation (eventlet or native
+    threading) is now selected automatically based on ``HUB_TYPE``,
+    fixing BGP peer hold time expiration issues when using the native
+    threading backend.
+    See bug `2146526 <https://bugs.launchpad.net/neutron/+bug/2146526>`_.
+
+

@@ -26,12 +26,12 @@ class EventletIOFactory(object):
 
     @staticmethod
     def create_custom_event():
-        LOG.debug('Create CustomEvent called')
+        LOG.debug('Create Eventlet based CustomEvent called')
         return hub.Event()
 
     @staticmethod
     def create_looping_call(funct, *args, **kwargs):
-        LOG.debug('create_looping_call called')
+        LOG.debug('Eventlet based create_looping_call called')
         return LoopingCall(funct, *args, **kwargs)
 
 
