@@ -42,7 +42,7 @@ from os_ken.lib.packet.bgp import RF_VPNv6_FLOWSPEC
 from os_ken.lib.packet.bgp import RF_L2VPN_FLOWSPEC
 from os_ken.lib.packet.bgp import RF_RTC_UC
 from os_ken.services.protocols.bgp.utils.circlist import CircularListType
-from os_ken.services.protocols.bgp.utils.evtlet import LoopingCall
+from os_ken.services.protocols.bgp import utils
 
 
 # Logger instance for this module.
@@ -225,7 +225,7 @@ class Activity(object, metaclass=abc.ABCMeta):
         return greenthread
 
     def _create_timer(self, name, func, *arg, **kwarg):
-        timer = LoopingCall(func, *arg, **kwarg)
+        timer = utils.LoopingCall(func, *arg, **kwarg)
         self._timers[name] = timer
         return timer
 
@@ -456,8 +456,7 @@ class Sink(object):
         self.index = Sink.next_index()
 
         # Create an event for signal enqueuing.
-        from .utils.evtlet import EventletIOFactory
-        self.outgoing_msg_event = EventletIOFactory.create_custom_event()
+        self.outgoing_msg_event = utils.IOFactory.create_custom_event()
 
         self.messages_queued = 0
         # List of msgs. that are to be sent to this peer. Each item

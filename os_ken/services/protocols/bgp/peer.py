@@ -43,7 +43,7 @@ from os_ken.services.protocols.bgp.info_base.vpnv4 import Vpnv4Path
 from os_ken.services.protocols.bgp.info_base.vpnv6 import Vpnv6Path
 from os_ken.services.protocols.bgp.rtconf.vrfs import VRF_RF_IPV4, VRF_RF_IPV6
 from os_ken.services.protocols.bgp.utils import bgp as bgp_utils
-from os_ken.services.protocols.bgp.utils.evtlet import EventletIOFactory
+from os_ken.services.protocols.bgp import utils
 from os_ken.services.protocols.bgp.utils import stats
 from os_ken.services.protocols.bgp.utils.validation import is_valid_old_asn
 
@@ -345,7 +345,7 @@ class Peer(Source, Sink, NeighborConfListener, Activity):
 
         # Setting this event starts the connect_loop loop again
         # Clearing this event will stop the connect_loop loop
-        self._connect_retry_event = EventletIOFactory.create_custom_event()
+        self._connect_retry_event = utils.IOFactory.create_custom_event()
 
         # Reference to threads related to enhanced refresh timers.
         self._refresh_stalepath_timer = None
