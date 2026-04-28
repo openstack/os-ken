@@ -284,10 +284,11 @@ elif HUB_TYPE == 'native':
         return thread
 
     def spawn_after(seconds, func, *args, **kwargs):
-        def delayed_func():
-            time.sleep(seconds)
-            func(*args, **kwargs)
-        return spawn(delayed_func)
+        kwargs.pop('raise_error', False)
+        timer = threading.Timer(seconds, func, args=args, kwargs=kwargs)
+        timer.daemon = True
+        timer.start()
+        return timer
 
     def joinall(threads):
         for thread in threads:
