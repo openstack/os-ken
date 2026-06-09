@@ -18,8 +18,7 @@ from unittest import mock
 
 from os_ken.app.ofctl import event
 from os_ken.app.ofctl import exception
-from os_ken.app.ofctl.service import OfctlService
-from os_ken.app.ofctl.service import _SwitchInfo
+from os_ken.app.ofctl import service
 
 
 class _FakeBarrierRequest:
@@ -36,7 +35,7 @@ class TestOfctlService(unittest.TestCase):
     def setUp(self):
         with mock.patch('os_ken.base.app_manager.OSKenApp.__init__',
                         return_value=None):
-            self.service = OfctlService()
+            self.service = service.OfctlService()
         self.service.name = 'ofctl_service'
         self.service._switches = {}
         self.service._observing_events = {}
@@ -57,7 +56,7 @@ class TestOfctlService(unittest.TestCase):
 
         self.datapath.set_xid = _set_xid
 
-        self.si = _SwitchInfo(datapath=self.datapath)
+        self.si = service._SwitchInfo(datapath=self.datapath)
         self.service._switches[self.datapath.id] = self.si
 
     def _make_msg(self):
@@ -115,3 +114,81 @@ class TestOfctlService(unittest.TestCase):
         reply = call_args[0][1]
         self.assertIsInstance(reply, event.Reply)
         self.assertIsInstance(reply.exception, exception.InvalidDatapath)
+
+
+class TestOfctlServiceHandleSendMsg(unittest.TestCase):
+    """Test that _handle_send_msg rejects messages with stale datapaths."""
+
+    def setUp(self):
+        self.svc = service.OfctlService.__new__(service.OfctlService)
+        self.svc.name = 'ofctl_service'
+        self.svc._switches = {}
+        self.svc._observing_events = {}
+        self.svc.reply_to_request = mock.Mock()
+        self.svc.logger = mock.Mock()
+
+    def _make_datapath(self, dpid):
+        dp = mock.Mock()
+        dp.id = dpid
+
+        dp.ofproto_parser.OFPBarrierRequest = _FakeBarrierRequest
+        dp.send_msg = mock.Mock(return_value=True)
+        dp.set_xid = mock.Mock(side_effect=lambda m: setattr(m, 'xid', 1))
+        return dp
+
+    def _make_request(self, datapath, reply_cls=None):
+        msg = mock.Mock()
+        msg.datapath = datapath
+        msg.xid = None
+        req = event.SendMsgRequest(msg=msg, reply_cls=reply_cls,
+                                   reply_multi=False)
+        return req
+
+    def test_handle_send_msg_unknown_dpid(self):
+        """Request for unknown dpid is rejected with InvalidDatapath."""
+        dp = self._make_datapath(1)
+        req = self._make_request(dp)
+
+        self.svc._handle_send_msg(req)
+
+        self.svc.reply_to_request.assert_called_once()
+        reply = self.svc.reply_to_request.call_args[0][1]
+        self.assertIsInstance(reply.exception, exception.InvalidDatapath)
+
+    def test_handle_send_msg_stale_datapath_rejected(self):
+        """Request with stale datapath is rejected when switch reconnected."""
+        old_dp = self._make_datapath(1)
+        new_dp = self._make_datapath(1)
+
+        # Switch reconnected: _switches has new datapath
+        si = service._SwitchInfo(datapath=new_dp)
+        self.svc._switches[1] = si
+
+        # Request carries the OLD datapath
+        req = self._make_request(old_dp)
+
+        self.svc._handle_send_msg(req)
+
+        # Should be rejected
+        self.svc.reply_to_request.assert_called_once()
+        reply = self.svc.reply_to_request.call_args[0][1]
+        self.assertIsInstance(reply.exception, exception.InvalidDatapath)
+        # Should NOT have sent anything on the old datapath
+        old_dp.send_msg.assert_not_called()
+
+    def test_handle_send_msg_current_datapath_accepted(self):
+        """Request with current datapath is processed normally."""
+        dp = self._make_datapath(1)
+        dp.ofproto_parser.OFPBarrierRequest.return_value = mock.Mock()
+
+        si = service._SwitchInfo(datapath=dp)
+        self.svc._switches[1] = si
+
+        req = self._make_request(dp)
+
+        self.svc._handle_send_msg(req)
+
+        # Should NOT have been rejected
+        self.svc.reply_to_request.assert_not_called()
+        # Should have sent the message and barrier
+        self.assertEqual(2, dp.send_msg.call_count)

@@ -145,6 +145,14 @@ class OfctlService(app_manager.OSKenApp):
             self.reply_to_request(req, rep)
             return
 
+        # Reject if the message's datapath is stale (switch reconnected)
+        if si.datapath is not datapath:
+            self.logger.error('stale dpid %s', datapath.id)
+            rep = event.Reply(exception=exception.
+                              InvalidDatapath(result=datapath.id))
+            self.reply_to_request(req, rep)
+            return
+
         def _store_xid(xid, barrier_xid):
             assert xid not in si.results
             assert xid not in si.xids
