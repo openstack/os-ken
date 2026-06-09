@@ -44,3 +44,9 @@ class InvalidDatapath(_ExceptionBase):
     """
 
     message = 'Datapath Invalid %(result)s'
+
+
+class InvalidMessage(_ExceptionBase):
+    """OpenFlow message could not be serialized or sent."""
+
+    message = 'Invalid message %(result)s'

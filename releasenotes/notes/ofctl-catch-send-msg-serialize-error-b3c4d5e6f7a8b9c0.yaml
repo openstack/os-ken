@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixed a bug in ``OfctlService`` where an exception raised during
+    OpenFlow message serialization (e.g. from an invalid match field
+    value like ``in_port=None``) left the ``SendMsgRequest`` hanging
+    indefinitely.  The caller now receives an ``InvalidMessage``
+    exception instead of blocking until a timeout fires.
+    See bug `2155883 <https://bugs.launchpad.net/neutron/+bug/2155883>`_.

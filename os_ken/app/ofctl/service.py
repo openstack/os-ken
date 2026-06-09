@@ -164,7 +164,15 @@ class OfctlService(app_manager.OSKenApp):
             barrier = datapath.ofproto_parser.OFPBarrierRequest(datapath)
             datapath.set_xid(barrier)
             _store_xid(msg.xid, barrier.xid)
-            if not datapath.send_msg(msg):
+            try:
+                msg_sent = datapath.send_msg(msg)
+            except Exception as e:
+                self.logger.error('failed to serialize message <%s>: %s',
+                                  msg, e)
+                return self._cancel(
+                    si, barrier.xid,
+                    exception.InvalidMessage(result=msg))
+            if not msg_sent:
                 return self._cancel(
                     si, barrier.xid,
                     exception.InvalidDatapath(result=datapath.id))
