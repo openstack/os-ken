@@ -82,7 +82,7 @@ assert calcsize(OFP_PORT_PACK_STR) == OFP_PORT_SIZE
 
 # enum ofp_port_config
 OFPPC_PORT_DOWN = 1 << 0        # Port is administratively down.
-OFPPC_NO_RECV = 1 << 2          # Drop all packets recieved by port.
+OFPPC_NO_RECV = 1 << 2          # Drop all packets received by port.
 OFPPC_NO_FWD = 1 << 5           # Drop packets forwarded to port.
 OFPPC_NO_PACKET_IN = 1 << 6     # Do not send packet-in msgs for port.
 
