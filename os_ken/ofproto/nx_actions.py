@@ -2801,12 +2801,12 @@ def generate(ofp_name, ofpp_name):
         Attribute        Description
         ================ ======================================================
         flags            Zero or more(Unspecified flag bits must be zero.)
-        range_ipv4_min   Range ipv4 address minimun
-        range_ipv4_max   Range ipv4 address maximun
-        range_ipv6_min   Range ipv6 address minimun
-        range_ipv6_max   Range ipv6 address maximun
+        range_ipv4_min   Range ipv4 address minimum
+        range_ipv4_max   Range ipv4 address maximum
+        range_ipv6_min   Range ipv6 address minimum
+        range_ipv6_max   Range ipv6 address maximum
         range_proto_min  Range protocol minimum
-        range_proto_max  Range protocol maximun
+        range_proto_max  Range protocol maximum
         ================ ======================================================
 
         .. CAUTION::
