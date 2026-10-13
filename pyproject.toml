@@ -28,6 +28,12 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
 ]
 
+[project.optional-dependencies]
+# NETCONF client for the OF-Config library (os_ken.lib.of_config).
+of-config = [
+    "ncclient>=0.6.13", # Apache-2.0
+]
+
 [project.urls]
 "Bug Tracker" = "https://bugs.launchpad.net/neutron"
 "Documentation" = "https://docs.openstack.org/os-ken/latest/"
