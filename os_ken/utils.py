@@ -40,35 +40,6 @@ def chop_py_suffix(p):
     return p
 
 
-def _likely_same(a, b):
-    try:
-        # Samefile not availible on windows
-        if sys.platform == 'win32':
-            if os.stat(a) == os.stat(b):
-                return True
-        else:
-            if os.path.samefile(a, b):
-                return True
-    except OSError:
-        # m.__file__ is not always accessible.  eg. egg
-        return False
-    if chop_py_suffix(a) == chop_py_suffix(b):
-        return True
-    return False
-
-
-def _find_loaded_module(modpath):
-    # copy() to avoid RuntimeError: dictionary changed size during iteration
-    for k, m in sys.modules.copy().items():
-        if k == '__main__':
-            continue
-        if not hasattr(m, '__file__'):
-            continue
-        if _likely_same(m.__file__, modpath):
-            return m
-    return None
-
-
 def _import_module_file(path):
     abspath = os.path.abspath(path)
     # Backup original sys.path before appending path to file
