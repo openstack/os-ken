@@ -59,7 +59,8 @@ def dictify(row):
 
 
 def transact_block(request, connection):
-    """Emulate jsonrpc.Connection.transact_block without blocking eventlet.
+    """Emulate jsonrpc.Connection.transact_block without blocking the
+    hub's other greenthreads/tasks.
     """
     error = connection.send(request)
     reply = None

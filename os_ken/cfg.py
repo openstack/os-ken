@@ -34,15 +34,15 @@ CONF = oslo_config.cfg.ConfigOpts()
 
 # re-export for convenience
 
-from oslo_config.cfg import ConfigOpts
+from oslo_config.cfg import ConfigOpts  # noqa: E402
 
-from oslo_config.cfg import Opt
-from oslo_config.cfg import BoolOpt
-from oslo_config.cfg import IntOpt
-from oslo_config.cfg import ListOpt
-from oslo_config.cfg import MultiStrOpt
-from oslo_config.cfg import StrOpt
-from oslo_config.cfg import FloatOpt
+from oslo_config.cfg import Opt  # noqa: E402
+from oslo_config.cfg import BoolOpt  # noqa: E402
+from oslo_config.cfg import IntOpt  # noqa: E402
+from oslo_config.cfg import ListOpt  # noqa: E402
+from oslo_config.cfg import MultiStrOpt  # noqa: E402
+from oslo_config.cfg import StrOpt  # noqa: E402
+from oslo_config.cfg import FloatOpt  # noqa: E402
 
-from oslo_config.cfg import RequiredOptError
-from oslo_config.cfg import ConfigFilesNotFoundError
+from oslo_config.cfg import RequiredOptError  # noqa: E402
+from oslo_config.cfg import ConfigFilesNotFoundError  # noqa: E402

@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Support for ``eventlet`` has been removed from ``os_ken.lib.hub`` and
+    the BGP speaker's internal utilities. ``native`` threading (based on
+    the Python standard library) is now the only supported hub
+    implementation. The ``OSKEN_HUB_TYPE`` environment variable and the
+    ``eventlet`` dependency are no longer used.

@@ -554,9 +554,9 @@ class Peer(Source, Sink, NeighborConfListener, Activity):
             if self._protocol:
                 # Stopping protocol will eventually trigger connection_lost
                 # handler which will do some clean-up.
-                # But the greenlet that is in charge of the socket may be kill
-                # when we stop the protocol, hence we call connection_lost
-                # here as we triggered socket to close.
+                # But the thread that is in charge of the socket may be
+                # killed when we stop the protocol, hence we call
+                # connection_lost here as we triggered socket to close.
                 self._protocol.send_notification(
                     BGP_ERROR_CEASE,
                     BGP_ERROR_SUB_ADMINISTRATIVE_SHUTDOWN
@@ -1260,9 +1260,9 @@ class Peer(Source, Sink, NeighborConfListener, Activity):
         return update
 
     def _connect_loop(self, client_factory):
-        """In the current greenlet we try to establish connection with peer.
+        """In the current thread we try to establish connection with peer.
 
-        This greenlet will spin another greenlet to handle incoming data
+        This thread will spawn another thread to handle incoming data
         from the peer once connection is established.
         """
         # If current configuration allow, enable active session establishment.
