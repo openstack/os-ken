@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Fix a race in native-threaded switch-features processing that could
+    terminate the OfctlService event loop and leave subsequent requests
+    waiting indefinitely. Use the datapath ID from the received features
+    reply without relying on another thread to initialize the shared
+    datapath object first.

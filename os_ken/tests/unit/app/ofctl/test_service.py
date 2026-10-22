@@ -19,6 +19,8 @@ from unittest import mock
 from os_ken.app.ofctl import event
 from os_ken.app.ofctl import exception
 from os_ken.app.ofctl import service
+from os_ken.controller import ofp_event
+from os_ken.ofproto import ofproto_v1_3_parser
 
 
 class _FakeBarrierRequest:
@@ -63,6 +65,42 @@ class TestOfctlService(unittest.TestCase):
         msg = mock.MagicMock(spec=_FakeMsg)
         msg.datapath = self.datapath
         return msg
+
+    def test_switch_features_before_datapath_id_initialized(self):
+        self.service._switches.clear()
+        self.datapath.id = None
+        msg = ofproto_v1_3_parser.OFPSwitchFeatures(
+            self.datapath, datapath_id=1)
+
+        self.service._switch_features_handler(
+            ofp_event.EventOFPSwitchFeatures(msg))
+
+        req = event.GetDatapathRequest(dpid=1)
+        self.service._handle_get_datapath(req)
+        self.service.reply_to_request.assert_called_once()
+        reply = self.service.reply_to_request.call_args[0][1]
+        self.assertIs(self.datapath, reply())
+
+    def test_switch_features_reconnect_before_datapath_id_initialized(self):
+        req = event.SendMsgRequest(self._make_msg())
+        self.service._handle_send_msg(req)
+        self.service.reply_to_request.assert_not_called()
+        new_datapath = mock.Mock(id=None)
+        msg = ofproto_v1_3_parser.OFPSwitchFeatures(
+            new_datapath, datapath_id=1)
+
+        self.service._switch_features_handler(
+            ofp_event.EventOFPSwitchFeatures(msg))
+
+        self.assertIs(new_datapath, self.service._switches[1].datapath)
+        self.datapath.close.assert_called_once_with()
+        self.service.reply_to_request.assert_called_once()
+        replied_req, reply = self.service.reply_to_request.call_args[0]
+        self.assertIs(req, replied_req)
+        self.assertIsInstance(reply.exception, exception.InvalidDatapath)
+        self.assertEqual({}, self.si.xids)
+        self.assertEqual({}, self.si.barriers)
+        self.assertEqual({}, self.si.results)
 
     def test_handle_send_msg_serialize_exception(self):
         """send_msg raising during serialize must cancel, not hang."""

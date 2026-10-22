@@ -89,7 +89,9 @@ class OfctlService(app_manager.OSKenApp):
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def _switch_features_handler(self, ev):
         datapath = ev.msg.datapath
-        id = datapath.id
+        # Observers can run before OFPHandler initializes datapath.id when
+        # using native threads. The received message already contains it.
+        id = ev.msg.datapath_id
         assert isinstance(id, numbers.Integral)
         old_info = self._switches.get(id, None)
         new_info = _SwitchInfo(datapath=datapath)
