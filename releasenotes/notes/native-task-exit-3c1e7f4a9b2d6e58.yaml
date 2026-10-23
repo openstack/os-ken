@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    With the native hub, an exception raised by an event handler no longer
+    ends the event loop of its application without being logged. It is
+    logged, and the application keeps handling events, as with eventlet.

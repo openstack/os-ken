@@ -307,7 +307,13 @@ elif HUB_TYPE == 'native':
     QueueEmpty = queue.Empty
     Semaphore = threading.Semaphore
     BoundedSemaphore = threading.BoundedSemaphore
-    TaskExit = Exception
+
+    class TaskExit(Exception):
+        """Raised to end a thread normally, as GreenletExit for eventlet.
+
+        Not Exception itself: the event loop would take any exception of
+        a handler for a normal exit, and end without logging it.
+        """
 
     HubEvent = threading.Event
 
