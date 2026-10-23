@@ -300,7 +300,7 @@ elif HUB_TYPE == 'native':
         # a proper termination mechanism using a flag or an event.
         pass
 
-    getcurrent = threading.current_thread()
+    getcurrent = threading.current_thread
     sleep = time.sleep
 
     Queue = queue.Queue
