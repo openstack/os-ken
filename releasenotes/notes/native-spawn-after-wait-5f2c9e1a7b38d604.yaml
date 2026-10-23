@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    With the native hub, the thread returned by ``hub.spawn_after()`` has a
+    ``wait()`` method, as the ones returned by ``hub.spawn()`` and by the
+    eventlet hub.

@@ -295,8 +295,6 @@ class TestThreadManagementNative(unittest.TestCase):
         thread.wait()
         self.assertEqual([mock.sentinel.value], result)
 
-    # NOTE: the thread spawn_after() returns has no wait().
-    @unittest.expectedFailure
     def test_spawn_after(self):
         result = []
 
