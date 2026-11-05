@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    ``ncclient`` is no longer a mandatory dependency. It is only needed by
+    the OF-Config library (``os_ken.lib.of_config``); install it with the
+    ``of-config`` extra, e.g. ``pip install os-ken[of-config]``.
