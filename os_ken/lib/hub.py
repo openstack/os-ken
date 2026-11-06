@@ -118,11 +118,6 @@ class StreamClient(object):
         self._is_active = False
 
 
-class LoggingWrapper(object):
-    def write(self, message):
-        LOG.info(message.rstrip('\n'))
-
-
 class Event(object):
     def __init__(self):
         self._ev = HubEvent()
@@ -183,6 +178,9 @@ class HubThread(threading.Thread):
                           traceback.format_exc())
 
     def cancel(self):
+        # NOTE(sahid): There is no safe and reliable way to force
+        # stopping a thread in Python.  It is recommended to implement
+        # a proper termination mechanism using a flag or an event.
         pass
 
 
@@ -211,10 +209,7 @@ def joinall(threads):
 
 
 def kill(thread):
-    # NOTE(sahid): There is no safe and reliable way to force
-    # stopping a thread in Python.  It is recommended to implement
-    # a proper termination mechanism using a flag or an event.
-    pass
+    thread.cancel()
 
 
 class TaskExit(Exception):
@@ -283,7 +278,8 @@ class Timeout(BaseException):
         self._event.set()
 
     def cancel(self):
-        self.timer.cancel()
+        if self.timer:
+            self.timer.cancel()
         self._event.set()
 
 

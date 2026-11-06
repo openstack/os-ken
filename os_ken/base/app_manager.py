@@ -367,7 +367,7 @@ class AppManager(object):
         finally:
             app_mgr.close()
             for t in services:
-                t.kill()
+                hub.kill(t)
             hub.joinall(services)
             gc.collect()
 
