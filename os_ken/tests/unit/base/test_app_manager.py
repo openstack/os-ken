@@ -49,9 +49,6 @@ class TestEventLoopNative(unittest.TestCase):
         self.app.start()
         self.addCleanup(self.app.stop)
 
-    # NOTE: the native hub aliases TaskExit to Exception, so the event loop
-    # takes any handler exception for a normal exit: LP#2172073.
-    @unittest.expectedFailure
     @mock.patch.object(app_manager.LOG, 'exception')
     def test_handler_exception_keeps_event_loop(self, mock_log_exception):
         self.app._send_event(_Event(), None)
