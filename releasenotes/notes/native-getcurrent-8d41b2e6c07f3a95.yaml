@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    With the native hub, ``hub.getcurrent()`` returns the current thread. It
+    raised ``TypeError``, ``getcurrent`` being the thread that imported the
+    hub instead of a function.

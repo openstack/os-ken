@@ -351,8 +351,6 @@ class TestThreadManagementNative(unittest.TestCase):
         self.assertEqual([mock.sentinel.value1,
                           mock.sentinel.value2], result)
 
-    # NOTE: getcurrent is the thread that imported the hub, not a function.
-    @unittest.expectedFailure
     def test_defined(self):
         self.assertTrue(callable(self.hub.getcurrent))
         self.assertTrue(callable(self.hub.sleep))
