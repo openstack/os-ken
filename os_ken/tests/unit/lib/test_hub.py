@@ -285,6 +285,83 @@ class TestThreadManagementNative(unittest.TestCase):
     def setUp(self):
         self.hub = importlib.reload(os_ken.lib.hub)
 
+    def test_spawn(self):
+        result = []
+
+        def task():
+            result.append(mock.sentinel.value)
+
+        thread = self.hub.spawn(task)
+        thread.wait()
+        self.assertEqual([mock.sentinel.value], result)
+
+    # NOTE: the thread spawn_after() returns has no wait().
+    @unittest.expectedFailure
+    def test_spawn_after(self):
+        result = []
+
+        def task():
+            result.append(mock.sentinel.value)
+
+        start_time = time.time()
+        thread = self.hub.spawn_after(1, task)
+        thread.wait()
+
+        self.assertGreaterEqual(time.time() - start_time, 1)
+        self.assertEqual([mock.sentinel.value], result)
+
+    @mock.patch('os_ken.lib.hub.LOG.error')
+    def test_spawn_raise_error_false(self, mock_log_error):
+        def failing_task():
+            raise Exception()
+
+        thread = self.hub.spawn(failing_task, raise_error=False)
+        thread.wait()
+        self.assertIn("exception", mock_log_error.call_args[0][0])
+
+    # NOTE: wait() does not raise the exception that ended the thread.
+    @unittest.expectedFailure
+    def test_spawn_raise_error_true(self):
+        def failing_task():
+            raise Exception()
+
+        thread = self.hub.spawn(failing_task, raise_error=True)
+        self.assertRaises(Exception, thread.wait)
+
+    def test_spawn_task_exit(self):
+        def exit_task():
+            raise self.hub.TaskExit()
+
+        thread = self.hub.spawn(exit_task, raise_error=True)
+        thread.wait()
+
+    def test_joinall(self):
+        result = []
+
+        def task1():
+            result.append(mock.sentinel.value1)
+
+        def task2():
+            result.append(mock.sentinel.value2)
+
+        thread1 = self.hub.spawn(task1)
+        thread2 = self.hub.spawn_after(1, task2)
+        self.hub.joinall([thread1, thread2])
+
+        self.assertEqual([mock.sentinel.value1,
+                          mock.sentinel.value2], result)
+
+    # NOTE: getcurrent is the thread that imported the hub, not a function.
+    @unittest.expectedFailure
+    def test_defined(self):
+        self.assertTrue(callable(self.hub.getcurrent))
+        self.assertTrue(callable(self.hub.sleep))
+        self.assertTrue(callable(self.hub.Queue))
+        self.assertTrue(callable(self.hub.QueueEmpty))
+        self.assertTrue(callable(self.hub.Semaphore))
+        self.assertTrue(callable(self.hub.BoundedSemaphore))
+        self.assertTrue(callable(self.hub.TaskExit))
+
 
 class TestListenEventlet(unittest.TestCase):
 
