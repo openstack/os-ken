@@ -124,8 +124,15 @@ class Event(object):
         self._cond = False
 
     def _wait(self, timeout=None):
-        while not self._cond:
-            self._ev.wait()
+        while True:
+            # Grab the current event before testing the flag: set() flips
+            # the flag first and only then wakes and replaces the event, so
+            # a concurrent set() can no longer leave us on a fresh event
+            # that nobody will ever signal.
+            ev = self._ev
+            if self._cond:
+                return
+            ev.wait()
 
     def _broadcast(self):
         self._ev.send()

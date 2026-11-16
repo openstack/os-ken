@@ -132,6 +132,38 @@ class TestEvent(unittest.TestCase):
         result = self.event.wait(timeout=1)
         self.assertTrue(result)
 
+    def test_set_between_check_and_wait(self):
+        # set() lands right after the waiter tests the flag and before it
+        # starts waiting; the waiter must still be woken.
+        event = self.event
+        real_set = event.set
+
+        class Flag(object):
+            raced = False
+
+            def __get__(self, obj, objtype=None):
+                value = obj.__dict__['_flag']
+                if not value and not Flag.raced:
+                    Flag.raced = True
+                    real_set()
+                return value
+
+            def __set__(self, obj, value):
+                obj.__dict__['_flag'] = value
+
+        class RacyEvent(type(event)):
+            _cond = Flag()
+
+        event.__class__ = RacyEvent
+        event._cond = False
+
+        done = []
+        thread = threading.Thread(target=lambda: done.append(event.wait()),
+                                  daemon=True)
+        thread.start()
+        thread.join(3)
+        self.assertEqual([True], done)
+
     def test_timeout_context(self):
         with os_ken.lib.hub.Timeout(seconds=10):
             time.sleep(1)
