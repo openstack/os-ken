@@ -283,9 +283,13 @@ elif HUB_TYPE == 'native':
         thread.start()
         return thread
 
+    class HubTimer(threading.Timer):
+        def wait(self, timeout=None):
+            self.join(timeout)
+
     def spawn_after(seconds, func, *args, **kwargs):
         kwargs.pop('raise_error', False)
-        timer = threading.Timer(seconds, func, args=args, kwargs=kwargs)
+        timer = HubTimer(seconds, func, args=args, kwargs=kwargs)
         timer.daemon = True
         timer.start()
         return timer
