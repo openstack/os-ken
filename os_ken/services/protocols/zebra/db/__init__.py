@@ -34,7 +34,7 @@ Session class connecting to database
 """
 
 # Create all tables
-from . import base
-from . import interface
-from . import route
+from . import base  # noqa: E402
+from . import interface  # noqa: E402
+from . import route  # noqa: E402
 base.Base.metadata.create_all(ENGINE)

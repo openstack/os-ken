@@ -33,7 +33,6 @@ from os_ken.lib import hub
 from os_ken.ofproto import ofproto_v1_3_parser
 from os_ken.ofproto import ofproto_v1_2_parser
 from os_ken.ofproto import ofproto_v1_0_parser
-hub.patch()
 
 
 LOG = logging.getLogger('test_controller')

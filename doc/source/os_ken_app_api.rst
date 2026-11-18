@@ -35,8 +35,9 @@ While such requests use the same machinery as ordinary
 events, their replies are put on a queue dedicated to the transaction
 to avoid deadlock.
 
-While threads and queues are currently implemented with eventlet/greenlet,
-a direct use of them in a OS-Ken application is strongly discouraged.
+While threads and queues are currently implemented using standard Python
+threading primitives (see ``os_ken.lib.hub``), a direct use of them in a
+OS-Ken application is strongly discouraged.
 
 Contexts
 --------

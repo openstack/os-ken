@@ -16,20 +16,26 @@
 
 import logging
 import os
-import ssl
+import queue
 import socket
+import ssl
 import sys
+import threading
+import time
 import traceback
 
 from os_ken.lib import ip
 
 
-# We don't bother to use cfg.py because monkey patch needs to be
-# called very early. Instead, we use an environment variable to
-# select the type of hub.
-HUB_TYPE = os.getenv('OSKEN_HUB_TYPE', 'native')
-
 LOG = logging.getLogger('os_ken.lib.hub')
+
+
+getcurrent = threading.current_thread
+sleep = time.sleep
+Queue = queue.Queue
+QueueEmpty = queue.Empty
+Semaphore = threading.Semaphore
+BoundedSemaphore = threading.BoundedSemaphore
 
 
 class StreamServer(object):
@@ -128,9 +134,9 @@ class Event(object):
 
     def _broadcast(self):
         self._ev.send()
-        # Since eventlet Event doesn't allow multiple send() operations
-        # on an event, re-create the underlying event.
-        # Note: _ev.reset() is obsolete.
+        # Re-create the underlying event so that multiple set() calls
+        # can be issued, mirroring the semantics of a manual-reset
+        # event that can be broadcast more than once.
         self._ev = HubEvent()
 
     def is_set(self):
@@ -156,253 +162,144 @@ class Event(object):
         return self._cond
 
 
-if HUB_TYPE == 'eventlet':
-    import eventlet
-    # HACK:
-    # sleep() is the workaround for the following issue.
-    # https://github.com/eventlet/eventlet/issues/401
-    eventlet.sleep()
-    import eventlet.event
-    import eventlet.queue
-    import eventlet.semaphore
-    import eventlet.timeout
-    import eventlet.wsgi
-    from eventlet import websocket
-    import greenlet
+class HubThread(threading.Thread):
+    def __init__(self, target, args=(), kwargs=None):
+        self.raise_error = kwargs.pop('raise_error', False)
+        super().__init__(target=target, args=args, kwargs=kwargs)
 
-    getcurrent = eventlet.getcurrent
-    sleep = eventlet.sleep
-    listen = eventlet.listen
-    connect = eventlet.connect
+    def wait(self, timeout=None):
+        self.join(timeout)
 
-    def patch(thread=True):
-        eventlet.monkey_patch(thread=thread)
-
-    def spawn(*args, **kwargs):
-        raise_error = kwargs.pop('raise_error', False)
-
-        def _launch(func, *args, **kwargs):
-            # Mimic gevent's default raise_error=False behaviour
-            # by not propagating an exception to the joiner.
-            try:
-                return func(*args, **kwargs)
-            except TaskExit:
-                pass
-            except BaseException as e:
-                if raise_error:
-                    raise e
-                # Log uncaught exception.
-                # Note: this is an intentional divergence from gevent
-                # behaviour; gevent silently ignores such exceptions.
-                LOG.error('hub: uncaught exception: %s',
-                          traceback.format_exc())
-
-        return eventlet.spawn(_launch, *args, **kwargs)
-
-    def spawn_after(seconds, *args, **kwargs):
-        raise_error = kwargs.pop('raise_error', False)
-
-        def _launch(func, *args, **kwargs):
-            # Mimic gevent's default raise_error=False behaviour
-            # by not propagating an exception to the joiner.
-            try:
-                return func(*args, **kwargs)
-            except TaskExit:
-                pass
-            except BaseException as e:
-                if raise_error:
-                    raise e
-                # Log uncaught exception.
-                # Note: this is an intentional divergence from gevent
-                # behaviour; gevent silently ignores such exceptions.
-                LOG.error('hub: uncaught exception: %s',
-                          traceback.format_exc())
-
-        return eventlet.spawn_after(seconds, _launch, *args, **kwargs)
-
-    def kill(thread):
-        thread.kill()
-
-    def joinall(threads):
-        for t in threads:
-            # This try-except is necessary when killing an inactive
-            # greenthread.
-            try:
-                t.wait()
-            except TaskExit:
-                pass
-
-    Queue = eventlet.queue.LightQueue
-    QueueEmpty = eventlet.queue.Empty
-    Semaphore = eventlet.semaphore.Semaphore
-    BoundedSemaphore = eventlet.semaphore.BoundedSemaphore
-    TaskExit = greenlet.GreenletExit
-
-    class WSGIServer(StreamServer):
-        def serve_forever(self):
-            self.logger = LoggingWrapper()
-            eventlet.wsgi.server(self.server, self.handle, self.logger)
-
-    WebSocketWSGI = websocket.WebSocketWSGI
-
-    Timeout = eventlet.timeout.Timeout
-    HubEvent = eventlet.event.Event
-
-elif HUB_TYPE == 'native':
-    import threading
-    import queue
-    import time
-
-    def patch(thread=True):
-        pass
-
-    class HubThread(threading.Thread):
-        def wait(self, timeout=None):
-            self.join(timeout)
-
-        def __init__(self, target, args=(), kwargs=None):
-            self.raise_error = kwargs.pop('raise_error', False)
-            super().__init__(target=target, args=args, kwargs=kwargs)
-
-        def run(self):
-            try:
-                super().run()
-            except TaskExit:
-                pass
-            except BaseException as e:
-                if self.raise_error:
-                    raise e
+    def run(self):
+        try:
+            super().run()
+        except TaskExit:
+            pass
+        except BaseException as e:
+            if self.raise_error:
+                raise e
+            else:
                 LOG.error('HubThread uncaught exception: %s',
                           traceback.format_exc())
 
-        def cancel(self):
-            pass
-
-    def spawn(func, *args, **kwargs):
-        thread = HubThread(func, args, kwargs)
-        thread.start()
-        return thread
-
-    class HubTimer(threading.Timer):
-        def wait(self, timeout=None):
-            self.join(timeout)
-
-    def spawn_after(seconds, func, *args, **kwargs):
-        kwargs.pop('raise_error', False)
-        timer = HubTimer(seconds, func, args=args, kwargs=kwargs)
-        timer.daemon = True
-        timer.start()
-        return timer
-
-    def joinall(threads):
-        for thread in threads:
-            thread.join()
-
-    def kill(thread):
-        # NOTE(sahid): There is no safe and reliable way to force
-        # stopping a thread in Python.  It is recommended to implement
-        # a proper termination mechanism using a flag or an event.
+    def cancel(self):
         pass
 
-    getcurrent = threading.current_thread
-    sleep = time.sleep
 
-    Queue = queue.Queue
-    QueueEmpty = queue.Empty
-    Semaphore = threading.Semaphore
-    BoundedSemaphore = threading.BoundedSemaphore
+def spawn(func, *args, **kwargs):
+    thread = HubThread(func, args, kwargs)
+    thread.start()
+    return thread
 
-    class TaskExit(Exception):
-        """Raised to end a thread normally, as GreenletExit for eventlet.
 
-        Not Exception itself: the event loop would take any exception of
-        a handler for a normal exit, and end without logging it.
-        """
+class HubTimer(threading.Timer):
+    def wait(self, timeout=None):
+        self.join(timeout)
 
-    HubEvent = threading.Event
 
-    class HubEvent(threading.Event):
-        def send(self):
-            self.set()
+def spawn_after(seconds, func, *args, **kwargs):
+    kwargs.pop('raise_error', False)
+    timer = HubTimer(seconds, func, args=args, kwargs=kwargs)
+    timer.daemon = True
+    timer.start()
+    return timer
 
-    class Timeout(BaseException):
-        """
-        Largely inspired by:
-          https://github.com/eventlet/eventlet/blob/master/eventlet/timeout.py
-        """
-        def __init__(self, seconds=None, exception=None):
-            self._event = threading.Event()
-            self._event.set()
-            self._queue = queue.Queue()
 
-            self.seconds = seconds
-            self.exception = exception
+def joinall(threads):
+    for thread in threads:
+        thread.join()
 
+
+def kill(thread):
+    # NOTE(sahid): There is no safe and reliable way to force
+    # stopping a thread in Python.  It is recommended to implement
+    # a proper termination mechanism using a flag or an event.
+    pass
+
+
+class TaskExit(Exception):
+    """Raised to end a thread normally.
+
+    Not Exception itself: the event loop would take any exception of
+    a handler for a normal exit, and end without logging it.
+    """
+
+
+class HubEvent(threading.Event):
+    def send(self):
+        self.set()
+
+
+class Timeout(BaseException):
+    """A context manager that raises an exception after a timeout."""
+
+    def __init__(self, seconds=None, exception=None):
+        self._event = threading.Event()
+        self._event.set()
+        self._queue = queue.Queue()
+
+        self.seconds = seconds
+        self.exception = exception
+
+        self.timer = None
+        self._timed_out = False
+
+    def start(self):
+        if self.seconds is None:
+            # "fake" timeout (never expires)
             self.timer = None
-            self._timed_out = False
+        else:
+            self.timer = threading.Timer(self.seconds, self._on_timeout)
+            self.timer.start()
+        return self
 
-        def start(self):
-            if self.seconds is None:
-                # "fake" timeout (never expires)
-                self.timer = None
-            else:
-                self.timer = threading.Timer(self.seconds, self._on_timeout)
-                self.timer.start()
-            return self
+    def __enter__(self):
+        if self.timer is None:
+            self.start()
+        return self
 
-        def __enter__(self):
-            if self.timer is None:
-                self.start()
-            return self
+    def __exit__(self, typ, value, tb):
+        self.cancel()
+        # Check if timeout occurred during execution
+        if self._timed_out:
+            try:
+                exc = self._queue.get_nowait()
+                # Only raise if we're not already handling an exception
+                # and the exception type is not False (which means
+                # suppress)
+                if self.exception is not False:
+                    raise exc
+            except queue.Empty:
+                pass
 
-        def __exit__(self, typ, value, tb):
-            self.cancel()
-            # Check if timeout occurred during execution
-            if self._timed_out:
-                try:
-                    exc = self._queue.get_nowait()
-                    # Only raise if we're not already handling an exception
-                    # and the exception type is not False (which means
-                    # suppress)
-                    if self.exception is not False:
-                        raise exc
-                except queue.Empty:
-                    pass
+    def _on_timeout(self):
+        self._timed_out = True
+        if self.exception is None or isinstance(self.exception, bool):
+            # timeout that raises self
+            exc = self
+        else:
+            exc = self.exception
+        self._queue.put(exc)
+        self._event.set()
 
-        def _on_timeout(self):
-            self._timed_out = True
-            if self.exception is None or isinstance(self.exception, bool):
-                # timeout that raises self
-                exc = self
-            else:
-                exc = self.exception
-            self._queue.put(exc)
-            self._event.set()
+    def cancel(self):
+        self.timer.cancel()
+        self._event.set()
 
-        def cancel(self):
-            self.timer.cancel()
-            self._event.set()
 
-    def listen(addr, family=socket.AF_INET, backlog=50, reuse_addr=True,
-               reuse_port=None):
-        """
-        Largely inspired by:
-          https://github.com/eventlet/eventlet/../eventlet/convenience.py
-        """
-        sock = socket.socket(family, socket.SOCK_STREAM)
-        if reuse_addr and sys.platform[:3] != 'win':
-            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        elif reuse_port is None:
-            reuse_port = True
-            if reuse_port and hasattr(socket, 'SO_REUSEPORT'):
-                try:
-                    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-                except Exception:
-                    # Not supported by the platform
-                    pass
-        sock.bind(addr)
-        sock.listen(backlog)
-        return sock
-else:
-    raise NotImplementedError(
-        "Invalid OSKEN_HUB_TYPE. Expected one of ('eventlet', 'native').")
+def listen(addr, family=socket.AF_INET, backlog=50, reuse_addr=True,
+           reuse_port=None):
+    sock = socket.socket(family, socket.SOCK_STREAM)
+    if reuse_addr and sys.platform[:3] != 'win':
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    elif reuse_port is None:
+        reuse_port = True
+        if reuse_port and hasattr(socket, 'SO_REUSEPORT'):
+            try:
+                sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+            except Exception:
+                # Not supported by the platform
+                pass
+    sock.bind(addr)
+    sock.listen(backlog)
+    return sock

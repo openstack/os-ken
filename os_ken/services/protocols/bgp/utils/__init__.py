@@ -13,19 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from os_ken.lib import hub
+from os_ken.services.protocols.bgp.utils import thrding
 
-
-LoopingCall = None
-IOFactory = None
-
-if hub.HUB_TYPE == 'eventlet':
-    from os_ken.services.protocols.bgp.utils import evtlet
-    LoopingCall = evtlet.LoopingCall
-    IOFactory = evtlet.EventletIOFactory
-
-
-if hub.HUB_TYPE == 'native':
-    from os_ken.services.protocols.bgp.utils import thrding
-    LoopingCall = thrding.LoopingCall
-    IOFactory = thrding.ThreadingIOFactory
+LoopingCall = thrding.LoopingCall
+IOFactory = thrding.ThreadingIOFactory

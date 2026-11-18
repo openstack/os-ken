@@ -123,7 +123,6 @@ Here's the helper executable, os_ken-vrrp::
     # limitations under the License.
 
     from os_ken.lib import hub
-    hub.patch()
 
     # TODO:
     #   Right now, we have our own patched copy of ovs python bindings

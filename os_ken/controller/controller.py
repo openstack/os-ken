@@ -324,8 +324,8 @@ class Datapath(ofproto_protocol.ProtocolDesc):
             except SocketTimeout:
                 continue
             except ssl.SSLError:
-                # eventlet throws SSLError (which is a subclass of IOError)
-                # on SSL socket read timeout; re-try the loop in this case.
+                # SSLError (a subclass of IOError) may be raised on SSL
+                # socket read timeout; re-try the loop in this case.
                 continue
             except (EOFError, IOError):
                 break
@@ -367,8 +367,8 @@ class Datapath(ofproto_protocol.ProtocolDesc):
                 buf_len = len(buf)
                 remaining_read_len = min_read_len
 
-                # We need to schedule other greenlets. Otherwise, os_ken
-                # can't accept new switches or handle the existing
+                # We need to schedule other tasks/threads. Otherwise,
+                # os_ken can't accept new switches or handle the existing
                 # switches. The limit is arbitrary. We need the better
                 # approach in the future.
                 count += 1

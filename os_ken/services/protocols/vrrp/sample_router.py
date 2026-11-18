@@ -27,7 +27,6 @@ osken-manager --verbose \
 """
 
 import contextlib
-import greenlet
 import socket
 
 from os_ken.base import app_manager
@@ -343,7 +342,7 @@ class RouterIPV4Linux(RouterIPV4):
                                     arp.ARP_HW_TYPE_ETHERNET,
                                     mac_lib.BROADCAST))
                 self._arp_loop_socket(packet_socket)
-        except greenlet.GreenletExit:
+        except hub.TaskExit:
             # suppress thread.kill exception
             pass
 
