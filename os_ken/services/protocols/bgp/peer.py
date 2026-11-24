@@ -723,14 +723,35 @@ class Peer(Source, Sink, NeighborConfListener, Activity):
         block, blocked_cause = self._apply_out_filter(path)
 
         nlri_str = outgoing_route.path.nlri.formatted_nlri_str
+        prev_sent_route = self._adj_rib_out.get(nlri_str)
+
+        # TODO(PH): optimized by sending several prefixes per update.
+        # Construct the update message.
+        update_msg = None
+        if not block:
+            update_msg = self._construct_update(outgoing_route)
+            if len(update_msg.serialize()) > bgp.BGP_MAX_MSG_LEN:
+                # Sending it would make the peer reset the session (Bad
+                # Message Length), so treat it as not advertisable and
+                # withdraw what was advertised before.
+                block = True
+                blocked_cause = 'message exceeds %d octets' % (
+                    bgp.BGP_MAX_MSG_LEN)
+                if (prev_sent_route and not prev_sent_route.filtered and
+                        not prev_sent_route.path.is_withdraw):
+                    update_msg = self._construct_update(OutgoingRoute(
+                        outgoing_route.path.clone(for_withdrawal=True)))
+                    LOG.warning('prefix : %s is too large to send to %s, '
+                                'withdrawing it', path.nlri, self)
+                else:
+                    update_msg = None
+
         sent_route = SentRoute(outgoing_route.path, self, block)
         self._adj_rib_out[nlri_str] = sent_route
         self._signal_bus.adj_rib_out_changed(self, sent_route)
 
-        # TODO(PH): optimized by sending several prefixes per update.
-        # Construct and send update message.
-        if not block:
-            update_msg = self._construct_update(outgoing_route)
+        # Send update message.
+        if update_msg is not None:
             self._protocol.send(update_msg)
             # Collect update statistics.
             self.state.incr(PeerCounterNames.SENT_UPDATES)

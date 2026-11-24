@@ -470,3 +470,57 @@ class Test_Peer(unittest.TestCase):
         # Test
         self._test_is_looped_path_attrs(
             path_attributes, local_as, ex_returned_value)
+
+
+class Test_Peer_SendOutgoingRoute(unittest.TestCase):
+
+    @mock.patch.object(
+        peer.Peer, '__init__', mock.MagicMock(return_value=None))
+    def setUp(self):
+        self.peer = peer.Peer(None, None, None, None, None)
+        self.peer.version_num = 0
+        self.peer._adj_rib_out = {}
+        self.peer._signal_bus = mock.MagicMock()
+        self.peer._protocol = mock.MagicMock()
+        self.peer._core_service = mock.MagicMock()
+        self.peer.state = mock.MagicMock()
+        self.peer._apply_out_filter = mock.MagicMock(
+            return_value=(False, None))
+        self.peer._construct_update = mock.MagicMock(
+            side_effect=self._construct_update)
+
+    @staticmethod
+    def _construct_update(outgoing_route):
+        if outgoing_route.path.is_withdraw:
+            return bgp.BGPUpdate(withdrawn_routes=[outgoing_route.path.nlri])
+        communities = bgp.BGPPathAttributeCommunities(
+            list(range(1, 1100)))
+        return bgp.BGPUpdate(path_attributes=[communities])
+
+    def _path(self, withdraw=False):
+        path = mock.MagicMock(is_withdraw=withdraw)
+        path.nlri = bgp.IPAddrPrefix(24, '198.51.100.0')
+        path.clone.return_value = mock.MagicMock(
+            is_withdraw=True, nlri=path.nlri)
+        return path
+
+    def _send(self, path):
+        outgoing_route = mock.MagicMock(path=path, for_route_refresh=False)
+        self.peer._send_outgoing_route(outgoing_route)
+
+    def test_oversized_update_not_sent(self):
+        self._send(self._path())
+
+        self.peer._protocol.send.assert_not_called()
+        sent = self.peer._adj_rib_out['198.51.100.0/24']
+        self.assertTrue(sent.filtered)
+
+    def test_oversized_update_withdraws_previous(self):
+        self._send(self._path())
+        self.peer._adj_rib_out['198.51.100.0/24'].filtered = False
+        self._send(self._path())
+
+        self.peer._protocol.send.assert_called_once()
+        msg = self.peer._protocol.send.call_args[0][0]
+        self.assertTrue(msg.withdrawn_routes)
+        self.assertLessEqual(len(msg.serialize()), bgp.BGP_MAX_MSG_LEN)

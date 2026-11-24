@@ -5189,6 +5189,11 @@ class BGPNLRI(IPAddrPrefix):
     pass
 
 
+# Maximum BGP message size (RFC 4271 section 4); os-ken does not support
+# the Extended Message capability (RFC 8654).
+BGP_MAX_MSG_LEN = 4096
+
+
 class BGPMessage(packet_base.PacketBase, TypeDisp):
     """Base class for BGP-4 messages.
 
