@@ -3741,9 +3741,11 @@ class _BGPPathAttributeAsPathCommon(_PathAttribute):
         if not self.value or not remote_as:
             return False
 
-        leftmost_seg = self.path_seg_list[0]
-        if leftmost_seg and leftmost_seg[0] == remote_as:
-            return True
+        # An AS_SET segment is stored as an unordered set and has no
+        # leftmost AS.
+        leftmost_seg = self.value[0]
+        if isinstance(leftmost_seg, list) and leftmost_seg:
+            return leftmost_seg[0] == remote_as
 
         return False
 

@@ -807,3 +807,19 @@ class Test_bgp(unittest.TestCase):
         msg3, rest = bgp.FlowSpecL2VPNNLRI.parser(binmsg)
         self.assertEqual(str(msg), str(msg3))
         self.assertEqual(rest, b'')
+
+
+class TestAsPathHasMatchingLeftmost(unittest.TestCase):
+
+    def test_sequence(self):
+        as_path = bgp.BGPPathAttributeAsPath([[65001, 65002]])
+        self.assertTrue(as_path.has_matching_leftmost(65001))
+        self.assertFalse(as_path.has_matching_leftmost(65002))
+
+    def test_leftmost_as_set(self):
+        as_path = bgp.BGPPathAttributeAsPath([{65001}])
+        self.assertFalse(as_path.has_matching_leftmost(65001))
+
+    def test_empty(self):
+        as_path = bgp.BGPPathAttributeAsPath([])
+        self.assertFalse(as_path.has_matching_leftmost(65001))
